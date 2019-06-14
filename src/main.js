@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import {get, post, getExcel, postExcel} from "./components/axiosHttp";
 import Cube from 'cube-ui'
 
 Vue.config.productionTip = false
@@ -10,6 +12,11 @@ Vue.config.productionTip = false
 Vue.use(Cube)
 // 引入axios
 Vue.prototype.axios = axios
+// 引入封装接口
+Vue.prototype.$get = get
+Vue.prototype.$post = post
+Vue.prototype.$getExcel = getExcel
+Vue.prototype.$postExcel = postExcel
 
 /* eslint-disable no-new */
 new Vue({

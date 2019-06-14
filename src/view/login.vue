@@ -15,11 +15,11 @@ export default {
 }
 </script>
 
-<style scoped>
-.login{
+<style scoped lang="stylus">
+.login
   height: 100vh;
   width: 100vw;
-  background: url("./../assets/login-bg.png");
+  background: url("../assets/login-bg.png");
   background-size:100% 100%;
-}
+
 </style>
