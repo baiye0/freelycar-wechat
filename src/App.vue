@@ -11,15 +11,7 @@
 </script>
 
 <style lang="stylus">
-  /*按钮颜色*/
-  $bt-yellow = #FFBD03
-  $bt-blue = #2049BF
-  $bt-grey = #A0A0A0
-
-  /*背景颜色*/
-  $bg-grey = #EEEEEE
-
-  body
+  body,div,img
     margin 0
     padding 0
 
@@ -27,6 +19,9 @@
     margin 0
     padding 0
     background $bg-grey
+    height 100vh
+    width 100vw
+    font-family MicrosoftYaHei
 
 
 </style>
