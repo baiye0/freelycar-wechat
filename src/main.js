@@ -6,10 +6,14 @@ import router from './router'
 import axios from 'axios'
 import {get, post, getExcel, postExcel} from "./components/axiosHttp";
 import Cube from 'cube-ui'
+import Mint from 'mint-ui';
+import 'mint-ui/lib/style.css';
 
 Vue.config.productionTip = false
 // 引入cube
 Vue.use(Cube)
+// 引入mintUI
+Vue.use(Mint)
 // 引入axios
 Vue.prototype.axios = axios
 // 引入封装接口

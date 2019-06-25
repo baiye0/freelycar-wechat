@@ -20,6 +20,8 @@
 </template>
 
 <script>
+  import wx from 'weixin-js-sdk'
+
   export default {
     name: 'login',
     data() {
@@ -28,11 +30,48 @@
         phone: '',
         password: '',
         passwordInfo: '获取验证码',
-        isGetCode: false
+        isGetCode: false,
+        data:{},
       }
     },
     methods: {
       // 获取验证码
+
+      // getCode(){
+      //   // let url = location.href.split('#')[0]
+      //   this.axios.get('/api/wechat/config/getJSSDKConfig', {
+      //     targetUrl:'https://www.freelycar.com/wechat/'
+      //   }).then(res=>{
+      //     this.data=res
+      //     console.log(res,'getConfig')
+      //     wx.config({
+      //       debug:false,
+      //       appId:this.data.appId,
+      //       timestamp:this.data.timestamp ,
+      //       nonceStr: this.data.nonceStr,
+      //       signature: this.data.signature,
+      //       jsApiList: [
+      //         'checkJsApi',
+      //         'chooseWXPay'
+      //       ]
+      //     })
+      //     wx.checkJsApi({
+      //       jsApiList: ['chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+      //       success: function(res) {
+      //         console.log(res)
+      //       },
+      //       fail:function(error){
+      //         console.log(error)
+      //       }
+      //     })
+      //     wx.ready(function(){
+      //       console.log('微信接口成功')
+      //     })
+      //     wx.error(function(res){
+      //       console.log(res)
+      //     })
+      //   })
+      // }
       getCode() {
         if(this.phone!==''&&this.phone.length===11){
           this.$post('/wechat/login/getSmsCode',{
@@ -59,7 +98,7 @@
 <style scoped lang="stylus">
   /*高度宽度*/
   h(n)
-    n * 0.125vw
+    n * 0.13vw
 
   w(n)
     n / 7.5vw

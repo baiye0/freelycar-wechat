@@ -20,8 +20,10 @@
     "cube-ui": "^1.12.24",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
