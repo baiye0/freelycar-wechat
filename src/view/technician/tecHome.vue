@@ -3,52 +3,30 @@
     <div class="my-info">
       <img class="my-info-setting" src="./../../assets/setting.png" alt="">
       <img class="my-info-photo" src="../../assets/photo.png" alt="头像">
-      <span class="name">马东东</span>
+      <span class="name">王师傅</span>
       <span class="my-info-other">男  ·  江苏  ·  南京</span>
       <div class="my-info-position">
         <img src="../../assets/position.png" alt="位置">
-        <span>定位门店：徐庄研发三区店</span>
+        <span>服务门店：徐庄研发三区店</span>
         <button>更换</button>
       </div>
     </div>
 
     <div class="switch">
-      <div class="menu">
-        <img class="car-icon" src="../../assets/my-car.png" alt="车">
-        <span>爱车管理</span>
-        <img class="edit" src="../../assets/edit.png" alt="编辑">
-      </div>
+      <img v-if="switchValue" src="../../assets/switch-on.png" alt="开">
+      <img v-else src="../../assets/switch-off.png" alt="关">
+      <span>服务状态</span>
 
-      <div class="my-car">
-        <div class="my-car-card">
-          <img class="my-car-del" src="./../../assets/del.png" alt="">
-          <img class="my-car-head" src="./../../assets/car-head.png" alt="">
-          <div class="my-car-num">苏A12345</div>
-          <div class="my-car-brand">白色 · 宝马</div>
-        </div>
-
-        <div class="my-car-card">
-          <img class="my-car-del" src="./../../assets/del.png" alt="">
-          <img class="my-car-head" src="./../../assets/car-head.png" alt="">
-          <div class="my-car-num">苏A12345</div>
-          <div class="my-car-brand">白色 · 宝马</div>
-        </div>
-
-        <img class="my-car-add" src="./../../assets/add.png" alt="">
-      </div>
+      <span :class="[switchValue?'switch-info switch-info-blue':'switch-info switch-info-gray']">{{switchValue?'接单中':'停止接单'}}</span>
+      <mt-switch class="switch-btn" v-model="switchValue"></mt-switch>
 
     </div>
 
     <div>
       <div class="menu">
-        <img class="card-icon" src="../../assets/my-card.png" alt="会员卡">
-        <span>我的会员卡</span>
-        <img class="more" src="../../assets/more.png" alt="详细">
-      </div>
-
-      <div class="menu">
-        <img class="voucher-icon" src="../../assets/my-voucher.png" alt="抵用券">
-        <span>我的抵用券</span>
+        <img class="history-icon" src="../../assets/history-icon.png" alt="历史">
+        <span>历史订单</span>
+        <span class="count">总计：30单</span>
         <img class="more" src="../../assets/more.png" alt="详细">
       </div>
 
@@ -140,62 +118,33 @@
 
   .switch
     width 100vw
-    height h(256)
+    height h(90)
     border-top h(16) solid #EEEEEE
     border-bottom h(16) solid #EEEEEE
-    font-size w(25)
-
-  .my-car
-    width 100vw
-    height h(168)
-    overflow-x scroll
     display flex
     align-items center
-
-  .my-car div
-    flex none
-
-  .my-car-card
-    height h(127)
-    width w(293)
-    border-radius w(20)
-    background #F4F4F4
-    margin 0 0 0 w(37)
-    position relative
-
-  .my-car-add
-    height w(126)
-    width w(126)
-    margin-left w(30)
-
-  .my-car-head
-    height w(90)
-    width w(90)
-    position absolute
-    top w(18)
-    left w(18)
-
-  .my-car-num
     font-size w(25)
-    line-height w(50)
-    font-weight 600
-    left w(137)
-    top h(21)
-    position relative
 
-  .my-car-brand
-    font-size w(22)
-    line-height w(50)
-    left w(137)
-    top h(10)
-    position relative
+  .switch img
+    height w(34)
+    width w(34)
+    margin 0 w(28) 0 w(46)
 
-  .my-car-del
-    height w(35)
-    width w(35)
+  .switch-info
+    font-size w(25)
     position absolute
-    right w(-15)
-    top w(-15)
+    right w(169)
+
+  .switch-info-gray
+    color #CFCFCF
+
+  .switch-info-blue
+    color #2049BF
+
+  .switch-btn
+    transform scale(0.6, 0.6) !important
+    position absolute
+    right w(46)
 
   .menu
     height h(88)
@@ -208,31 +157,15 @@
   .menu span
     font-size w(25)
 
-  .card-icon
-    height h(34)
-    width w(45)
-    margin-right w(24)
-
-  .voucher-icon
+  .history-icon
     height h(41)
-    width w(44)
-    margin-right w(25)
-
-  .car-icon
-    height h(41)
-    width w(44)
-    margin-right w(25)
+    width w(32)
+    margin-right w(29)
 
   .call-me-icon
-    width w(46)
-    height h(40)
-    margin-right w(27)
-
-  .edit
-    height h(34)
-    width w(30)
-    right w(39)
-    position absolute
+    width w(39)
+    height h(37)
+    margin-right w(26)
 
   .more
     height h(25)
@@ -243,5 +176,4 @@
   .count
     position absolute
     right w(71)
-
 </style>
