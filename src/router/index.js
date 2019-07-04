@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/view/user/login.vue'
 import userHome from '@/view/user/userHome.vue'
+import userInfo from '@/view/user/userInfo.vue'
+import carInfo from '@/view/user/carInfo.vue'
 import tecHome from '@/view/technician/tecHome.vue'
 import tecLogin from '@/view/technician/tecLogin.vue'
 
@@ -28,6 +30,16 @@ export default new Router({
       path: '/userHome',
       name: 'userHome',
       component: userHome
+    },
+    {
+      path: '/userInfo',
+      name: 'userInfo',
+      component: userInfo
+    },
+    {
+      path: '/carInfo',
+      name: 'carInfo',
+      component: carInfo
     }
   ],
   mode: 'history',

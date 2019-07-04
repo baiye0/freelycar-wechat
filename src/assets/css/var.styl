@@ -1,20 +1,46 @@
 /*按钮颜色*/
 $bt-yellow = #FFBD03
 $bt-blue = #2049BF
-$bt-grey = #A0A0A0
+$bt-gray = #CFCFCF
 
 /*背景颜色*/
-$bg-grey = #EEEEEE
+$bg-gray = #EEEEEE
 
 /*输入框边框*/
-$border-grey = 1px solid #ebebeb
+$border-gray = 1px solid #ebebeb
 
 /*高度宽度*/
 h(n)
-  n * 0.125vw
+  n * 0.13vw
 
 w(n)
-  n / 75vw
+  n / 7.5vw
+
+.big-blue-btn
+  height h(84)
+  width w(579)
+  border-radius w(40)
+  border transparent
+  color white
+  font-size w(32)
+  background $bt-blue
+  position absolute
+  transform translate(-50%,0)
+  left 50%
+  bottom h(190)
+
+.big-gray-btn
+  height h(84)
+  width w(579)
+  border-radius w(40)
+  border transparent
+  color white
+  font-size w(32)
+  background $bt-gray
+  position absolute
+  transform translate(-50%,0)
+  left 50%
+  bottom h(82)
 
 input:-ms-input-placeholder
   color #D7D7D7

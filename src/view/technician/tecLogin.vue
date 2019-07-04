@@ -83,7 +83,7 @@
     align-content center
 
   .form input
-    border-bottom $border-grey
+    border-bottom $border-gray
     width w(566)
     padding 0 0 w(11) 0
     margin 0 0 0 w(42)
@@ -110,7 +110,7 @@
     font-size w(24)
     color #2049BF
     right 0
-    border-left $border-grey
+    border-left $border-gray
     padding 0 w(82) 0 w(36)
     text-align center
 

@@ -201,7 +201,7 @@
     height h(88)
     margin-left w(41)
     width w(709)
-    border-bottom $border-grey
+    border-bottom $border-gray
     display flex
     align-items center
 

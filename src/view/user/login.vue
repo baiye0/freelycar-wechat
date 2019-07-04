@@ -1,6 +1,7 @@
 <template>
   <div class="login">
     <img class="logo" src="../../assets/login-bg.png" alt="logo">
+
     <div class="form">
       <div class="phone">
         <img src="../../assets/phone.png" alt="电话">
@@ -16,6 +17,7 @@
         <button class="login-btn">登录</button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -36,42 +38,6 @@
     },
     methods: {
       // 获取验证码
-
-      // getCode(){
-      //   // let url = location.href.split('#')[0]
-      //   this.axios.get('/api/wechat/config/getJSSDKConfig', {
-      //     targetUrl:'https://www.freelycar.com/wechat/'
-      //   }).then(res=>{
-      //     this.data=res
-      //     console.log(res,'getConfig')
-      //     wx.config({
-      //       debug:false,
-      //       appId:this.data.appId,
-      //       timestamp:this.data.timestamp ,
-      //       nonceStr: this.data.nonceStr,
-      //       signature: this.data.signature,
-      //       jsApiList: [
-      //         'checkJsApi',
-      //         'chooseWXPay'
-      //       ]
-      //     })
-      //     wx.checkJsApi({
-      //       jsApiList: ['chooseWXPay'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-      //       success: function(res) {
-      //         console.log(res)
-      //       },
-      //       fail:function(error){
-      //         console.log(error)
-      //       }
-      //     })
-      //     wx.ready(function(){
-      //       console.log('微信接口成功')
-      //     })
-      //     wx.error(function(res){
-      //       console.log(res)
-      //     })
-      //   })
-      // }
       getCode() {
         if(this.phone!==''&&this.phone.length===11){
           this.$post('/wechat/login/getSmsCode',{
@@ -122,7 +88,7 @@
     align-content center
 
   .form input
-    border-bottom $border-grey
+    border-bottom $border-gray
     width w(566)
     padding 0 0 w(11) 0
     margin 0 0 0 w(42)
@@ -149,7 +115,7 @@
     font-size w(24)
     color #2049BF
     right 0
-    border-left $border-grey
+    border-left $border-gray
     padding 0 w(82) 0 w(36)
     text-align center
 
