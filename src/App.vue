@@ -18,7 +18,7 @@
   #app
     margin 0
     padding 0
-    background $bg-grey
+    background #EEEEEE
     height 100vh
     width 100vw
     font-family MicrosoftYaHei

@@ -4,6 +4,9 @@ import login from '@/view/user/login.vue'
 import userHome from '@/view/user/userHome.vue'
 import userInfo from '@/view/user/userInfo.vue'
 import carInfo from '@/view/user/carInfo.vue'
+import myOrder from '@/view/user/myOrder.vue'
+
+
 import tecHome from '@/view/technician/tecHome.vue'
 import tecLogin from '@/view/technician/tecLogin.vue'
 
@@ -35,6 +38,10 @@ export default new Router({
       path: '/userInfo',
       name: 'userInfo',
       component: userInfo
+    },{
+      path: '/myOrder',
+      name: 'myOrder',
+      component: myOrder
     },
     {
       path: '/carInfo',
