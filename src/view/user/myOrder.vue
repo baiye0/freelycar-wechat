@@ -19,14 +19,15 @@
       </div>
 
       <div class="open-the-door">
-        <span><img src="./../../assets/call-service.png" alt="">联系客服</span>
+        <img src="./../../assets/call-service.png" alt="">
+        <span>联系客服</span>
         <button>立即开柜</button>
       </div>
 
-      <div class="">
+      <div class="payment">
         <span>待付款￥</span><span>120</span>
         <img src="./../../assets/call-service.png" alt="">
-        <span>联系客服</span>
+        <span class="payment-call-service">联系客服</span>
         <button>立即支付</button>
       </div>
 
@@ -175,6 +176,7 @@
   .my-order
     background #EEEEEE
     padding-top h(20)
+    padding-bottom h(20)
 
   .order-card
     background white
@@ -245,7 +247,6 @@
 
   .open-the-door
     height h(89)
-    justify-content space-between
     align-items center
     font-size w(23)
     color #2049BF
@@ -255,6 +256,7 @@
     width w(25)
     margin 0 w(5)
 
+
   .open-the-door button
     height h(55)
     width w(190)
@@ -262,6 +264,33 @@
     color white
     border transparent
     border-radius w(30)
+    right w(41)
+    position absolute
+
+  .payment
+    height h(89)
+    align-items center
+    font-size w(30)
+    color #FFBD03
+
+  .payment img
+    height w(25)
+    width w(25)
+    margin 0 w(5) 0 w(36)
+
+  .payment button
+    height h(55)
+    width w(190)
+    background $bt-blue
+    color white
+    border transparent
+    border-radius w(30)
+    right w(41)
+    position absolute
+
+  .payment-call-service
+    color #2049BF
+    font-size w(23)
 
 
 </style>
