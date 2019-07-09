@@ -5,6 +5,8 @@ import userHome from '@/view/user/userHome.vue'
 import userInfo from '@/view/user/userInfo.vue'
 import carInfo from '@/view/user/carInfo.vue'
 import myOrder from '@/view/user/myOrder.vue'
+import buyCard from '@/view/user/buyCard.vue'
+import chooseStore from '@/view/user/chooseStore.vue'
 
 
 import tecHome from '@/view/technician/tecHome.vue'
@@ -38,10 +40,21 @@ export default new Router({
       path: '/userInfo',
       name: 'userInfo',
       component: userInfo
-    },{
+    },
+    {
       path: '/myOrder',
       name: 'myOrder',
       component: myOrder
+    },
+    {
+      path: '/buyCard',
+      name: 'buyCard',
+      component: buyCard
+    },
+    {
+      path: '/chooseStore',
+      name: 'chooseStore',
+      component: chooseStore
     },
     {
       path: '/carInfo',
