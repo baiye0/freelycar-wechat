@@ -16,6 +16,7 @@ import success from '@/view/components/success.vue'
 
 import tecHome from '@/view/technician/tecHome.vue'
 import tecLogin from '@/view/technician/tecLogin.vue'
+import historyOrder from '@/view/technician/historyOrder.vue'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/tecLogin',
       name: 'tecLogin',
       component: tecLogin
+    },
+    {
+      path: '/historyOrder',
+      name: 'historyOrder',
+      component: historyOrder
     },
     {
       path: '/payOrder',
