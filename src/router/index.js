@@ -7,6 +7,7 @@ import carInfo from '@/view/user/carInfo.vue'
 import myOrder from '@/view/user/myOrder.vue'
 import buyCard from '@/view/user/buyCard.vue'
 import chooseStore from '@/view/user/chooseStore.vue'
+import payOrder from '@/view/user/payOrder.vue'
 
 
 import openDoor from '@/view/components/openDoor.vue'
@@ -29,6 +30,11 @@ export default new Router({
       path: '/tecLogin',
       name: 'tecLogin',
       component: tecLogin
+    },
+    {
+      path: '/payOrder',
+      name: 'payOrder',
+      component: payOrder
     },
     {
       path: '/tecHome',
