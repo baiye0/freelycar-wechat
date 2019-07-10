@@ -56,6 +56,7 @@
     position relative
     height 100vh
     width 100vw
+    background white
 
   .centered
     position absolute

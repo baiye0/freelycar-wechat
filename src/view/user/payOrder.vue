@@ -1,5 +1,19 @@
 <template>
   <div class="pay-order">
+    <div class="pay-order-card">
+      <div class="pay-order-card-item">
+        <span>订单编号</span>
+        <span class="pay-order-info-gray">dr10101101001<b class="pay-order-info-blue copy">复制</b></span>
+      </div>
+      <div class="pay-order-card-item">
+        <span>下单时间</span>
+        <span class="pay-order-info-gray">2019-1-1</span>
+      </div>
+      <div class="pay-order-card-item">
+        <span>支付方式</span>
+        <span class="pay-order-info-gray">会员卡（000）</span>
+      </div>
+    </div>
 
     <div class="pay-order-card">
       <div class="pay-order-card-item">
@@ -9,6 +23,10 @@
       <div class="pay-order-card-item">
         <span>车主信息</span>
         <span class="pay-order-info-gray">马东东11111111</span>
+      </div>
+      <div class="pay-order-card-item">
+        <span>车辆位置</span>
+        <span class="pay-order-info-gray">01号柜-青创园</span>
       </div>
     </div>
 
@@ -55,6 +73,9 @@
       <span class="pay-order-info-yellow">￥110 <b class="pay-order-info-gray">已优惠￥10</b></span>
       <button>立即结算</button>
     </div>
+
+    <button class="blue-btn" v-show="msg">订单跟踪</button>
+    <button class="gray-btn" v-show="msg">取消订单</button>
   </div>
 </template>
 
@@ -81,6 +102,37 @@
 
   w(n)
     n / 7.5vw
+
+  .pay-order
+    margin-bottom h(90)
+    position relative
+    background #EEEEEE
+
+  .blue-btn
+    height h(84)
+    width w(579)
+    border-radius w(40)
+    border transparent
+    color white
+    font-size w(32)
+    background $bt-blue
+    position relative
+    transform translate(-50%,0)
+    left 50%
+    margin h(50) 0 0 0
+
+  .gray-btn
+    height h(84)
+    width w(579)
+    border-radius w(40)
+    border transparent
+    color white
+    font-size w(32)
+    background $bt-gray
+    position relative
+    transform translate(-50%,0)
+    left 50%
+    margin h(50) 0
 
   .pay-order-more
     height w(25)
@@ -154,4 +206,10 @@
     height h(83)
     width w(263)
     border transparent
+
+  .copy
+    padding-left w(15)
+    margin-left w(15)
+    border-left $border-gray
+    font-size w(25)
 </style>
