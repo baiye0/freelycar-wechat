@@ -9,6 +9,10 @@ import buyCard from '@/view/user/buyCard.vue'
 import chooseStore from '@/view/user/chooseStore.vue'
 
 
+import openDoor from '@/view/components/openDoor.vue'
+import success from '@/view/components/success.vue'
+
+
 import tecHome from '@/view/technician/tecHome.vue'
 import tecLogin from '@/view/technician/tecLogin.vue'
 
@@ -55,6 +59,16 @@ export default new Router({
       path: '/chooseStore',
       name: 'chooseStore',
       component: chooseStore
+    },
+    {
+      path: '/openDoor',
+      name: 'openDoor',
+      component: openDoor
+    },
+    {
+      path: '/success',
+      name: 'success',
+      component: success
     },
     {
       path: '/carInfo',
