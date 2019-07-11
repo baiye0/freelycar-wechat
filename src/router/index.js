@@ -8,6 +8,7 @@ import myOrder from '@/view/user/myOrder.vue'
 import buyCard from '@/view/user/buyCard.vue'
 import chooseStore from '@/view/user/chooseStore.vue'
 import payOrder from '@/view/user/payOrder.vue'
+import addCar from '@/view/user/addCar.vue'
 
 
 import openDoor from '@/view/components/openDoor.vue'
@@ -31,6 +32,10 @@ export default new Router({
       path: '/tecLogin',
       name: 'tecLogin',
       component: tecLogin
+    },{
+      path: '/addCar',
+      name: 'addCar',
+      component: addCar
     },
     {
       path: '/historyOrder',
