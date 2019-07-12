@@ -1,8 +1,18 @@
 <template>
-  <div>
-    <div v-for="(item,index) in msg">
+  <div class="buy-card">
+    <span class="buy-card-store">以下会员卡仅限于{{store}}门店使用</span>
 
+    <div class="buy-card-card" v-for="(item,index) in msg">
+      <div class="buy-card-title">
+        <span>小易会员VIP</span>
+        <span>点击购买>></span>
+      </div>
+
+      <span class="buy-card-count">{{item.money}}<b>元</b></span>
+
+      <span class="buy-card-text">储值金额</span>
     </div>
+
   </div>
 </template>
 
@@ -14,8 +24,15 @@
         msg: [
           {
             money:500
-          }
-        ]
+          },{
+            money:300
+          },{
+            money:200
+          },{
+            money:100
+          },
+        ],
+        store:'1'
       }
     },
     methods: {},
@@ -34,4 +51,44 @@
   w(n)
     n / 7.5vw
 
+  .buy-card
+    background white
+    min-height 100vh
+    box-sizing border-box
+    padding w(30)
+
+  .buy-card-store
+    font-size w(20)
+
+  .buy-card-card
+    height h(330)
+    width w(690)
+    background url("./../../assets/vip-card.png")
+    background-size 100% 100%
+    margin-top h(33)
+    color white
+    position relative
+
+  .buy-card-title
+    display flex
+    justify-content space-between
+    align-items center
+    height h(48)
+    font-size w(25)
+    padding 0 w(42)
+
+  .buy-card-count
+    font-size w(150)
+    position absolute
+    top h(100)
+    left w(26)
+
+  .buy-card-count b
+    font-size w(39)
+
+  .buy-card-text
+    font-size w(20)
+    position absolute
+    top h(270)
+    left w(30)
 </style>
