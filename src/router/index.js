@@ -11,6 +11,7 @@ import payOrder from '@/view/user/payOrder.vue'
 import addCar from '@/view/user/addCar.vue'
 import billingOrder from '@/view/user/billingOrder.vue'
 import orderTracking from '@/view/user/orderTracking.vue'
+import store from '@/view/user/store.vue'
 
 
 import openDoor from '@/view/components/openDoor.vue'
@@ -46,6 +47,10 @@ export default new Router({
       path: '/orderTracking',
       name: 'orderTracking',
       component: orderTracking
+    },{
+      path: '/store',
+      name: 'store',
+      component: store
     },
     {
       path: '/historyOrder',
