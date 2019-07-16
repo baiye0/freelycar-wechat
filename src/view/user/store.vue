@@ -58,37 +58,40 @@
       <span>会员卡</span>
       <div class="store-card-box">
 
-        <div class="store-card-item-box">
-          <div class="store-card-item">
-            <span class="store-card-item-price"><b>￥</b>500</span>
-            <div><span>点击购买</span></div>
+        <div class="store-card-box-scroll">
+          <div class="store-card-item-box">
+            <div class="store-card-item">
+              <span class="store-card-item-price"><b>￥</b>500</span>
+              <div><span>点击购买</span></div>
+            </div>
+            <div class="store-card-item-info">购买价 ￥400</div>
           </div>
-          <div class="store-card-item-info">购买价 ￥400</div>
+
+          <div class="store-card-item-box">
+            <div class="store-card-item">
+              <span class="store-card-item-price"><b>￥</b>500</span>
+              <div><span>点击购买</span></div>
+            </div>
+            <div class="store-card-item-info">购买价 ￥400</div>
+          </div>
+
+          <div class="store-card-item-box">
+            <div class="store-card-item">
+              <span class="store-card-item-price"><b>￥</b>500</span>
+              <div><span>点击购买</span></div>
+            </div>
+            <div class="store-card-item-info">购买价 ￥400</div>
+          </div>
+
+          <div class="store-card-item-box">
+            <div class="store-card-item">
+              <span class="store-card-item-price"><b>￥</b>500</span>
+              <div><span>点击购买</span></div>
+            </div>
+            <div class="store-card-item-info">购买价 ￥400</div>
+          </div>
         </div>
 
-        <div class="store-card-item-box">
-          <div class="store-card-item">
-            <span class="store-card-item-price"><b>￥</b>500</span>
-            <div><span>点击购买</span></div>
-          </div>
-          <div class="store-card-item-info">购买价 ￥400</div>
-        </div>
-
-        <div class="store-card-item-box">
-          <div class="store-card-item">
-            <span class="store-card-item-price"><b>￥</b>500</span>
-            <div><span>点击购买</span></div>
-          </div>
-          <div class="store-card-item-info">购买价 ￥400</div>
-        </div>
-
-        <div class="store-card-item-box">
-          <div class="store-card-item">
-            <span class="store-card-item-price"><b>￥</b>500</span>
-            <div><span>点击购买</span></div>
-          </div>
-          <div class="store-card-item-info">购买价 ￥400</div>
-        </div>
       </div>
     </div>
   </div>
@@ -257,7 +260,9 @@
   .store-card-box
     overflow-x scroll
     height h(200)
-    white-space nowrap
+
+  .store-card-box-scroll
+    width w(10000)
 
   .store-card-item-box
     display inline-block
