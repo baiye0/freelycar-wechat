@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="order-detail">
     <div class="order-detail-card">
       <div class="order-detail-head">
         <span>订单编号</span>
@@ -19,11 +19,29 @@
         <span><img src="./../../assets/call-service.png" alt="">联系车主</span>
         <span><img src="./../../assets/my-car-img.png" alt="">车辆照片</span>
       </div>
+    </div>
+
+    <div class="order-detail-position">
+      <div class="order-detail-position-head">
+        <span><img src="./../../assets/position-blue.png" alt="">车辆所在位置</span>
+        <span class="order-detail-position-orange">快速定位</span>
+      </div>
 
     </div>
 
-    <button class="big-blue-btn">接单</button>
-    <button class="big-gray-btn">取消</button>
+    <div class="order-detail-photo">
+      <div class="order-detail-position-head">
+        <span><img src="./../../assets/img.png" alt="">上传车辆照片</span>
+        <img src="./../../assets/add.png" alt="">
+      </div>
+      <img class="order-detail-photo-img" src="./../../assets/car-info-head.png" alt="">
+      <img class="order-detail-photo-del" src="./../../assets/del-img.png" alt="">
+    </div>
+
+    <div class="order-detail-btn">
+      <button class="big-blue-btn">接单</button>
+      <button class="big-gray-btn">取消</button>
+    </div>
   </div>
 </template>
 
@@ -50,6 +68,9 @@
 
   w(n)
     n / 7.5vw
+
+  .order-detail
+    padding-bottom h(333)
 
   .order-detail-card
     background white
@@ -106,4 +127,54 @@
       width w(26)
       margin 0 w(10)
       font-size w(26)
+
+  .order-detail-position
+    background white
+    height h(220)
+    width w(727)
+    padding h(25) w(30)
+    box-sizing border-box
+    margin w(12)
+
+  .order-detail-position-head
+    display flex
+    justify-content space-between
+    align-items center
+    span
+      img
+        height h(33)
+        width w(29)
+        margin-right w(24)
+        position relative
+        top h(5)
+    img
+      height h(33)
+      width w(29)
+
+  .order-detail-position-orange
+    color #FFBD03
+    text-decoration underline
+
+  .order-detail-photo
+    background white
+    height h(290)
+    width w(727)
+    padding h(25) w(30)
+    box-sizing border-box
+    margin w(12)
+
+  .order-detail-btn
+    height h(333)
+    width 100vw
+    background url("./../../assets/button-bg.png")
+    position fixed
+    bottom h(50)
+
+  .order-detail-photo-img
+    height w(100)
+    width w(100)
+
+  .order-detail-photo-del
+    height w(100)
+    width w(100)
 </style>
