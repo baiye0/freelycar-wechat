@@ -32,7 +32,7 @@
     <div class="order-detail-photo">
       <div class="order-detail-position-head">
         <span><img src="./../../assets/img.png" alt="">上传车辆照片</span>
-        <img src="./../../assets/add.png" alt="">
+        <img src="./../../assets/add1.png" alt="">
       </div>
       <img class="order-detail-photo-img" src="./../../assets/car-info-head.png" alt="">
       <img class="order-detail-photo-del" src="./../../assets/del-img.png" alt="">
@@ -171,10 +171,16 @@
     bottom h(50)
 
   .order-detail-photo-img
-    height w(100)
-    width w(100)
+    height w(124)
+    width w(124)
+    position relative
+    left w(55)
+    top h(50)
 
   .order-detail-photo-del
-    height w(100)
-    width w(100)
+    height w(29)
+    width w(29)
+    position relative
+    left w(30)
+    top h(-60)
 </style>
