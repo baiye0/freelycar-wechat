@@ -1,8 +1,42 @@
 <template>
-  <div>
-    <div>
-
+  <div class="order-tracking">
+    <div class="order-tracking-head">
+      <span>爱车正送往门店</span>
     </div>
+
+    <div class="order-tracking-card">
+      <div class="order-tracking-card-head">
+        <div>
+          <img src="./../../assets/head.png" alt="">
+          <span>王师傅</span>
+          <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
+        </div>
+        <div class="order-tracking-card-state">
+          <img src="./../../assets/car-state.png" alt="">
+          <span>已还车</span>
+          <p>您的爱车钥匙已放入001号柜</p>
+        </div>
+      </div>
+      <div class="order-tracking-card-button">
+        <span>联系客服</span>
+        <div></div>
+        <span>联系门店</span>
+      </div>
+    </div>
+
+    <div class="order-tracking-time-line">
+      <div>状态跟踪</div>
+
+      <div class="order-tracking-box" v-for="(item,index) in msg">
+        <span class="order-tracking-date">{{item.date}}</span>
+        <span class="order-tracking-time">{{item.time}}</span>
+        <span class="order-tracking-title">{{item.title}}</span>
+        <span class="order-tracking-info">{{item.info}}</span>
+        <img src="./../../assets/time-line-gray.png" alt="">
+        <div v-show="index !== (msg.length-1)"></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -11,12 +45,35 @@
     name: 'orderTracking',
     data() {
       return {
-        msg: {
+        a: {
           createTime:'2019-06-10 16:25:36',
           pickTime:'2019-06-10 16:25:36',
           finishTime:'2019-06-10 16:25:36',
           deliverTime:'2019-06-10 16:25:36',
-        }
+        },
+        msg:[
+          {
+            date:'2019-06-10',
+            time:'16:25:36',
+            title:'订单提交成功',
+            info:'正在为您的爱车安排服务'
+          },{
+            date:'2019-06-10',
+            time:'16:25:36',
+            title:'订单提交成功',
+            info:'正在为您的爱车安排服务'
+          },{
+            date:'2019-06-10',
+            time:'16:25:36',
+            title:'订单提交成功',
+            info:'正在为您的爱车安排服务'
+          },{
+            date:'2019-06-10',
+            time:'16:25:36',
+            title:'订单提交成功',
+            info:'正在为您的爱车安排服务'
+          },
+        ]
       }
     },
     methods: {},
@@ -34,5 +91,135 @@
 
   w(n)
     n / 7.5vw
+
+  .order-tracking
+    background white
+    min-height 100vh
+    width 100vw
+    position relative
+
+  .order-tracking-head
+    height h(159)
+    width 100vw
+    background url("./../../assets/head-bg.png") no-repeat
+    background-size 100% 100%
+    padding h(51) w(63)
+    box-sizing border-box
+    span
+      color white
+      font-size w(41)
+      font-weight 800
+
+  .order-tracking-card
+    width w(600)
+    height h(250)
+    border-radius 5px
+    box-shadow 0 0 10px #dcdcdc
+    position absolute
+    transform translate(-50%,0)
+    left 50%
+    top h(140)
+    background white
+    padding w(20)
+    box-sizing border-box
+    img
+      height w(77)
+      width w(77)
+      border-radius w(40)
+      margin-right w(30)
+
+  .order-tracking-card-head
+    border-bottom $border-gray
+    height h(145)
+    box-sizing border-box
+    padding h(38) w(32)
+    span
+      position absolute
+      img
+        width w(25)
+        height w(25)
+        margin-right w(7)
+    p
+      width w(130)
+      font-size w(18)
+
+  .order-tracking-card-call
+    top h(100)
+    left w(160)
+    font-size w(22)
+    color #2049BF
+    display flex
+    align-items center
+
+  .order-tracking-card-state
+    position absolute
+    left w(320)
+    top h(55)
+    width w(250)
+    p
+      position absolute
+      top h(45)
+      left w(110)
+
+  .order-tracking-card-button
+    padding h(13) 0
+    display flex
+    justify-content space-between
+    align-items center
+    span
+      color #2049BF
+      margin 0 w(70)
+    div
+      background #ebebeb
+      width 1px
+      height h(51)
+
+  .order-tracking-time-line
+    position relative
+    top h(280)
+    padding 0 w(63)
+
+  .order-tracking-box
+    position relative
+    height h(120)
+    padding w(11)
+    box-sizing border-box
+    img
+      height w(27)
+      width w(27)
+      position absolute
+      left w(150)
+    div
+      height h(68)
+      width 1px
+      background #9D9D9D
+      position absolute
+      top h(50)
+      left w(165)
+    span
+      position absolute
+
+  .order-tracking-gray
+    color #858585
+
+  .order-tracking-blue
+    color #2049BF
+
+  .order-tracking-date
+    font-size w(18)
+
+  .order-tracking-time
+    left w(15)
+    font-size w(22)
+    top h(40)
+
+  .order-tracking-title
+    left w(230)
+    font-size w(22)
+
+  .order-tracking-info
+    left w(230)
+    top h(50)
+    font-size w(20)
 
 </style>
