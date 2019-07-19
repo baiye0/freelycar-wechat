@@ -10,11 +10,11 @@
       <div class="password">
         <img src="../../assets/password.png" alt="验证码">
         <input type="text" placeholder="请输入验证码" v-model="password">
-        <span class="password-info" @click="getCode">{{passwordInfo}}</span>
+        <span :class="getCodeInfo" @click="getCode">{{passwordInfo}}</span>
       </div>
       <div class="btn">
         <button class="switch-user">切换用户</button>
-        <button class="login-btn">登录</button>
+        <button :class="loginBtn" @click="logIn">登录</button>
       </div>
     </div>
 
@@ -22,27 +22,35 @@
 </template>
 
 <script>
-  import wx from 'weixin-js-sdk'
+  import wx from 'weixin-js-sdk
+  import axios from 'axios'
 
   export default {
     name: 'login',
     data() {
       return {
-        checked: false,
         phone: '',
         password: '',
         passwordInfo: '获取验证码',
-        isGetCode: false,
         data:{},
+        getCodeInfoTime:60
       }
     },
     methods: {
       // 获取验证码
       getCode() {
-        if(this.phone!==''&&this.phone.length===11){
-          this.$post('/wechat/login/getSmsCode',{
-            phone:this.phone
-          }).then(res=>{
+        if(this.phone.length===11){
+          this.$post('/api/wechat/login/getSmsCode?phone='+this.phone).then(res=>{
+            let info = setInterval(()=>{
+              if (this.getCodeInfoTime !== 0) {
+                this.getCodeInfoTime -= 1
+                this.passwordInfo = time+'秒后可重获'
+              } else {
+                this.passwordInfo = '获取验证码'
+                this.getCodeInfoTime = 60
+                clearInterval(info)
+              }
+            },1000)
             this.toast = this.$createToast({
               txt: '成功获取验证码',
               type: 'txt'
@@ -56,7 +64,34 @@
           })
           this.toast.show()
         }
+      },
+      logIn(){
+        if(this.phone.length===11&&this.password.length===6){
+
+        } else {
+          this.toast = this.$createToast({
+            txt: '请输入正确的手机号或验证码',
+            type: 'txt'
+          })
+          this.toast.show()
+        }
       }
+    },
+    computed: {
+      loginBtn:function () {
+        if(this.phone.length===11&&this.password.length===6){
+          return 'login-btn-blue'
+        } else {
+          return 'login-btn-gray'
+        }
+      },
+      getCodeInfo:function () {
+        if(this.phone.length===11&&this.getCodeInfoTime===60){
+          return 'password-info blue-info'
+        } else {
+          return 'password-info gray-info'
+        }
+      },
     }
   }
 </script>
@@ -113,11 +148,16 @@
     width w(150)
     line-height h(45)
     font-size w(24)
-    color #2049BF
     right 0
     border-left $border-gray
     padding 0 w(82) 0 w(36)
     text-align center
+
+  .gray-info
+    color darkgray
+
+  .blue-info
+    color #2049BF
 
   .btn
     display flex
@@ -135,8 +175,11 @@
   .switch-user
     background-color $bt-yellow
 
-  .login-btn
+  .login-btn-blue
     background-color $bt-blue
+
+  .login-btn-gray
+    background-color darkgray
 
 
 </style>

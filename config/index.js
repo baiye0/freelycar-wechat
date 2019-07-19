@@ -13,9 +13,12 @@ module.exports = {
     proxyTable: {
       '/api': {  //使用"/api"来代替"https://www.freelycar.com"
         target: 'https://www.freelycar.com', //源地址
+        // target: 'http://192.168.0.163', //源地址
         changeOrigin: true,//改变源
+        // withCredentials: false,
+        // secure: false,
         pathRewrite: {
-          '^/api': '' //路径重写
+          // '^/api': '' //路径重写
         }
       }
     },
