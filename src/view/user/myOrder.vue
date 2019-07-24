@@ -6,7 +6,7 @@
         <span class="order-state-time">{{item.createTime}}</span>
       </div>
 
-      <div class="order-info">
+      <div class="order-info" @click="orderDetail">
         <span class="order-info-brand">{{item.licensePlate}}  {{item.carBrand}}</span>
         <button class="order-info-type">普洗</button>
         <span class="order-info-num">订单编号 {{item.id}}</span>
@@ -149,12 +149,30 @@
             useTime: null,
             member: false
           }
-        ]
+        ],
+        clientId:'',
+        orderId:'A0011906100001'
       }
     },
-    methods: {},
-    mounted: function () {
+    methods: {
+      // 获取订单列表
+      getOrderList(){
+        this.$get('/wechat/order/listOrders',{
+          clientId:this.clientId,
+          type:'ark'
+        }).then(res=>{
+          console.log(res)
+        })
+      },
 
+      // 订单详情
+      orderDetail(){
+        this.$router.push({path:'/payOrder',query:{orderId:this.orderId}})
+      }
+    },
+    mounted: function () {
+      this.clientId = this.$route.query.id
+      this.getOrderList()
     },
     computed:{
       orderState:function () {

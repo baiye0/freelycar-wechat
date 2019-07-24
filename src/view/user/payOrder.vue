@@ -84,12 +84,22 @@
     name: 'payOrder',
     data() {
       return {
-        msg: ''
+        msg: '',
+        orderId:''
       }
     },
-    methods: {},
+    methods: {
+      getOrderDetail(){
+        this.$get('/wechat/order/getOrderDetail',{
+          id:this.orderId
+        }).then(res=>{
+          console.log(res)
+        })
+      }
+    },
     mounted: function () {
-
+      this.orderId = this.$route.query.orderId
+      this.getOrderDetail()
     }
   }
 </script>

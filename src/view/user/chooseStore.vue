@@ -1,15 +1,15 @@
 <template>
   <div class="choose-store">
-    <input type="text" placeholder="请输入门店名称或地址">
-    <button class="search-store">搜门店</button>
-    <div class="store-info" v-for="(item,index) in msg"
+    <input type="text" placeholder="请输入门店名称或地址" v-model="storeName">
+    <button class="search-store" @click="getStoreList">搜门店</button>
+    <div class="store-info" v-for="(item,index) in storeList"
          @click="checkedStore(index)">
-      <img class="store-img" src="./../../assets/my-car-img.png" alt="">
-      <span class="store-title">{{item.title}}</span>
-      <span class="store-local">门店地址：{{item.local}}</span>
+      <img class="store-img" :src="[item.headUrl]" alt="">
+      <span class="store-title">{{item.name}}</span>
+      <span class="store-local">门店地址：{{item.address}}</span>
       <img class="checkbox" :src="index===chooseStore?'/static/check-yellow.png':'/static/check-no.png'" alt="">
     </div>
-    <button class="big-blue-btn">确认</button>
+    <button class="big-blue-btn" @click="submit">确认</button>
   </div>
 </template>
 
@@ -18,43 +18,40 @@
     name: 'chooseStore',
     data() {
       return {
-        msg: [
-          {
-            title:'徐庄研发三区店',
-            local:'徐庄研发三区',
-            img:''
-          },
-          {
-            title:'紫金嘉悦',
-            local:'徐庄研发三区',
-            img:''
-          },
-          {
-            title:'金奥店',
-            local:'徐庄研发三区',
-            img:''
-          },
-          {
-            title:'紫金嘉悦',
-            local:'徐庄研发三区',
-            img:''
-          },
-          {
-            title:'金奥店',
-            local:'徐庄研发三区',
-            img:''
-          },
-        ],
-        chooseStore:0
+        storeList: [],
+        storeName:'',
+        chooseStore:0,
+        storeId:''
       }
     },
     methods: {
+      // 获取门店列表
+      getStoreList(){
+        this.$get('/wechat/store/listAllStore',{
+          storeName:this.storeName
+        }).then(res=>{
+          this.storeList = res
+        })
+      },
+
+      // 勾选门店
       checkedStore(index){
         this.chooseStore = index
+        this.storeId = this.storeList[index].id
+      },
+
+      // 确认按钮
+      submit(){
+        this.$post('/wechat/wxuser/chooseDefaultStore', {
+          id: 'ea8ecbc56a2a7de1016a4467bce80018',//用的是id不是clientid
+          defaultStoreId: this.storeId
+        }).then(res => {
+          console.log(res)
+        })
       }
     },
     mounted: function () {
-
+      this.getStoreList()
     }
   }
 </script>

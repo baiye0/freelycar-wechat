@@ -33,32 +33,38 @@
         phone: '',
         password: '',
         passwordInfo: '获取验证码',
-        data:{},
-        getCodeInfoTime:60,
-        userInfo:{
-          openId:'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
-          headImgUrl:'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
-          nickName:'bwh'
+        data: {},
+        getCodeInfoTime: 60,
+        userInfo: {
+          openId: 'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
+          headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
+          nickName: 'bwh',
+          defaultClientId: "ea8ecbc56a2a7de1016a446857530019",
+          defaultStoreId: "1",
+          gender: "女",
+          id: "ea8ecbc56a2a7de1016a4467bce80018",
+          phone: "13833131704",
+          trueName: "白"
         },
-        arkSn:862057048957259,
-        wxUserInfo:{}
+        arkSn: 862057048957259,
+        wxUserInfo: {}
       }
     },
     methods: {
       // 获取验证码
       getCode() {
-        if(this.phone.length===11){
-          this.$post('/wechat/login/getSmsCode?phone='+this.phone).then(res=>{
-            let info = setInterval(()=>{
+        if (this.phone.length === 11) {
+          this.$post('/wechat/login/getSmsCode?phone=' + this.phone).then(res => {
+            let info = setInterval(() => {
               if (this.getCodeInfoTime !== 0) {
                 this.getCodeInfoTime -= 1
-                this.passwordInfo = this.getCodeInfoTime+'秒后可重获'
+                this.passwordInfo = this.getCodeInfoTime + '秒后可重获'
               } else {
                 this.passwordInfo = '获取验证码'
                 this.getCodeInfoTime = 60
                 clearInterval(info)
               }
-            },1000)
+            }, 1000)
             this.toast = this.$createToast({
               txt: '成功获取验证码',
               type: 'txt'
@@ -75,24 +81,24 @@
       },
 
       // 登录
-      logIn(){
-        if(this.phone.length===11&&this.password.length===6){
-          this.$post('/wechat/login/verifySmsCode?phone='+this.phone
-            +'&smscode='+this.password
-            +'&openId='+this.userInfo.openId
-            +'&headimgurl='+this.userInfo.headImgUrl
-            +'&nickName='+this.userInfo.nickName).then(res=>{
-              console.log(res)
-              this.wxUserInfo = res.wxUserInfo
-              this.axios.defaults.headers.common["Authorization"] = res.jwt
-              localStorage.setItem('jwt',res.jwt)
-              // 判断是否存在柜子码
-              if(this.arkSn){
-                // 检查柜子信息，看是否需要换门店
-                this.getArkInfo()
-              }else {
-                this.$router.push({path:'/userHome'})
-              }
+      logIn() {
+        if (this.phone.length === 11 && this.password.length === 6) {
+          this.$post('/wechat/login/verifySmsCode?phone=' + this.phone
+            + '&smscode=' + this.password
+            + '&openId=' + this.userInfo.openId
+            + '&headimgurl=' + this.userInfo.headImgUrl
+            + '&nickName=' + this.userInfo.nickName).then(res => {
+            console.log(res)
+            this.wxUserInfo = res.wxUserInfo
+            this.axios.defaults.headers.common["Authorization"] = res.jwt
+            localStorage.setItem('jwt', res.jwt)
+            // 判断是否存在柜子码
+            if (this.arkSn) {
+              // 检查柜子信息，看是否需要换门店
+              this.getArkInfo()
+            } else {
+              this.$router.push({path: '/userHome'})
+            }
           })
         } else {
           this.toast = this.$createToast({
@@ -104,18 +110,18 @@
       },
 
       // 检查柜子信息，看是否需要换门店
-      getArkInfo(){
-        this.$get('/wechat/ark/getArkInfo',{
-          arkSn:this.arkSn
-        }).then(res=>{
-          if(res.storeId === this.wxUserInfo.defaultStoreId){
+      getArkInfo() {
+        this.$get('/wechat/ark/getArkInfo', {
+          arkSn: this.arkSn
+        }).then(res => {
+          if (res.storeId === this.wxUserInfo.defaultStoreId) {
             this.isNewUser()
-          } else{
+          } else {
             // 更新门店信息
-            this.$post('/wechat/wxuser/chooseDefaultStore',{
-              id:this.wxUserInfo.id,
-              defaultStoreId:res.storeId
-            }).then(res=>{
+            this.$post('/wechat/wxuser/chooseDefaultStore', {
+              id: this.wxUserInfo.id,
+              defaultStoreId: res.storeId
+            }).then(res => {
               this.isNewUser()
             })
           }
@@ -123,25 +129,25 @@
       },
 
       // 检查是否第一次登录
-      isNewUser(){
-        if(this.wxUserInfo.trueName){
-          this.$router.push({path:'/myOrder'})
+      isNewUser() {
+        if (this.wxUserInfo.trueName) {
+          this.$router.push({path: '/myOrder',query:{id:this.userInfo.defaultClientId}})
         } else {
-          this.$router.push({path:'/userInfo'})
+          this.$router.push({path: '/userInfo',query:{id:this.userInfo.defaultClientId}})
         }
       }
 
     },
     computed: {
-      loginBtn:function () {
-        if(this.phone.length===11&&this.password.length===6){
+      loginBtn: function () {
+        if (this.phone.length === 11 && this.password.length === 6) {
           return 'login-btn-blue'
         } else {
           return 'login-btn-gray'
         }
       },
-      getCodeInfo:function () {
-        if(this.phone.length===11&&this.getCodeInfoTime===60){
+      getCodeInfo: function () {
+        if (this.phone.length === 11 && this.getCodeInfoTime === 60) {
           return 'password-info blue-info'
         } else {
           return 'password-info gray-info'

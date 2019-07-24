@@ -12,13 +12,6 @@
       <div class="form-box">
         <img class="user-info-sex" src="./../../assets/sex.png" alt="">
       </div>
-
-      <div class="form-box">
-        <img class="user-info-birth" src="./../../assets/birth.png" alt="">
-        <input type="text" placeholder="请选择出生日期">
-        <img class="down-arrow" src="./../../assets/down-arrow.png" alt="">
-      </div>
-
     </div>
 
     <button class="big-blue-btn">下一步</button>
