@@ -4,15 +4,17 @@
     <div class="form">
       <div class="phone">
         <img src="../../assets/people.png" alt="账号">
-        <input type="text" placeholder="请输入技师账号" v-model="phone">
+        <input type="text" placeholder="请输入技师账号" v-model="account">
       </div>
       <div class="password">
         <img src="../../assets/password2.png" alt="验证码">
         <input type="text" placeholder="请输入账号密码" v-model="password">
       </div>
       <div class="btn">
-        <button class="switch-user">切换用户</button>
-        <button class="login-btn">登录</button>
+        <router-link to="/login">
+          <button class="switch-user">切换用户</button>
+        </router-link>
+        <button :class="loginBtn" @click="logIn">登录</button>
       </div>
     </div>
   </div>
@@ -24,10 +26,16 @@
     data() {
       return {
         checked: false,
-        phone: '',
+        account: '',
         password: '',
         passwordInfo: '获取验证码',
-        isGetCode: false
+        isGetCode: false,
+        userInfo:{
+          openId:'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
+          headImgUrl:'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
+          nickName:'bwh',
+          gender:'女'
+        },
       }
     },
     methods: {
@@ -48,10 +56,39 @@
             }).show()
           }
         }).show()
+      },
+
+      // 登录
+      logIn(){
+        this.$get('/wechat/employee/login',{
+          account:this.account,
+          password:this.password,
+          openId:this.userInfo.openId,
+          nickName:this.userInfo.nickName,
+          phone:this.account,
+          headImgUrl:this.userInfo.headImgUrl,
+          gender:this.userInfo.gender,
+          province:"江苏",
+          city:"南京"
+        }).then(res=>{
+          this.axios.defaults.headers.common["Authorization"] = res.jwt
+          localStorage.setItem('jwt',res.jwt)
+        })
       }
+
+
+    },
+    computed: {
+      loginBtn:function () {
+        if(this.account.length===11&&this.password!==''){
+          return 'login-btn-blue'
+        } else {
+          return 'login-btn-gray'
+        }
+      },
     },
     mounted(){
-      this.chooseStore()
+      // this.chooseStore()
     }
   }
 </script>
@@ -108,11 +145,16 @@
     width w(150)
     line-height h(45)
     font-size w(24)
-    color #2049BF
     right 0
     border-left $border-gray
     padding 0 w(82) 0 w(36)
     text-align center
+
+  .gray-info
+    color darkgray
+
+  .blue-info
+    color #2049BF
 
   .btn
     display flex
@@ -130,8 +172,9 @@
   .switch-user
     background-color $bt-yellow
 
-  .login-btn
+  .login-btn-blue
     background-color $bt-blue
 
-
+  .login-btn-gray
+    background-color darkgray
 </style>

@@ -6,7 +6,12 @@
 
 <script>
   export default {
-    name: 'App'
+    name: 'App',
+    beforeCreate(){
+      if (localStorage.getItem('jwt') !== '') {
+        this.axios.defaults.headers.common["Authorization"] = localStorage.getItem('jwt')
+      }
+    }
   }
 </script>
 

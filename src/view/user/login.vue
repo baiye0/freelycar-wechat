@@ -13,7 +13,9 @@
         <span :class="getCodeInfo" @click="getCode">{{passwordInfo}}</span>
       </div>
       <div class="btn">
-        <button class="switch-user">切换用户</button>
+        <router-link to="/tecLogin">
+          <button class="switch-user">切换用户</button>
+        </router-link>
         <button :class="loginBtn" @click="logIn">登录</button>
       </div>
     </div>
@@ -22,8 +24,7 @@
 </template>
 
 <script>
-  import wx from 'weixin-js-sdk
-  import axios from 'axios'
+  import wx from 'weixin-js-sdk'
 
   export default {
     name: 'login',
@@ -33,18 +34,25 @@
         password: '',
         passwordInfo: '获取验证码',
         data:{},
-        getCodeInfoTime:60
+        getCodeInfoTime:60,
+        userInfo:{
+          openId:'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
+          headImgUrl:'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
+          nickName:'bwh'
+        },
+        arkSn:862057048957259,
+        wxUserInfo:{}
       }
     },
     methods: {
       // 获取验证码
       getCode() {
         if(this.phone.length===11){
-          this.$post('/api/wechat/login/getSmsCode?phone='+this.phone).then(res=>{
+          this.$post('/wechat/login/getSmsCode?phone='+this.phone).then(res=>{
             let info = setInterval(()=>{
               if (this.getCodeInfoTime !== 0) {
                 this.getCodeInfoTime -= 1
-                this.passwordInfo = time+'秒后可重获'
+                this.passwordInfo = this.getCodeInfoTime+'秒后可重获'
               } else {
                 this.passwordInfo = '获取验证码'
                 this.getCodeInfoTime = 60
@@ -65,9 +73,27 @@
           this.toast.show()
         }
       },
+
+      // 登录
       logIn(){
         if(this.phone.length===11&&this.password.length===6){
-
+          this.$post('/wechat/login/verifySmsCode?phone='+this.phone
+            +'&smscode='+this.password
+            +'&openId='+this.userInfo.openId
+            +'&headimgurl='+this.userInfo.headImgUrl
+            +'&nickName='+this.userInfo.nickName).then(res=>{
+              console.log(res)
+              this.wxUserInfo = res.wxUserInfo
+              this.axios.defaults.headers.common["Authorization"] = res.jwt
+              localStorage.setItem('jwt',res.jwt)
+              // 判断是否存在柜子码
+              if(this.arkSn){
+                // 检查柜子信息，看是否需要换门店
+                this.getArkInfo()
+              }else {
+                this.$router.push({path:'/userHome'})
+              }
+          })
         } else {
           this.toast = this.$createToast({
             txt: '请输入正确的手机号或验证码',
@@ -75,7 +101,36 @@
           })
           this.toast.show()
         }
+      },
+
+      // 检查柜子信息，看是否需要换门店
+      getArkInfo(){
+        this.$get('/wechat/ark/getArkInfo',{
+          arkSn:this.arkSn
+        }).then(res=>{
+          if(res.storeId === this.wxUserInfo.defaultStoreId){
+            this.isNewUser()
+          } else{
+            // 更新门店信息
+            this.$post('/wechat/wxuser/chooseDefaultStore',{
+              id:this.wxUserInfo.id,
+              defaultStoreId:res.storeId
+            }).then(res=>{
+              this.isNewUser()
+            })
+          }
+        })
+      },
+
+      // 检查是否第一次登录
+      isNewUser(){
+        if(this.wxUserInfo.trueName){
+          this.$router.push({path:'/myOrder'})
+        } else {
+          this.$router.push({path:'/userInfo'})
+        }
       }
+
     },
     computed: {
       loginBtn:function () {

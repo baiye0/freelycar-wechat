@@ -17,9 +17,9 @@ module.exports = {
         changeOrigin: true,//改变源
         // withCredentials: false,
         // secure: false,
-        pathRewrite: {
+        //pathRewrite: {
           // '^/api': '' //路径重写
-        }
+        //}
       }
     },
 

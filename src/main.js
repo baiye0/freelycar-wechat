@@ -22,6 +22,23 @@ Vue.prototype.$post = post
 Vue.prototype.$getExcel = getExcel
 Vue.prototype.$postExcel = postExcel
 
+router.beforeEach((to, from, next) => {
+  console.log('to.path:', to.path)
+  if (to.path === '/login') {
+    next()
+    return
+  }
+  let jwt = localStorage.getItem('jwt')
+  // 判断jwt是否存在。是，继续。否，跳转到登录页
+  if (jwt) {
+    next()
+  } else {
+    next({
+      path: '/login'
+    })
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
