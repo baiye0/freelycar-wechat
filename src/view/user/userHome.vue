@@ -72,7 +72,9 @@
         options: ['服务状态'],
       }
     },
-    methods: {},
+    methods: {
+
+    },
     mounted: function () {
 
     }

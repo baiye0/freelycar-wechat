@@ -83,10 +83,19 @@
           this.projects = res.projects
           this.cardServices = res.cardServices
         })
+      },
+
+      getImg(){
+        this.$get('/wechat/store/getImgs',{
+          storeId:1
+        }).then(res=>{
+          console.log(res)
+        })
       }
     },
     mounted: function () {
       this.getStoreDetail()
+      this.getImg()
     }
   }
 </script>
