@@ -2,8 +2,8 @@
   <div class="store">
     <div class="store-head">
       <div class="store-head-card">
-        <span class="store-head-title">青创园演示柜</span>
-        <span class="store-head-time">营业时间：8：00-21:00</span>
+        <span class="store-head-title">{{store.name}}</span>
+        <span class="store-head-time">营业时间：{{store.openingTime}}-{{store.closingTime}}</span>
         <div class="store-head-call"><img src="./../../assets/call-service.png" alt=""><span>联系店家</span></div>
         <div class="store-head-img">
           <img src="./../../assets/distance.png" alt="">
@@ -14,7 +14,7 @@
 
         <div class="store-head-location">
           <img src="./../../assets/position-gray.png" alt="">
-          <span>南京苏宁青创园C302</span>
+          <span>{{store.address}}</span>
         </div>
       </div>
     </div>
@@ -22,36 +22,23 @@
     <div class="store-service">
       <div class="store-service-title flex-center">门店服务</div>
 
-      <div class="store-service-item-title flex-center">
-        <span>汽车美容 <b>共2项</b></span>
-        <img src="./../../assets/up.png" alt="">
-      </div>
-      <div class="flex-center store-service-item">
-        <div>
-          <span class="store-service-items">标准洗车</span>
-          <span class="store-service-info">整车外观清洗</span>
+      <div v-for="(item,index) in projects">
+        <div class="store-service-item-title flex-center">
+          <span>{{item.projectTypeName}} <b>共{{item.projectInfos.length}}项</b></span>
+          <img src="./../../assets/up.png" alt="">
         </div>
-        <div>
-          <span class="store-service-price">￥25</span>
-          <span class="store-service-price-info">门店价</span>
+        <div v-for="(projectItem,projuctIndex) in item.projectInfos" class="flex-center store-service-item">
+          <div>
+            <span class="store-service-items">{{projectItem.name}}</span>
+            <span class="store-service-info">{{projectItem.comment}}</span>
+          </div>
+          <div>
+            <span class="store-service-price">￥{{projectItem.price}}</span>
+            <span class="store-service-price-info">门店价</span>
+          </div>
         </div>
       </div>
 
-
-      <div class="store-service-item-title flex-center">
-        <span>汽车维修 <b>共2项</b></span>
-        <img src="./../../assets/up.png" alt="">
-      </div>
-      <div class="flex-center store-service-item">
-        <div>
-          <span class="store-service-items">标准洗车</span>
-          <span class="store-service-info">整车外观清洗</span>
-        </div>
-        <div>
-          <span class="store-service-price">￥25</span>
-          <span class="store-service-price-info">门店价</span>
-        </div>
-      </div>
     </div>
 
     <div class="store-card">
@@ -59,36 +46,12 @@
       <div class="store-card-box">
 
         <div class="store-card-box-scroll">
-          <div class="store-card-item-box">
+          <div class="store-card-item-box" v-for="(item,index) in cardServices">
             <div class="store-card-item">
-              <span class="store-card-item-price"><b>￥</b>500</span>
+              <span class="store-card-item-price"><b>￥</b>{{item.price}}</span>
               <div><span>点击购买</span></div>
             </div>
-            <div class="store-card-item-info">购买价 ￥400</div>
-          </div>
-
-          <div class="store-card-item-box">
-            <div class="store-card-item">
-              <span class="store-card-item-price"><b>￥</b>500</span>
-              <div><span>点击购买</span></div>
-            </div>
-            <div class="store-card-item-info">购买价 ￥400</div>
-          </div>
-
-          <div class="store-card-item-box">
-            <div class="store-card-item">
-              <span class="store-card-item-price"><b>￥</b>500</span>
-              <div><span>点击购买</span></div>
-            </div>
-            <div class="store-card-item-info">购买价 ￥400</div>
-          </div>
-
-          <div class="store-card-item-box">
-            <div class="store-card-item">
-              <span class="store-card-item-price"><b>￥</b>500</span>
-              <div><span>点击购买</span></div>
-            </div>
-            <div class="store-card-item-info">购买价 ￥400</div>
+            <div class="store-card-item-info">购买价 ￥{{item.actualPrice}}</div>
           </div>
         </div>
 
@@ -102,12 +65,28 @@
     name: 'store',
     data() {
       return {
-        msg: ''
+        storeImgs:[{
+          url:''
+        }],
+        store:{},
+        projects:[],
+        cardServices:[]
       }
     },
-    methods: {},
+    methods: {
+      getStoreDetail(){
+        this.$get('/wechat/store/getDetail',{
+          id:1
+        }).then(res=>{
+          this.storeImgs = res.storeImgs
+          this.store = res.store
+          this.projects = res.projects
+          this.cardServices = res.cardServices
+        })
+      }
+    },
     mounted: function () {
-
+      this.getStoreDetail()
     }
   }
 </script>
