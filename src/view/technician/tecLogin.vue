@@ -57,6 +57,13 @@
           }
         }).show()
       },
+      submitStore(){
+        this.$post('/wechat/employee/selectStore',{
+          id:"ea8ecbc56c0408c3016c040c68b10000",
+          defaultStoreId:"1",
+          defaultStaffId:''
+        })
+      },
 
       // 登录
       logIn(){

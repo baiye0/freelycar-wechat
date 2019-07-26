@@ -73,7 +73,19 @@
       }
     },
     methods: {
+      // 获取个人信息
+      getAllInfo(){
+        this.$get('/wechat/wxuser/getPersonalInfo',{
+          id:''
+        })
+      },
 
+      // 删除车
+      delCar(){
+        this.$get('/wechat/client/deleteCar',{
+          id:''
+        })
+      }
     },
     mounted: function () {
 

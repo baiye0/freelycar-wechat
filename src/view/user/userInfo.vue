@@ -27,7 +27,16 @@
 
       }
     },
-    methods: {},
+    methods: {
+      submit(){
+        this.$post('/wechat/wxuser/saveUserInfo',{
+          id:"ea8ecbc5692ce32f01692d8d47fd0000",
+          trueName:"唐炜",
+          nickName:null,
+          gender:"男"
+        })
+      }
+    },
     mounted: function () {
 
     }

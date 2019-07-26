@@ -36,7 +36,7 @@
       <span class="color-blue"><img class="billing-order-img" src="./../../assets/no-checked.png" alt="">同意《小易智能柜使用协议》</span>
     </div>
 
-    <button class="big-gray-btn">提交</button>
+    <button class="big-gray-btn" @click="submit">提交</button>
   </div>
 </template>
 
@@ -48,12 +48,55 @@
         msg: {
           name:'马东东',
           number:'苏a122222',
-        }
+        },
+        arkSn:862057048957259,
+        consumerOrder:{},
+        consumerProjectInfos:[],
+        clientOrderImg:{},
+        projects:{},
+        wxUserInfo:{},
+        cars:[]
       }
     },
-    methods: {},
-    mounted: function () {
+    methods: {
+      // 获取用户信息
+      getUserInfo(){
+        this.$get('/wechat/wxuser/getPersonalInfo',{
+          id:'ea8ecbc5694d1d1d01694d2be8930000'
+        }).then(res=>{
+          this.wxUserInfo = res.wxUserInfo
+          this.cars = res.cars
+        })
+      },
 
+      // 获取门店服务列表
+      getStoreProject(){
+        this.$get('/wechat/ark/getProjects',{
+          storeId:1
+        }).then(res=>{
+          this.projects = res
+        })
+      },
+
+      // 上传图片
+      uploadImg(){
+        this.$post('/upload/clientOrderImg',)
+      },
+
+      submit(){
+        this.$post('/wechat/ark/orderService',{
+          consumerOrder:{},
+          consumerProjectInfos:[],
+          arkSn:this.arkSn,
+          clientOrderImg:{}
+        }).then(res=>{
+
+        })
+      }
+    },
+    mounted: function () {
+      this.getUserInfo()
+      this.getStoreProject()
     }
   }
 </script>

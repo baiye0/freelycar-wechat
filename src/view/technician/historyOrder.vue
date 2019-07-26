@@ -114,7 +114,15 @@
         ]
       }
     },
-    methods: {},
+    methods: {
+      // 获取订单列表
+      getOrderList(){
+        this.$get('/wechat/employee/listHistoryOrders',{
+          staffId:'',
+          keyword:''
+        })
+      }
+    },
     mounted: function () {
 
     }

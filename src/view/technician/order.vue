@@ -68,6 +68,26 @@
       }
     },
     methods: {
+      // 待服务
+      getOrders(){
+        this.$get('/wechat/order/listReservationOrders',{
+          licensePlate:'',
+          storeId:''
+        }).then(res=>{
+
+        })
+      },
+
+      // 已接到
+      getFinishOrders(){
+        this.$get('/wechat/order/listServicingOrders',{
+          licensePlate:'',
+          storeId:''
+        }).then(res=>{
+
+        })
+      },
+
       clickHandler (label) {
         // if you clicked home tab, then print 'Home'
         console.log(label)

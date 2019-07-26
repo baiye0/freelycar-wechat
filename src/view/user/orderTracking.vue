@@ -76,7 +76,14 @@
         ]
       }
     },
-    methods: {},
+    methods: {
+      // 获取订单详情
+      getOrderDetail(){
+        this.$get('/wechat/order/getOrderDetail',{
+          id:''
+        })
+      }
+    },
     mounted: function () {
 
     }

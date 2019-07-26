@@ -1,7 +1,6 @@
 <template>
   <div class="user-home">
     <div class="my-info">
-      <img class="my-info-setting" src="./../../assets/setting.png" alt="">
       <img class="my-info-photo" src="../../assets/photo.png" alt="头像">
       <span class="name">王师傅</span>
       <span class="my-info-other">男  ·  江苏  ·  南京</span>
@@ -23,12 +22,15 @@
     </div>
 
     <div>
-      <div class="menu">
-        <img class="history-icon" src="../../assets/history-icon.png" alt="历史">
-        <span>历史订单</span>
-        <span class="count">总计：30单</span>
-        <img class="more" src="../../assets/more.png" alt="详细">
-      </div>
+      <router-link to="/historyOrder">
+        <div class="menu">
+          <img class="history-icon" src="../../assets/history-icon.png" alt="历史">
+          <span>历史订单</span>
+          <span class="count">总计：30单</span>
+          <img class="more" src="../../assets/more.png" alt="详细">
+        </div>
+      </router-link>
+
 
       <div class="menu">
         <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
@@ -50,7 +52,21 @@
         options: ['服务状态'],
       }
     },
-    methods: {},
+    methods: {
+      // 切换服务状态
+      switchService(){
+        this.$get('/wechat/employee/switchServiceStatus',{
+          id:''
+        })
+      },
+
+      // 个人信息
+      getInfo(){
+        this.$get('/wechat/employee/detail',{
+          id:''
+        })
+      }
+    },
     mounted: function () {
 
     }

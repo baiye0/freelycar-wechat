@@ -95,6 +95,35 @@
         }).then(res=>{
           console.log(res)
         })
+      },
+
+      // 取消
+      cancelOrder(){
+        this.$get('/wechat/ark/cancelOrderService',{
+          id:''
+        }).then(res=>{
+
+        })
+      },
+
+      // 支付
+      wxPay(){
+        this.$post('/wechat/pay/payOrderByWechat',{
+          openId: "ojtNs1vQCAHik8kc93vuoAKJlCzs",
+          orderId: "A0011902110002",
+          totalPrice:1
+        }).then(res=>{
+
+        })
+      },
+
+      // 取车
+      getCar(){
+        this.$get('/wechat/ark/orderFinish',{
+          id:''
+        }).then(res=>{
+
+        })
       }
     },
     mounted: function () {

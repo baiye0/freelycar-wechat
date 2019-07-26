@@ -50,10 +50,53 @@
     name: 'orderDetail',
     data() {
       return {
-        msg: ''
+        msg: '',
+        consumerOrder:{
+          i: "A0011902280001",
+          parkingLocation: "停在原位"
+        },
+        arkSn:'',
+        staffOrderImg:{
+          createTime: "2019-06-10 15:45:26",
+          delStatus: false,
+          id: 2,
+          orderId: "",
+          url:''
+        }
       }
     },
-    methods: {},
+    methods: {
+      // 上次图片
+      uploadImg(){
+        this.$post('/upload/staffOrderImg',{
+
+        })
+      },
+
+      // 接车的一键开柜
+      pickOpen(){
+        this.$get('/wechat/ark/pickCar',{
+          orderId:'',
+          staffId:''
+        })
+      },
+
+      // 快速定位
+      arkLocation(){
+        this.$get('/wechat/ark/getCurrentArkLocation',{
+          arkSn:''
+        })
+      },
+
+      // 确认完工的一键开柜
+      finishOpen(){
+        this.$post('/wechat/ark/finishCar',{
+          consumerOrder:this.consumerOrder,
+          arkSn:this.arkSn ,
+          staffOrderImg:this.staffOrderImg
+        })
+      }
+    },
     mounted: function () {
 
     }

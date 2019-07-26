@@ -36,7 +36,28 @@
 
       }
     },
-    methods: {},
+    methods: {
+      // 选择车型车系
+      // 提交
+      addCar(){
+        this.$post('/wechat/client/addCar',{
+          storeId:1,
+          clientId:"ea8ecbc5694d1d1d01694d2bf15d0001",
+          licensePlate:"苏C74110",
+          carBrand:"别克凯越",
+          carType:"",
+          miles:"0",
+          lastMiles:"0",
+          color:"白色",
+          carImageUrl:''
+        })
+      },
+
+      // 上传图片
+      uploadImg(){
+        this.$post('/upload/carImg')
+      }
+    },
     mounted: function () {
 
     }
