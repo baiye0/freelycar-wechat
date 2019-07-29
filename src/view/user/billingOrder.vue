@@ -62,17 +62,19 @@
       // 获取用户信息
       getUserInfo(){
         this.$get('/wechat/wxuser/getPersonalInfo',{
-          id:'ea8ecbc5694d1d1d01694d2be8930000'
+          id:localStorage.getItem('id')
         }).then(res=>{
           this.wxUserInfo = res.wxUserInfo
+          this.msg.name = res.wxUserInfo.trueName
           this.cars = res.cars
+          this.msg.number = res.cars[0].licensePlate
         })
       },
 
       // 获取门店服务列表
       getStoreProject(){
         this.$get('/wechat/ark/getProjects',{
-          storeId:1
+          storeId:localStorage.getItem('storeId')
         }).then(res=>{
           this.projects = res
         })

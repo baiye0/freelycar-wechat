@@ -92,6 +92,10 @@
             this.wxUserInfo = res.wxUserInfo
             this.axios.defaults.headers.common["Authorization"] = res.jwt
             localStorage.setItem('jwt', res.jwt)
+            localStorage.setItem('phone', this.wxUserInfo.phone)
+            localStorage.setItem('clientId', this.wxUserInfo.defaultClientId)
+            localStorage.setItem('id', this.wxUserInfo.id)
+            localStorage.setItem('openId', this.wxUserInfo.openId)
             // 判断是否存在柜子码
             if (this.arkSn) {
               // 检查柜子信息，看是否需要换门店
@@ -114,6 +118,7 @@
         this.$get('/wechat/ark/getArkInfo', {
           arkSn: this.arkSn
         }).then(res => {
+          localStorage.setItem('storeId', res.storeId)
           if (res.storeId === this.wxUserInfo.defaultStoreId) {
             this.isNewUser()
           } else {

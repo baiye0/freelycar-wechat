@@ -16,6 +16,7 @@ import store from '@/view/user/store.vue'
 
 import openDoor from '@/view/components/openDoor.vue'
 import success from '@/view/components/success.vue'
+import roleSelection from '@/view/components/role-selection.vue'
 
 
 import tecHome from '@/view/technician/tecHome.vue'
@@ -45,6 +46,10 @@ export default new Router({
       path: '/locationInfo',
       name: 'locationInfo',
       component: locationInfo
+    },{
+      path: '/roleSelection',
+      name: 'roleSelection',
+      component: roleSelection
     },
     {
       path: '/tecLogin',

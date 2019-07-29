@@ -8,8 +8,11 @@
   export default {
     name: 'App',
     beforeCreate(){
-      if (localStorage.getItem('jwt') !== '') {
+      if (localStorage.getItem('jwt')) {
+        console.log('有jwt')
         this.axios.defaults.headers.common["Authorization"] = localStorage.getItem('jwt')
+      } else{
+        console.log('无jwt')
       }
     }
   }
