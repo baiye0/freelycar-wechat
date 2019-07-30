@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>dddd</div>
 </template>
 
 <script>
@@ -24,7 +24,7 @@ export default {
       window.location.href = "https://www.freelycar.com/wechat/#/techome"
     }
     //如果用户已经登录，
-    if (localStorage.getItem('wxuserjwt')!=null && JSON.parse(localStorage.getItem('wxinfo'))!=null) {
+    if (localStorage.getItem('jwt')!==null && localStorage.getItem('clientId')!==null) {
       console.log(localStorage.getItem('client_truename'))
       this.truename = localStorage.getItem('client_truename')
       //若用户没有填写真实姓名，则先让其填写真实姓名

@@ -33,7 +33,10 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: login,
+      meta:{
+        title:'登录'
+      }
     },{
       path: '/order',
       name: 'order',
@@ -47,9 +50,9 @@ export default new Router({
       name: 'locationInfo',
       component: locationInfo
     },{
-      path: '/roleSelection',
-      name: 'roleSelection',
-      component: roleSelection
+      path: '/role-select/:arkSn',
+      name: 'role-select',
+      component:roleSelection,
     },
     {
       path: '/tecLogin',

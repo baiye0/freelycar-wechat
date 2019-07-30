@@ -37,6 +37,28 @@
     </div>
 
     <button class="big-gray-btn" @click="submit">提交</button>
+
+    <div class="dialog-layer">
+      <div class="dialog-box billing-order-dialog">
+        <div class="billing-order-dialog-header">
+          <span>xx店</span>
+          <img src="./../../assets/close-black.png" alt="">
+        </div>
+        <div class="billing-order-dialog-content">
+          <div>
+            <img src="" alt="">
+            <span>普洗</span>
+            <div>随便洗洗</div>
+            <span>￥25</span>
+          </div>
+        </div>
+        <div class="billing-order-dialog-footer">
+          <span><b>￥</b>120</span>
+          <span>普洗</span>
+          <button>确认</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -220,4 +242,27 @@
     position absolute
     top h(90)
     left w(158)
+
+  .billing-order-dialog
+    height h(794)
+    width w(570)
+
+  .billing-order-dialog-header
+    height h(90)
+    border-bottom $border-gray
+    padding 0 w(10)
+    display flex
+    justify-content space-between
+    align-items center
+
+  .billing-order-dialog-content
+    height h(594)
+
+  .billing-order-dialog-footer
+    height h(110)
+    border-top $border-gray
+    position absolute
+    bottom 0
+    width 100%
+
 </style>
