@@ -2,29 +2,31 @@
   <div class="my-order">
     <div class="order-card" v-for="(item,index) in msg">
       <div class="order-state">
-        <span class="order-state-title">{{orderState}}</span>
+        <span
+          :class="[item.state !==2 && item.payState !==2 ?'order-state-title order-state-blue':'order-state-title order-state-gray']">
+          {{orderStateTitle(item.state)}}</span>
         <span class="order-state-time">{{item.createTime}}</span>
       </div>
 
-      <div class="order-info" @click="orderDetail">
+      <div class="order-info" @click="orderDetail(item.id)">
         <span class="order-info-brand">{{item.licensePlate}}  {{item.carBrand}}</span>
         <button class="order-info-type">普洗</button>
         <span class="order-info-num">订单编号 {{item.id}}</span>
         <img class="order-info-more" src="./../../assets/more.png" alt="">
       </div>
 
-      <div class="order-img">
+      <div class="order-img" v-show="item.state === 3 && item.payState !== 2">
         <span>查看技师拍摄爱车状态照片</span>
         <img src="./../../assets/my-car-img.png" alt="">
       </div>
 
-      <div class="open-the-door">
+      <div class="open-the-door" v-show="item.state === 2 && item.state === 2">
         <img src="./../../assets/call-service.png" alt="">
         <span>联系客服</span>
         <button>立即开柜</button>
       </div>
 
-      <div class="payment">
+      <div class="payment" v-show="item.payState === 1 && item.state === 3">
         <span>待付款￥</span><span>120</span>
         <img src="./../../assets/call-service.png" alt="">
         <span class="payment-call-service">联系客服</span>
@@ -40,145 +42,47 @@
     name: 'myOrder',
     data() {
       return {
-        msg: [
-          {
-            id: "ff80808168183a910",
-            delStatus: false,
-            createTime: "2019-01-04",
-            storeId: "1",
-            carId: "4028802767e9302a0167e935f2c40003",
-            carBrand: "别克凯越",
-            carType: "2016自动挡",
-            licensePlate: "牛B74DSB",
-            clientId: "4028802767e9302a0167e935f2ab0002",
-            clientName: "李四",
-            gender: null,
-            phone: "18918907788",
-            deliverTime: "2019-01-04T09:39:16.000+0000",
-            finishTime: null,
-            pickTime: null,
-            lastMiles: 2222,
-            miles: 3333,
-            parkingLocation: null,
-            state: 0,
-            totalPrice: 0,
-            actualPrice: 0,
-            firstPayMethod: null,
-            firstActualPrice: null,
-            firstCardOrCouponId: null,
-            secondPayMethod: null,
-            secondActualPrice: null,
-            secondCardOrCouponId: null,
-            payState: 0,
-            pickCarStaffId: "4028a18167ce66590167ce683ac60000",
-            orderType: 1,
-            cardOrCouponId: null,
-            faultDescription: "我就洗个车，有啥故障啊？",
-            useTime: null,
-            member: false
-          },
-          {
-            id: "ff80808168183a910168183b86890000",
-            delStatus: false,
-            createTime: "2019-01-04",
-            storeId: "1",
-            carId: "4028802767e9302a0167e935f2c40003",
-            carBrand: "别克凯越",
-            carType: "2016自动挡",
-            licensePlate: "牛B74DSB",
-            clientId: "4028802767e9302a0167e935f2ab0002",
-            clientName: "李四",
-            gender: null,
-            phone: "18918907788",
-            deliverTime: "2019-01-04T09:39:16.000+0000",
-            finishTime: null,
-            pickTime: null,
-            lastMiles: 2222,
-            miles: 3333,
-            parkingLocation: null,
-            state: 0,
-            totalPrice: 0,
-            actualPrice: 0,
-            firstPayMethod: null,
-            firstActualPrice: null,
-            firstCardOrCouponId: null,
-            secondPayMethod: null,
-            secondActualPrice: null,
-            secondCardOrCouponId: null,
-            payState: 0,
-            pickCarStaffId: "4028a18167ce66590167ce683ac60000",
-            orderType: 1,
-            cardOrCouponId: null,
-            faultDescription: "我就洗个车，有啥故障啊？",
-            useTime: null,
-            member: false
-          },
-          {
-            id: "ff80808168183a910168183b86890000",
-            delStatus: false,
-            createTime: "2019-01-04",
-            storeId: "1",
-            carId: "4028802767e9302a0167e935f2c40003",
-            carBrand: "别克凯越",
-            carType: "2016自动挡",
-            licensePlate: "牛B74DSB",
-            clientId: "4028802767e9302a0167e935f2ab0002",
-            clientName: "李四",
-            gender: null,
-            phone: "18918907788",
-            deliverTime: "2019-01-04T09:39:16.000+0000",
-            finishTime: null,
-            pickTime: null,
-            lastMiles: 2222,
-            miles: 3333,
-            parkingLocation: null,
-            state: 0,
-            totalPrice: 0,
-            actualPrice: 0,
-            firstPayMethod: null,
-            firstActualPrice: null,
-            firstCardOrCouponId: null,
-            secondPayMethod: null,
-            secondActualPrice: null,
-            secondCardOrCouponId: null,
-            payState: 0,
-            pickCarStaffId: "4028a18167ce66590167ce683ac60000",
-            orderType: 1,
-            cardOrCouponId: null,
-            faultDescription: "我就洗个车，有啥故障啊？",
-            useTime: null,
-            member: false
-          }
-        ],
-        clientId:'',
-        orderId:'A0011906100001'
+        msg: [],
+        clientId: '',
       }
     },
     methods: {
       // 获取订单列表
       getOrderList(){
-        this.$get('/wechat/order/listOrders',{
-          clientId:this.clientId,
-          type:'ark'
-        }).then(res=>{
-          console.log(res)
+        this.$get('/wechat/order/listOrders', {
+          clientId: localStorage.getItem('clientId'),
+          type: 'card'
+        }).then(res => {
+          this.msg = res
         })
       },
 
       // 订单详情
-      orderDetail(){
-        this.$router.push({path:'/payOrder',query:{orderId:this.orderId}})
+      orderDetail(id){
+        this.$router.push({path: '/payOrder', query: {orderId: id}})
+      },
+
+//      标题
+      orderStateTitle(state){
+        switch (state) {
+          case 0:
+            return '进行中的订单'
+          case 1:
+            return '进行中的订单'
+          case 2:
+            return '已完成订单'
+          case 3:
+            return '待支付订单'
+          case 4:
+            return '已取消订单'
+        }
       }
     },
     mounted: function () {
       this.clientId = this.$route.query.id
       this.getOrderList()
     },
-    computed:{
-      orderState:function () {
-        return '订单已完成'
-      }
-    }
+    computed: {}
   }
 </script>
 
@@ -198,10 +102,9 @@
 
   .order-card
     background white
-    width 100vw-w(24)
+    width 100 vw-w(24)
     margin 0 h(20) h(20) h(20)
     padding 0 w(32)
-
 
   .order-card div
     display flex
@@ -215,8 +118,13 @@
     height h(96)
 
   .order-state-title
-    color #2049BF
     font-size w(27)
+
+  .order-state-blue
+    color #2049BF
+
+  .order-state-gray
+    color #858585
 
   .order-state-time
     color #858585
@@ -273,7 +181,6 @@
     height w(25)
     width w(25)
     margin 0 w(5)
-
 
   .open-the-door button
     height h(55)

@@ -42,7 +42,7 @@
       <div class="dialog-box billing-order-dialog">
         <div class="billing-order-dialog-header">
           <span>xx店</span>
-          <img src="./../../assets/close-black.png" alt="">
+          <!--<img src="./../../assets/close-black.png" alt="">-->
         </div>
         <div class="billing-order-dialog-content">
           <div>
