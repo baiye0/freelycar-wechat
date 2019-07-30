@@ -4,7 +4,7 @@
       <div class="order-state">
         <span
           :class="[item.state !==2 && item.payState !==2 ?'order-state-title order-state-blue':'order-state-title order-state-gray']">
-          {{orderStateTitle(item.state)}}</span>
+          {{orderStateTitle(item.state,item.payState)}}</span>
         <span class="order-state-time">{{item.createTime}}</span>
       </div>
 
@@ -15,12 +15,12 @@
         <img class="order-info-more" src="./../../assets/more.png" alt="">
       </div>
 
-      <div class="order-img" v-show="item.state === 3 && item.payState !== 2">
+      <div class="order-img" v-show="item.state === 3">
         <span>查看技师拍摄爱车状态照片</span>
         <img src="./../../assets/my-car-img.png" alt="">
       </div>
 
-      <div class="open-the-door" v-show="item.state === 2 && item.state === 2">
+      <div class="open-the-door" v-show="item.payState === 2 && item.state === 3">
         <img src="./../../assets/call-service.png" alt="">
         <span>联系客服</span>
         <button>立即开柜</button>
@@ -63,7 +63,7 @@
       },
 
 //      标题
-      orderStateTitle(state){
+      orderStateTitle(state,payState){
         switch (state) {
           case 0:
             return '进行中的订单'
@@ -71,8 +71,13 @@
             return '进行中的订单'
           case 2:
             return '已完成订单'
-          case 3:
-            return '待支付订单'
+          case 3:{
+            if(payState===2){
+              return '已支付订单'
+            } else {
+              return '未支付订单'
+            }
+          }
           case 4:
             return '已取消订单'
         }

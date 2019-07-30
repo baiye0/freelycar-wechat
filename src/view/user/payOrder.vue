@@ -3,34 +3,34 @@
     <div class="pay-order-card">
       <div class="pay-order-card-item">
         <span>订单编号</span>
-        <span class="pay-order-info-gray">dr10101101001<b class="pay-order-info-blue copy">复制</b></span>
+        <span class="pay-order-info-gray">{{orderId}}<b class="pay-order-info-blue copy">复制</b></span>
       </div>
       <div class="pay-order-card-item">
         <span>下单时间</span>
-        <span class="pay-order-info-gray">2019-1-1</span>
+        <span class="pay-order-info-gray">{{consumerOrder.createTime}}</span>
       </div>
-      <div class="pay-order-card-item">
+      <div class="pay-order-card-item" v-show="consumerOrder.payState===2">
         <span>支付方式</span>
-        <span class="pay-order-info-gray">会员卡（000）</span>
+        <span class="pay-order-info-gray">？？？会员卡（000）</span>
       </div>
     </div>
 
     <div class="pay-order-card">
       <div class="pay-order-card-item">
         <span>车辆信息</span>
-        <span class="pay-order-info-gray">苏A12345</span>
+        <span class="pay-order-info-gray">{{consumerOrder.licensePlate}} {{consumerOrder.carColor}} · {{consumerOrder.carBrand}}</span>
       </div>
       <div class="pay-order-card-item">
         <span>车主信息</span>
-        <span class="pay-order-info-gray">马东东11111111</span>
+        <span class="pay-order-info-gray">{{consumerOrder.clientName}}</span>
       </div>
       <div class="pay-order-card-item">
         <span>车辆位置</span>
-        <span class="pay-order-info-gray">01号柜-青创园</span>
+        <span class="pay-order-info-gray">{{consumerOrder.parkingLocation}}</span>
       </div>
     </div>
 
-    <div class="pay-order-card">
+    <div class="pay-order-card" v-show="consumerOrder.state===3&&consumerOrder.payState===1">
       <div class="pay-order-card-item">
         <span>支付方式</span>
         <span class="pay-order-info-blue">会员卡（000）<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
@@ -47,35 +47,31 @@
 
     <div class="pay-order-card">
       <div class="pay-order-card-item">
-        <span>xxx店<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
+        <span>???xxx店<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
       </div>
       <div class="pay-order-card-item-second">
-        <div>
-          <span class="pay-order-info-gray">普洗</span>
-          <span class="pay-order-info-yellow">￥25</span>
-        </div>
-        <div>
-          <span class="pay-order-info-gray">手工打蜡</span>
-          <span class="pay-order-info-yellow">￥95</span>
+        <div v-for="(item,index) in consumerProjectInfos">
+          <span class="pay-order-info-gray">{{item.projectName}}</span>
+          <span class="pay-order-info-yellow">￥{{item.price}}</span>
         </div>
       </div>
       <div class="pay-order-card-item">
         <span>抵扣</span>
-        <span class="pay-order-info-yellow">-￥10</span>
+        <span class="pay-order-info-yellow">???-￥10</span>
       </div>
       <div class="pay-order-card-item">
-        <span class="pay-order-info-gray">总计￥120 <img class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b></span>
-        <span>实付<b class="pay-order-info-yellow">￥110</b></span>
+        <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}} <img class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b></span>
+        <span>实付<b class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</b></span>
       </div>
     </div>
 
-    <div class="pay-order-button">
-      <span class="pay-order-info-yellow">￥110 <b class="pay-order-info-gray">已优惠￥10</b></span>
+    <div class="pay-order-button" v-show="consumerOrder.state===3&&consumerOrder.payState===1">
+      <span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}} <b class="pay-order-info-gray">??已优惠￥10</b></span>
       <button>立即结算</button>
     </div>
 
-    <button class="blue-btn" v-show="msg">订单跟踪</button>
-    <button class="gray-btn" v-show="msg">取消订单</button>
+    <button class="blue-btn" v-show="consumerOrder.state===2">订单跟踪</button>
+    <button class="gray-btn" v-show="consumerOrder.state===1">取消订单</button>
   </div>
 </template>
 
@@ -85,7 +81,9 @@
     data() {
       return {
         msg: '',
-        orderId:''
+        orderId:'',
+        consumerOrder:{},
+        consumerProjectInfos:{}
       }
     },
     methods: {
@@ -94,6 +92,8 @@
           id:this.orderId
         }).then(res=>{
           console.log(res)
+          this.consumerOrder=res.consumerOrder
+          this.consumerProjectInfos=res.consumerProjectInfos
         })
       },
 
