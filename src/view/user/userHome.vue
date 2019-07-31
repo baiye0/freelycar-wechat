@@ -1,10 +1,10 @@
 <template>
   <div class="user-home">
     <div class="my-info">
-      <img class="my-info-setting" src="./../../assets/setting.png" alt="">
-      <img class="my-info-photo" src="../../assets/photo.png" alt="头像">
-      <span class="name">马东东</span>
-      <span class="my-info-other">男  ·  江苏  ·  南京</span>
+      <img class="my-info-setting" @click="toChangeInfo" src="./../../assets/setting.png" alt="">
+      <img class="my-info-photo" :src="[wxUserInfo.headImgUrl]" alt="头像">
+      <span class="name">{{wxUserInfo.trueName}}</span>
+      <span class="my-info-other">{{wxUserInfo.gender}}  ·  江苏  ·  南京</span>
       <div class="my-info-position">
         <img src="../../assets/position.png" alt="位置">
         <span>定位门店：徐庄研发三区店</span>
@@ -16,25 +16,18 @@
       <div class="menu">
         <img class="car-icon" src="../../assets/my-car.png" alt="车">
         <span>爱车管理</span>
-        <img class="edit" src="../../assets/edit.png" alt="编辑">
+        <img @click="editCar" class="edit" src="../../assets/edit.png" alt="编辑">
       </div>
 
       <div class="my-car">
-        <div class="my-car-card">
-          <img class="my-car-del" src="./../../assets/del.png" alt="">
+        <div class="my-car-card" v-for="(item,index) in cars">
+          <img v-show="isEditCar" @click="delCar(index)" class="my-car-del" src="./../../assets/del.png" alt="">
           <img class="my-car-head" src="./../../assets/car-head.png" alt="">
-          <div class="my-car-num">苏A12345</div>
-          <div class="my-car-brand">白色 · 宝马</div>
+          <div class="my-car-num">{{item.licensePlate}}</div>
+          <div class="my-car-brand">{{item.color}} · {{item.carBrand}}</div>
         </div>
 
-        <div class="my-car-card">
-          <img class="my-car-del" src="./../../assets/del.png" alt="">
-          <img class="my-car-head" src="./../../assets/car-head.png" alt="">
-          <div class="my-car-num">苏A12345</div>
-          <div class="my-car-brand">白色 · 宝马</div>
-        </div>
-
-        <img class="my-car-add" src="./../../assets/add.png" alt="">
+        <img v-show="isEditCar" @click="addNewCar" class="my-car-add" src="./../../assets/add.png" alt="">
       </div>
 
     </div>
@@ -46,11 +39,11 @@
         <img class="more" src="../../assets/more.png" alt="详细">
       </div>
 
-      <div class="menu">
-        <img class="voucher-icon" src="../../assets/my-voucher.png" alt="抵用券">
-        <span>我的抵用券</span>
-        <img class="more" src="../../assets/more.png" alt="详细">
-      </div>
+      <!--<div class="menu">-->
+        <!--<img class="voucher-icon" src="../../assets/my-voucher.png" alt="抵用券">-->
+        <!--<span>我的抵用券</span>-->
+        <!--<img class="more" src="../../assets/more.png" alt="详细">-->
+      <!--</div>-->
 
       <div class="menu">
         <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
@@ -70,25 +63,50 @@
         switchValue: false,
         selected: '',
         options: ['服务状态'],
+        wxUserInfo:{},
+        cars:[],
+        isEditCar:false
       }
     },
     methods: {
       // 获取个人信息
       getAllInfo(){
         this.$get('/wechat/wxuser/getPersonalInfo',{
-          id:''
+          id:localStorage.getItem('id')
+        }).then(res=>{
+          this.wxUserInfo=res.wxUserInfo
+          this.cars=res.cars
         })
       },
 
+      editCar(){
+        this.isEditCar = !this.isEditCar
+      },
+
       // 删除车
-      delCar(){
+      delCar(index){
         this.$get('/wechat/client/deleteCar',{
-          id:''
+          id:this.cars[index].id
+        }).then(res=>{
+          this.toast = this.$createToast({
+            txt: '删除成功',
+            type: 'txt'
+          })
+          this.toast.show()
+          this.getAllInfo()
         })
-      }
+      },
+      addNewCar(){
+        console.log('1')
+        this.$router.push({path: '/addCar'})
+      },
+      toChangeInfo(){
+        this.$router.push({path: '/changeOrder'})
+      },
+
     },
     mounted: function () {
-
+      this.getAllInfo()
     }
   }
 </script>

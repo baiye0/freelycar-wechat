@@ -1,6 +1,6 @@
 <template>
   <div class="pay-order">
-    <div class="pay-order-card">
+    <div class="pay-order-card" v-show="consumerOrder.state !== 2">
       <div class="pay-order-card-item">
         <span>订单编号</span>
         <span class="pay-order-info-gray">{{orderId}}<b class="pay-order-info-blue copy"
@@ -27,13 +27,13 @@
         <span>车主信息</span>
         <span class="pay-order-info-gray">{{consumerOrder.clientName}}</span>
       </div>
-      <div class="pay-order-card-item">
+      <div class="pay-order-card-item" v-show="consumerOrder.state !== 2">
         <span>车辆位置</span>
         <span class="pay-order-info-gray">{{consumerOrder.parkingLocation}}</span>
       </div>
     </div>
 
-    <div class="pay-order-card" v-show="consumerOrder.state===3&&consumerOrder.payState===1">
+    <div class="pay-order-card" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
       <div class="pay-order-card-item">
         <span>支付方式</span>
         <span class="pay-order-info-blue">会员卡（000）<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
@@ -68,8 +68,9 @@
       </div>
     </div>
 
-    <div class="pay-order-button" v-show="consumerOrder.state===3&&consumerOrder.payState===1">
-      <span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}} <b class="pay-order-info-gray">??已优惠￥10</b></span>
+    <div class="pay-order-button" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
+      <span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</span>
+      <!--<span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}} <b class="pay-order-info-gray">??已优惠￥10</b></span>-->
       <button>立即结算</button>
     </div>
 

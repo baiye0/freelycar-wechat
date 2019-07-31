@@ -8,7 +8,7 @@
       <div class="order-tracking-card-head">
         <div>
           <img src="./../../assets/head.png" alt="">
-          <span>王师傅</span>
+          <span>{{consumerOrder.pickCarStaffName}}</span>
           <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
         </div>
         <div class="order-tracking-card-state">
@@ -45,7 +45,7 @@
     name: 'orderTracking',
     data() {
       return {
-        a: {
+        time: {
           createTime:'2019-06-10 16:25:36',
           pickTime:'2019-06-10 16:25:36',
           finishTime:'2019-06-10 16:25:36',
@@ -86,6 +86,11 @@
         }).then(res=>{
           console.log(res)
           this.consumerOrder = res.consumerOrder
+          this.time.createTime=this.consumerOrder.createTime
+          this.time.pickTime=this.consumerOrder.pickTime
+          this.time.finishTime=this.consumerOrder.finishTime
+          this.time.deliverTime=this.consumerOrder.deliverTime
+
         })
       }
     },
