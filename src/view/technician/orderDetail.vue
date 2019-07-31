@@ -3,7 +3,9 @@
     <div class="order-detail-card">
       <div class="order-detail-head">
         <span>订单编号</span>
-        <span>dr111111 <b>复制</b></span>
+        <span>dr111111 <b v-clipboard:copy="orderId"
+                          v-clipboard:success="onCopy"
+                          v-clipboard:error="onError">复制</b></span>
       </div>
       <div class="order-detail-info">
         <div>车牌号 <span>苏a11111</span></div>
@@ -71,6 +73,13 @@
         this.$post('/upload/staffOrderImg',{
 
         })
+      },
+
+      onCopy(){
+        console.log('复制成功')
+      },
+      onError(){
+        console.log('复制失败')
       },
 
       // 接车的一键开柜

@@ -51,6 +51,7 @@
           finishTime:'2019-06-10 16:25:36',
           deliverTime:'2019-06-10 16:25:36',
         },
+        orderId:'',
         msg:[
           {
             date:'2019-06-10',
@@ -73,19 +74,24 @@
             title:'订单提交成功',
             info:'正在为您的爱车安排服务'
           },
-        ]
+        ],
+        consumerOrder:{}
       }
     },
     methods: {
       // 获取订单详情
       getOrderDetail(){
         this.$get('/wechat/order/getOrderDetail',{
-          id:''
+          id:this.orderId
+        }).then(res=>{
+          console.log(res)
+          this.consumerOrder = res.consumerOrder
         })
       }
     },
     mounted: function () {
-
+      this.orderId = this.$route.query.id
+      this.getOrderDetail()
     }
   }
 </script>

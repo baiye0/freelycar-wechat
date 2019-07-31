@@ -8,7 +8,8 @@ import {get, post, getExcel, postExcel} from "./components/axiosHttp";
 import Cube from 'cube-ui'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
-
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.config.productionTip = false
 // 引入cube
 Vue.use(Cube)

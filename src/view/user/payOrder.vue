@@ -3,7 +3,10 @@
     <div class="pay-order-card">
       <div class="pay-order-card-item">
         <span>订单编号</span>
-        <span class="pay-order-info-gray">{{orderId}}<b class="pay-order-info-blue copy">复制</b></span>
+        <span class="pay-order-info-gray">{{orderId}}<b class="pay-order-info-blue copy"
+                                                        v-clipboard:copy="orderId"
+                                                        v-clipboard:success="onCopy"
+                                                        v-clipboard:error="onError">复制</b></span>
       </div>
       <div class="pay-order-card-item">
         <span>下单时间</span>
@@ -11,7 +14,7 @@
       </div>
       <div class="pay-order-card-item" v-show="consumerOrder.payState===2">
         <span>支付方式</span>
-        <span class="pay-order-info-gray">？？？会员卡（000）</span>
+        <span class="pay-order-info-gray">{{payWay}}</span>
       </div>
     </div>
 
@@ -39,15 +42,15 @@
         <span>卡内余额</span>
         <span class="pay-order-info-blue">1元</span>
       </div>
-      <div class="pay-order-card-item">
-        <span>抵用券</span>
-        <span class="pay-order-info-blue">已有2张<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
-      </div>
+      <!--<div class="pay-order-card-item">-->
+        <!--<span>抵用券</span>-->
+        <!--<span class="pay-order-info-blue">已有2张<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>-->
+      <!--</div>-->
     </div>
 
     <div class="pay-order-card">
       <div class="pay-order-card-item">
-        <span>???xxx店<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
+        <span>{{storeName}}<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
       </div>
       <div class="pay-order-card-item-second">
         <div v-for="(item,index) in consumerProjectInfos">
@@ -55,10 +58,10 @@
           <span class="pay-order-info-yellow">￥{{item.price}}</span>
         </div>
       </div>
-      <div class="pay-order-card-item">
-        <span>抵扣</span>
-        <span class="pay-order-info-yellow">???-￥10</span>
-      </div>
+      <!--<div class="pay-order-card-item">-->
+        <!--<span>抵扣</span>-->
+        <!--<span class="pay-order-info-yellow">???-￥10</span>-->
+      <!--</div>-->
       <div class="pay-order-card-item">
         <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}} <img class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b></span>
         <span>实付<b class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</b></span>
@@ -70,8 +73,8 @@
       <button>立即结算</button>
     </div>
 
-    <button class="blue-btn" v-show="consumerOrder.state===2">订单跟踪</button>
-    <button class="gray-btn" v-show="consumerOrder.state===1">取消订单</button>
+    <button class="blue-btn" v-show="consumerOrder.state===0 || consumerOrder.state===1" @click="orderTracking">订单跟踪</button>
+    <button class="gray-btn" v-show="consumerOrder.state===0" @click="cancelOrder">取消订单</button>
   </div>
 </template>
 
@@ -83,7 +86,8 @@
         msg: '',
         orderId:'',
         consumerOrder:{},
-        consumerProjectInfos:{}
+        consumerProjectInfos:{},
+        storeName:''
       }
     },
     methods: {
@@ -96,13 +100,73 @@
           this.consumerProjectInfos=res.consumerProjectInfos
         })
       },
-
-      // 取消
-      cancelOrder(){
-        this.$get('/wechat/ark/cancelOrderService',{
-          id:''
+      // 获取我的会员卡
+      getMyCard(){
+        this.$get('/wechat/wxuser/getMyCards',{
+          id:localStorage.getItem('id'),
+          storeId:localStorage.getItem('storeId')
         }).then(res=>{
+          console.log(res)
+        })
+      },
 
+      onCopy(){
+        this.toast = this.$createToast({
+          txt: '复制成功',
+          type: 'txt'
+        })
+        this.toast.show()
+      },
+      onError(){
+        this.toast = this.$createToast({
+          txt: '复制失败',
+          type: 'txt'
+        })
+        this.toast.show()
+      },
+
+      // 取消订单按钮
+      cancelOrder(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '您将取消订单？',
+          confirmBtn: {
+            text: '再想想',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '确认取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            console.log('取消')
+          },
+          onCancel: () => {
+            this.cancelOrderService()
+          }
+        }).show()
+      },
+
+      orderTracking(){
+        this.$router.push({path: '/orderTracking',query:{id:this.orderId}})
+      },
+
+      cancelOrderService(){
+        this.$get('/wechat/ark/cancelOrderService',{
+          id:this.orderId
+        }).then(res=>{
+          this.toast = this.$createToast({
+            txt: '取消成功',
+            type: 'txt'
+          })
+          this.toast.show()
+          setTimeout(function () {
+            this.$router.push({path: '/myOrder'})
+          },2000)
         })
       },
 
@@ -128,7 +192,21 @@
     },
     mounted: function () {
       this.orderId = this.$route.query.orderId
+      this.storeName = localStorage.getItem('storeName')
       this.getOrderDetail()
+      this.getMyCard()
+    },
+    computed:{
+      payWay:function () {
+        switch (this.consumerOrder.firstPayMethod) {
+          case '0':return '储值卡'
+          case '1':return '现金'
+          case '2':return '微信'
+          case '3':return '支付宝'
+          case '4':return '易付宝'
+          case '5':return '刷卡'
+        }
+      }
     }
   }
 </script>

@@ -119,6 +119,7 @@
           arkSn: this.arkSn
         }).then(res => {
           localStorage.setItem('storeId', res.storeId)
+          localStorage.setItem('storeName', res.name)
           if (res.storeId === this.wxUserInfo.defaultStoreId) {
             this.isNewUser()
           } else {

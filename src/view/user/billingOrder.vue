@@ -38,23 +38,24 @@
 
     <button class="big-gray-btn" @click="submit">提交</button>
 
+    <!--模态框-->
     <div class="dialog-layer">
       <div class="dialog-box billing-order-dialog">
         <div class="billing-order-dialog-header">
           <span>xx店</span>
-          <!--<img src="./../../assets/close-black.png" alt="">-->
+          <img src="./../../assets/close-black.png" alt="">
         </div>
         <div class="billing-order-dialog-content">
-          <div>
-            <img src="" alt="">
-            <span>普洗</span>
-            <div>随便洗洗</div>
-            <span>￥25</span>
+          <div class="billing-order-dialog-item" v-for="(item,index) in projects">
+            <img src="/static/check-no.png" alt="">
+            <span>{{item.name}}</span>
+            <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
+            <div>{{item.comment}}</div>
           </div>
         </div>
         <div class="billing-order-dialog-footer">
           <span><b>￥</b>120</span>
-          <span>普洗</span>
+          <span class="billing-order-footer-project">普洗</span>
           <button>确认</button>
         </div>
       </div>
@@ -75,7 +76,7 @@
         consumerOrder:{},
         consumerProjectInfos:[],
         clientOrderImg:{},
-        projects:{},
+        projects:[],
         wxUserInfo:{},
         cars:[]
       }
@@ -250,13 +251,34 @@
   .billing-order-dialog-header
     height h(90)
     border-bottom $border-gray
-    padding 0 w(10)
+    padding 0 w(30)
     display flex
     justify-content space-between
     align-items center
+    img
+      height w(25)
+      width w(25)
 
   .billing-order-dialog-content
     height h(594)
+    margin-left w(30)
+    overflow scroll
+    .billing-order-dialog-item
+      padding h(30) w(30) h(30) 0
+      border-bottom $border-gray
+      div
+        width w(360)
+        margin-left w(60)
+        margin-top h(20)
+        font-size w(25)
+        color #AFAEAE
+    .billing-order-dialog-item-price
+      float right
+      color #FFBD03
+    img
+      height w(30)
+      width w(30)
+      margin-right w(20)
 
   .billing-order-dialog-footer
     height h(110)
@@ -264,5 +286,29 @@
     position absolute
     bottom 0
     width 100%
+    padding 0 w(30)
+    box-sizing border-box
+    b
+      color $bt-yellow
+      font-size w(20)
+    span
+      color $bt-yellow
+      font-size w(40)
+      line-height h(80)
+    .billing-order-footer-project
+      font-size w(25)
+      width w(300)
+      color $bt-gray
+      position absolute
+      top h(40)
+      left w(30)
+    button
+      border 1px solid #2049BF
+      background white
+      padding h(5) w(40)
+      border-radius w(30)
+      color #2049BF
+      margin h(30) 0
+      float right
 
 </style>
