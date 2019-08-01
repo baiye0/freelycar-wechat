@@ -2,14 +2,12 @@
   <div class="buy-card">
     <span class="buy-card-store">以下会员卡仅限于{{store}}门店使用</span>
 
-    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard">
+    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(index)">
       <div class="buy-card-title">
         <span>小易会员VIP</span>
         <span>点击购买>></span>
       </div>
-
       <span class="buy-card-count">{{item.price}}<b>元</b></span>
-
       <span class="buy-card-text">储值金额</span>
     </div>
 
@@ -21,7 +19,7 @@
     name: 'buyCard',
     data() {
       return {
-        msg: [],
+        msg: {},
         store:1
       }
     },
@@ -29,19 +27,19 @@
       // 获取卡列表
       getStoreDetail(){
         this.$get('/wechat/store/getDetail',{
-          id:this.store
+          id:localStorage.getItem('storeId')
         }).then(res=>{
           this.msg = res.cardServices
         })
       },
 
       // 买卡
-      buyCard(){
+      buyCard(index){
         this.$get('/wechat/card/generateCardOrder',{
-          clientId:'ea8ecbc5694d1d1d01694d2bf15d0001',
-          cardServiceId:'ea8ecbc5695246b401695729e9240008'
+          clientId:localStorage.getItem('clientId'),
+          cardServiceId:this.msg[index].id
         }).then(res=>{
-          console.log(res)
+          let cardId=res
         })
       }
     },

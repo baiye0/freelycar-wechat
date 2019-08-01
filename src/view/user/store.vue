@@ -3,7 +3,7 @@
     <div class="store-head">
       <div class="store-head-card">
         <span class="store-head-title">{{store.name}}</span>
-        <span class="store-head-time">营业时间：{{store.openingTime}}-{{store.closingTime}}</span>
+        <span class="store-head-time">营业时间：{{store.openingTime.split(' ')[1]}}-{{store.closingTime.split(' ')[1]}}</span>
         <div class="store-head-call"><img src="./../../assets/call-service.png" alt=""><span>联系店家</span></div>
         <div class="store-head-img">
           <img src="./../../assets/distance.png" alt="">
@@ -144,7 +144,7 @@
     text-align center
     position absolute
     top h(75)
-    left w(330)
+    left w(360)
     display flex
     align-items center
 

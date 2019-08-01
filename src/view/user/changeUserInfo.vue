@@ -34,6 +34,9 @@
           phone:111111111
         }
       }
+    },
+    methods:{
+
     }
   }
 </script>

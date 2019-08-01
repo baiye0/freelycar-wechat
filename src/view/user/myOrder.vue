@@ -15,7 +15,7 @@
         <img class="order-info-more" src="./../../assets/more.png" alt="">
       </div>
 
-      <div class="order-img" v-show="item.state === 2">
+      <div class="order-img" v-show="item.state === 2" @click="getImg(index)">
         <span>查看技师拍摄爱车状态照片</span>
         <img src="./../../assets/my-car-img.png" alt="">
       </div>
@@ -60,6 +60,11 @@
       // 订单详情
       orderDetail(id){
         this.$router.push({path: '/payOrder', query: {orderId: id}})
+      },
+
+//      显示车照片
+      getImg(index){
+
       },
 
       // 标题

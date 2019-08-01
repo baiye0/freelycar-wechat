@@ -45,12 +45,12 @@
     name: 'orderTracking',
     data() {
       return {
-        time: {
-          createTime:'2019-06-10 16:25:36',
-          pickTime:'2019-06-10 16:25:36',
-          finishTime:'2019-06-10 16:25:36',
-          deliverTime:'2019-06-10 16:25:36',
-        },
+        time: [
+          '2019-06-10 16:25:36',
+          '2019-06-10 16:25:36',
+          '2019-06-10 16:25:36',
+          '2019-06-10 16:25:36',
+        ],
         orderId:'',
         msg:[
           {
@@ -86,11 +86,14 @@
         }).then(res=>{
           console.log(res)
           this.consumerOrder = res.consumerOrder
-          this.time.createTime=this.consumerOrder.createTime
-          this.time.pickTime=this.consumerOrder.pickTime
-          this.time.finishTime=this.consumerOrder.finishTime
-          this.time.deliverTime=this.consumerOrder.deliverTime
-
+          this.time=[
+            this.consumerOrder.createTime,
+            this.consumerOrder.pickTime,
+            this.consumerOrder.finishTime,
+            this.consumerOrder.deliverTime
+          ]
+          console.log(this.time)
+          this.time.forEach()
         })
       }
     },

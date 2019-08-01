@@ -43,10 +43,10 @@
       // 确认按钮
       submit(){
         this.$post('/wechat/wxuser/chooseDefaultStore', {
-          id: 'ea8ecbc56a2a7de1016a4467bce80018',//用的是id不是clientid
-          defaultStoreId: this.storeId
+          id: localStorage.getItem('id'),//用的是id不是clientid
+          defaultStoreId: localStorage.getItem('storeId')
         }).then(res => {
-          console.log(res)
+          this.$router.push({path:'/userHome'})
         })
       }
     },

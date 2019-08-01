@@ -6,7 +6,7 @@
     <div class="form">
       <div class="form-box">
         <img class="user-info-name" src="./../../assets/name.png" alt="">
-        <input type="text" placeholder="请输入真实姓名">
+        <input v-model="name" type="text" placeholder="请输入真实姓名">
       </div>
 
       <div class="form-box">
@@ -14,8 +14,13 @@
       </div>
     </div>
 
-    <button class="big-blue-btn">下一步</button>
-    <button class="big-gray-btn">取消</button>
+    <router-link to="/carInfo">
+      <button class="big-blue-btn">下一步</button>
+    </router-link>
+    <router-link to="/login">
+      <button class="big-gray-btn">取消</button>
+    </router-link>
+
   </div>
 </template>
 
@@ -24,14 +29,17 @@
     name: 'userInfo',
     data() {
       return {
-
+        name:''
       }
     },
     methods: {
+//        选择性别
+
+//        提交
       submit(){
         this.$post('/wechat/wxuser/saveUserInfo',{
           id:"ea8ecbc5692ce32f01692d8d47fd0000",
-          trueName:"唐炜",
+          trueName:this.name,
           nickName:null,
           gender:"男"
         })

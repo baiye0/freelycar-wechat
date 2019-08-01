@@ -8,7 +8,9 @@
       <div class="my-info-position">
         <img src="../../assets/position.png" alt="位置">
         <span>定位门店：徐庄研发三区店</span>
-        <button>更换</button>
+        <router-link to="/chooseStore">
+          <button>更换</button>
+        </router-link>
       </div>
     </div>
 
@@ -37,8 +39,9 @@
         <img src="./../../assets/my-card.png" alt="">
         <span>我的会员卡</span>
         <span class="assets-count"><b>100</b>元</span>
-        <span class="assets-recharge">立即充值</span>
-        <!--<img src="./../../assets/recharge.png" alt="">-->
+        <router-link to="/buyCard">
+          <span class="assets-recharge">立即充值</span>
+        </router-link>
       </div>
       <div>
         <img src="./../../assets/my-voucher.png" alt="">
@@ -48,11 +51,13 @@
     </div>
 
     <div>
-      <div class="menu">
-        <img class="card-icon" src="../../assets/store.png" alt="会员卡">
-        <span>门店详情</span>
-        <img class="more" src="../../assets/more.png" alt="详细">
-      </div>
+      <router-link to="/store">
+        <div class="menu">
+          <img class="card-icon" src="../../assets/store.png" alt="会员卡">
+          <span>门店详情</span>
+          <img class="more" src="../../assets/more.png" alt="详细">
+        </div>
+      </router-link>
 
       <a class="contact" :href="['tel:' + storePhone]">
         <div class="menu">
@@ -114,7 +119,7 @@
         this.$router.push({path: '/addCar'})
       },
       toChangeInfo(){
-        this.$router.push({path: '/changeOrder'})
+        this.$router.push({path: '/changeUserInfo'})
       },
 
     },

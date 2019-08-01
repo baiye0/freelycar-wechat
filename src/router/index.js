@@ -12,7 +12,7 @@ import addCar from '@/view/user/addCar.vue'
 import billingOrder from '@/view/user/billingOrder.vue'
 import orderTracking from '@/view/user/orderTracking.vue'
 import store from '@/view/user/store.vue'
-import changeOrder from '@/view/user/changeOrder.vue'
+import changeUserInfo from '@/view/user/changeUserInfo.vue'
 
 
 import openDoor from '@/view/components/openDoor.vue'
@@ -55,9 +55,9 @@ export default new Router({
       name: 'role-select',
       component:roleSelection,
     },{
-      path: '/changeOrder',
-      name: 'changeOrder',
-      component:changeOrder,
+      path: '/changeUserInfo',
+      name: 'changeUserInfo',
+      component:changeUserInfo,
     },
     {
       path: '/tecLogin',
