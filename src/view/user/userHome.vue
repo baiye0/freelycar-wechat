@@ -23,33 +23,44 @@
         <div class="my-car-card" v-for="(item,index) in cars">
           <img v-show="isEditCar" @click="delCar(index)" class="my-car-del" src="./../../assets/del.png" alt="">
           <img class="my-car-head" src="./../../assets/car-head.png" alt="">
-          <div class="my-car-num">{{item.licensePlate}}</div>
-          <div class="my-car-brand">{{item.color}} · {{item.carBrand}}</div>
+          <span class="my-car-num">{{item.licensePlate}}</span>
+          <span class="my-car-brand">{{item.color}} · {{item.carBrand}}</span>
         </div>
 
-        <img v-show="isEditCar" @click="addNewCar" class="my-car-add" src="./../../assets/add.png" alt="">
+        <img v-show="isEditCar || cars.length===0" @click="addNewCar" class="my-car-add" src="./../../assets/add.png" alt="">
       </div>
 
     </div>
 
+    <div class="assets">
+      <div class="assets-card">
+        <img src="./../../assets/my-card.png" alt="">
+        <span>我的会员卡</span>
+        <span class="assets-count"><b>100</b>元</span>
+        <span class="assets-recharge">立即充值</span>
+        <!--<img src="./../../assets/recharge.png" alt="">-->
+      </div>
+      <div>
+        <img src="./../../assets/my-voucher.png" alt="">
+        <span>我的抵用券</span>
+        <span class="assets-count"><b>0</b>个</span>
+      </div>
+    </div>
+
     <div>
       <div class="menu">
-        <img class="card-icon" src="../../assets/my-card.png" alt="会员卡">
-        <span>我的会员卡</span>
+        <img class="card-icon" src="../../assets/store.png" alt="会员卡">
+        <span>门店详情</span>
         <img class="more" src="../../assets/more.png" alt="详细">
       </div>
 
-      <!--<div class="menu">-->
-        <!--<img class="voucher-icon" src="../../assets/my-voucher.png" alt="抵用券">-->
-        <!--<span>我的抵用券</span>-->
-        <!--<img class="more" src="../../assets/more.png" alt="详细">-->
-      <!--</div>-->
-
-      <div class="menu">
-        <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
-        <span>联系小易</span>
-        <img class="more" src="../../assets/more.png" alt="详细">
-      </div>
+      <a class="contact" :href="['tel:' + storePhone]">
+        <div class="menu">
+          <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
+          <span>联系小易</span>
+          <img class="more" src="../../assets/more.png" alt="详细">
+        </div>
+      </a>
     </div>
 
   </div>
@@ -65,7 +76,8 @@
         options: ['服务状态'],
         wxUserInfo:{},
         cars:[],
-        isEditCar:false
+        isEditCar:false,
+        storePhone:''
       }
     },
     methods: {
@@ -96,6 +108,7 @@
           this.getAllInfo()
         })
       },
+
       addNewCar(){
         console.log('1')
         this.$router.push({path: '/addCar'})
@@ -106,6 +119,7 @@
 
     },
     mounted: function () {
+      this.storePhone=localStorage.getItem('storePhone')
       this.getAllInfo()
     }
   }
@@ -218,8 +232,8 @@
   .my-car-brand
     font-size w(22)
     line-height w(50)
-    left w(137)
-    top h(10)
+    left w(7)
+    top h(60)
     position relative
 
   .my-car-del
@@ -236,6 +250,7 @@
     border-bottom $border-gray
     display flex
     align-items center
+    color black
 
   .menu span
     font-size w(25)
@@ -276,4 +291,45 @@
     position absolute
     right w(71)
 
+  .assets
+    border-bottom h(16) solid #EEEEEE
+    height h(179)
+    img
+      height h(40)
+      width w(45)
+      position relative
+      top h(5)
+      margin-right w(20)
+    div
+      width w(370)
+      float left
+      padding h(15) w(35)
+      margin h(10) 0
+      box-sizing border-box
+      position relative
+    .assets-count
+      color #2049BF
+      font-size w(20)
+      position absolute
+      top h(80)
+      left w(30)
+      b
+        font-size w(50)
+        font-weight 800
+        margin-right w(10)
+    .assets-card
+      border-right $border-gray
+      height h(156)
+    .assets-recharge
+      height h(50)
+      width w(165)
+      position absolute
+      right w(30)
+      top h(80)
+      color white
+      font-size w(25)
+      padding h(10) 0 0 w(45)
+      box-sizing border-box
+      background url("./../../assets/recharge.png") no-repeat
+      background-size w(165) h(50)
 </style>
