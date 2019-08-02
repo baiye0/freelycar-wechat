@@ -9,6 +9,9 @@ import Cube from 'cube-ui'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
 import VueClipboard from 'vue-clipboard2'
+import openDoor from './view/components/openDoor'
+import success from './view/components/success'
+
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 // 引入cube
@@ -22,6 +25,10 @@ Vue.prototype.$get = get
 Vue.prototype.$post = post
 Vue.prototype.$getExcel = getExcel
 Vue.prototype.$postExcel = postExcel
+
+Vue.component('openDoor', openDoor)
+Vue.component('success', success)
+
 
 router.beforeEach((to, from, next) => {
   console.log('to.path:', to.path)

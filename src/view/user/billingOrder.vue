@@ -8,7 +8,7 @@
     <div class="billing-order-card billing-order-project">
       <div class="align-center">
         <span><img class="billing-order-img" src="./../../assets/setting-blue.png" alt="">本次预约项目</span>
-        <button>项目选择</button>
+        <button @click="chooseProject">项目选择</button>
       </div>
       <span class="billing-order-project-item">普洗</span>
       <span class="billing-order-project-item">手工打蜡</span>
@@ -39,14 +39,14 @@
     <button class="big-gray-btn" @click="submit">提交</button>
 
     <!--模态框-->
-    <div class="dialog-layer">
+    <div class="dialog-layer" v-show="isDialogShow">
       <div class="dialog-box billing-order-dialog">
         <div class="billing-order-dialog-header">
-          <span>xx店</span>
-          <img src="./../../assets/close-black.png" alt="">
+          <span>{{storeName}}</span>
+          <img @click="closeDialog" src="./../../assets/close-black.png" alt="">
         </div>
         <div class="billing-order-dialog-content">
-          <div class="billing-order-dialog-item" v-for="(item,index) in projects">
+          <div @click="selectProject(index)" class="billing-order-dialog-item" v-for="(item,index) in projects">
             <img src="/static/check-no.png" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
@@ -56,10 +56,13 @@
         <div class="billing-order-dialog-footer">
           <span><b>￥</b>120</span>
           <span class="billing-order-footer-project">普洗</span>
-          <button>确认</button>
+          <button @click="selectProjectBtn">确认</button>
         </div>
       </div>
     </div>
+
+    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
   </div>
 </template>
 
@@ -69,16 +72,36 @@
     data() {
       return {
         msg: {
-          name:'马东东',
-          number:'苏a122222',
+          name:'',
+          number:'',
         },
-        arkSn:862057048957259,
-        consumerOrder:{},
-        consumerProjectInfos:[],
-        clientOrderImg:{},
+        arkInfoState:'billingOrder',
+        consumerOrder:{
+          carId:'',
+          clientId:'',
+          parkingLocation:'e'
+        },
+        consumerProjectInfos:[
+          {
+            price:"0.01",
+            projectId: "ea8ecbc5692da05101692da5c6630002",
+            projectName: "测试项目"
+          }
+        ],
+        clientOrderImg:{
+          createTime:'2019-06-10 15:45:26',
+          delStatus:false,
+          id:2,
+          orderId:'',
+          url:"https://freelycar.com/upload/clientorderimg/201906101545263ad8223882ab438fbfcf29338f429e88_lite.jpg"
+        },
         projects:[],
         wxUserInfo:{},
-        cars:[]
+        cars:[],
+        isDialogShow:false,
+        storeName:'',
+        isOpenDoorShow:false,
+        isSuccessShow:false,
       }
     },
     methods: {
@@ -88,9 +111,10 @@
           id:localStorage.getItem('id')
         }).then(res=>{
           this.wxUserInfo = res.wxUserInfo
-          this.msg.name = res.wxUserInfo.trueName
           this.cars = res.cars
+          this.msg.name = res.wxUserInfo.trueName
           this.msg.number = res.cars[0].licensePlate
+          this.consumerOrder.carId=res.cars[0].id
         })
       },
 
@@ -108,18 +132,51 @@
         this.$post('/upload/clientOrderImg',)
       },
 
-      submit(){
-        this.$post('/wechat/ark/orderService',{
-          consumerOrder:{},
-          consumerProjectInfos:[],
-          arkSn:this.arkSn,
-          clientOrderImg:{}
-        }).then(res=>{
+      // 选择项目按钮
+      chooseProject(){
+        this.isDialogShow=true
+      },
 
-        })
+      // 关闭模态框
+      closeDialog(){
+        this.isDialogShow=false
+      },
+
+      // 选择项目
+      selectProject(index){
+
+      },
+
+      // 确认按钮
+      selectProjectBtn(){
+        this.closeDialog()
+      },
+
+      // 同意小易智能柜使用协议
+
+      // 快速定位
+
+      // 删除照片
+
+      // 提交
+      submit(){
+        // this.isOpenDoorShow=true
+        // this.$post('/wechat/ark/orderService',{
+        //   consumerOrder:this.consumerOrder,
+        //   consumerProjectInfos:this.consumerProjectInfos,
+        //   arkSn:localStorage.getItem('arkSn'),
+        //   clientOrderImg:this.clientOrderImg
+        // }).then(res=>{
+        //   this.isSuccessShow=true
+        //   setTimeout(()=>{
+        //     this.$router.push({path:'/myOrder'})
+        //   },3000)
+        // })
       }
     },
     mounted: function () {
+      this.storeName=localStorage.getItem('storeName')
+      this.consumerOrder.clientId=localStorage.getItem('clientId')
       this.getUserInfo()
       this.getStoreProject()
     }

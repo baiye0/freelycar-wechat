@@ -7,7 +7,7 @@
       <span class="my-info-other">{{wxUserInfo.gender}}  ·  江苏  ·  南京</span>
       <div class="my-info-position">
         <img src="../../assets/position.png" alt="位置">
-        <span>定位门店：徐庄研发三区店</span>
+        <span>定位门店：{{storeName}}</span>
         <router-link to="/chooseStore">
           <button>更换</button>
         </router-link>
@@ -38,7 +38,7 @@
       <div class="assets-card">
         <img src="./../../assets/my-card.png" alt="">
         <span>我的会员卡</span>
-        <span class="assets-count"><b>100</b>元</span>
+        <span class="assets-count"><b>{{cardBalance}}</b>元</span>
         <router-link to="/buyCard">
           <span class="assets-recharge">立即充值</span>
         </router-link>
@@ -82,7 +82,9 @@
         wxUserInfo:{},
         cars:[],
         isEditCar:false,
-        storePhone:''
+        storePhone:'',
+        storeName:'',
+        cardBalance:null
       }
     },
     methods: {
@@ -93,6 +95,7 @@
         }).then(res=>{
           this.wxUserInfo=res.wxUserInfo
           this.cars=res.cars
+          this.cardBalance=res.cardBalance
         })
       },
 
@@ -125,6 +128,7 @@
     },
     mounted: function () {
       this.storePhone=localStorage.getItem('storePhone')
+      this.storeName=localStorage.getItem('storeName')
       this.getAllInfo()
     }
   }

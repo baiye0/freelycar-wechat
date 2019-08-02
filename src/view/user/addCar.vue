@@ -22,7 +22,7 @@
 
     <img class="add-car-img" src="./../../assets/car-head.png" alt="">
 
-    <button class="big-blue-btn">保存</button>
+    <button class="big-blue-btn" @click="addCar">保存</button>
   </div>
 </template>
 
@@ -48,6 +48,8 @@
           lastMiles:"0",
           color:"白色",
           carImageUrl:''
+        }).then(res=>{
+          this.$router.go(-1)
         })
       },
 

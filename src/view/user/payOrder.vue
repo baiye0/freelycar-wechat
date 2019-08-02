@@ -76,6 +76,9 @@
 
     <button class="blue-btn" v-show="consumerOrder.state===0 || consumerOrder.state===1" @click="orderTracking">订单跟踪</button>
     <button class="gray-btn" v-show="consumerOrder.state===0" @click="cancelOrder">取消订单</button>
+
+    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
   </div>
 </template>
 
@@ -88,7 +91,10 @@
         orderId:'',
         consumerOrder:{},
         consumerProjectInfos:{},
-        storeName:''
+        storeName:'',
+        arkInfoState:'billingOrder',
+        isOpenDoorShow:false,
+        isSuccessShow:false,
       }
     },
     methods: {

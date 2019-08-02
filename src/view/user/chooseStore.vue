@@ -20,7 +20,7 @@
       return {
         storeList: [],
         storeName:'',
-        chooseStore:0,
+        chooseStore:null,
         storeId:''
       }
     },
@@ -38,14 +38,18 @@
       checkedStore(index){
         this.chooseStore = index
         this.storeId = this.storeList[index].id
+        this.storeName = this.storeList[index].name
+        console.log(this.storeId,this.storeName)
       },
 
       // 确认按钮
       submit(){
         this.$post('/wechat/wxuser/chooseDefaultStore', {
           id: localStorage.getItem('id'),//用的是id不是clientid
-          defaultStoreId: localStorage.getItem('storeId')
+          defaultStoreId: this.storeId
         }).then(res => {
+          localStorage.setItem('storeName',this.storeName)
+          localStorage.setItem('storeId',this.storeId)
           this.$router.push({path:'/userHome'})
         })
       }

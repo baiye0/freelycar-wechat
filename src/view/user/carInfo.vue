@@ -23,8 +23,13 @@
 
     </div>
 
-    <button class="big-blue-btn">下一步</button>
-    <button class="big-gray-btn">取消</button>
+    <router-link to="/billingOrder">
+      <button class="big-blue-btn">下一步</button>
+    </router-link>
+    <router-link to="/login">
+      <button class="big-gray-btn">取消</button>
+    </router-link>
+
   </div>
 </template>
 

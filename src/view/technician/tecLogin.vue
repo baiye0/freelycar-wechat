@@ -39,6 +39,7 @@
       }
     },
     methods: {
+
       // 选择门店
       chooseStore(){
         this.dialog = this.$createDialog({
@@ -57,6 +58,8 @@
           }
         }).show()
       },
+
+      // 确认选择的门店
       submitStore(){
         this.$post('/wechat/employee/selectStore',{
           id:"ea8ecbc56c0408c3016c040c68b10000",
@@ -67,7 +70,7 @@
 
       // 登录
       logIn(){
-        this.$get('/wechat/employee/login',{
+        this.$post('/wechat/employee/login',{
           account:this.account,
           password:this.password,
           openId:this.userInfo.openId,
@@ -95,7 +98,7 @@
       },
     },
     mounted(){
-      // this.chooseStore()
+
     }
   }
 </script>

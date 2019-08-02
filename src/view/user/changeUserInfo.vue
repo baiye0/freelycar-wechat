@@ -18,7 +18,7 @@
       <span><input type="text" v-model="msg.phone"><b>修改</b></span>
     </div>
 
-    <button class="big-blue-btn">保存</button>
+    <button class="big-blue-btn" @click="submit">保存</button>
   </div>
 </template>
 
@@ -30,13 +30,47 @@
         msg: {
           name:'e',
           trueName:'e',
-          sex:'nan',
+          gender:'nan',
           phone:111111111
         }
       }
     },
     methods:{
+      // 获取个人信息
+      getInfo(){
+        this.$get('/wechat/wxuser/getDetail?',{
+          id:localStorage.getItem('id')
+        }).then(res=>{
+          this.msg.name=res.nickName
+          this.msg.trueName=res.trueName
+          this.msg.gender=res.gender
+          this.msg.phone=res.phone
+        })
+      },
 
+      // 修改手机号
+      changePhone(){
+        this.$post('/wechat/login/changePhone?phone=17712344321&smsCode=983765&id=4028802767e9302a0167e935f2ab7456',{
+        }).then(res=>{
+          this.toast = this.$createToast({
+            txt: '修改成功',
+            type: 'txt'
+          })
+          this.toast.show()
+        })
+      },
+
+      // 提交
+      submit(){
+        this.$post('/wechat/wxuser/saveUserInfo',{
+          id:localStorage.getItem('id'),
+          trueName:this.trueName,
+          nickName:this.name,
+          gender:this.gender
+        }).then(res=>{
+          this.$router.go(-1)
+        })
+      }
     }
   }
 </script>

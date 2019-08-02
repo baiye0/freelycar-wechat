@@ -30,10 +30,13 @@
         <span>待付款￥</span><span>120</span>
         <img src="./../../assets/call-service.png" alt="">
         <span class="payment-call-service">联系客服</span>
-        <button>立即支付</button>
+        <button @click="orderDetail(item.id)">立即支付</button>
       </div>
 
     </div>
+
+    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
   </div>
 </template>
 
@@ -44,6 +47,9 @@
       return {
         msg: [],
         clientId: '',
+        arkInfoState:'billingOrder',
+        isOpenDoorShow:false,
+        isSuccessShow:false,
       }
     },
     methods: {

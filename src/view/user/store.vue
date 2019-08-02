@@ -3,8 +3,10 @@
     <div class="store-head">
       <div class="store-head-card">
         <span class="store-head-title">{{store.name}}</span>
-        <span class="store-head-time">营业时间：{{store.openingTime.split(' ')[1]}}-{{store.closingTime.split(' ')[1]}}</span>
-        <div class="store-head-call"><img src="./../../assets/call-service.png" alt=""><span>联系店家</span></div>
+        <span class="store-head-time">营业时间：{{time[0]}}-{{time[1]}}</span>
+        <a :href="['tel:' + store.phone]">
+          <div class="store-head-call"><img src="./../../assets/call-service.png" alt=""><span>联系店家</span></div>
+        </a>
         <div class="store-head-img">
           <img src="./../../assets/distance.png" alt="">
           <span>10.9km</span>
@@ -70,24 +72,27 @@
         }],
         store:{},
         projects:[],
-        cardServices:[]
+        cardServices:[],
+        time:[],
       }
     },
     methods: {
+
       getStoreDetail(){
         this.$get('/wechat/store/getDetail',{
-          id:1
+          id:localStorage.getItem('storeId')
         }).then(res=>{
           this.storeImgs = res.storeImgs
           this.store = res.store
           this.projects = res.projects
           this.cardServices = res.cardServices
+          this.time=[this.store.openingTime.split(' ')[1],this.store.closingTime.split(' ')[1]]
         })
       },
 
       getImg(){
         this.$get('/wechat/store/getImgs',{
-          storeId:1
+          storeId:localStorage.getItem('storeId')
         }).then(res=>{
           console.log(res)
         })
