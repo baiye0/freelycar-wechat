@@ -34,7 +34,7 @@
     </div>
 
     <div class="pay-order-card" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
-      <div class="pay-order-card-item">
+      <div class="pay-order-card-item" @click="choosePayWay">
         <span>支付方式</span>
         <span class="pay-order-info-blue">会员卡（000）<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
       </div>
@@ -71,7 +71,7 @@
     <div class="pay-order-button" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
       <span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</span>
       <!--<span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}} <b class="pay-order-info-gray">??已优惠￥10</b></span>-->
-      <button>立即结算</button>
+      <button @click="toPayOrder">立即结算</button>
     </div>
 
     <button class="blue-btn" v-show="consumerOrder.state===0 || consumerOrder.state===1" @click="orderTracking">订单跟踪</button>
@@ -83,6 +83,7 @@
 </template>
 
 <script>
+  import { MessageBox } from 'mint-ui'
   export default {
     name: 'payOrder',
     data() {
@@ -92,21 +93,22 @@
         consumerOrder:{},
         consumerProjectInfos:{},
         storeName:'',
-        arkInfoState:'billingOrder',
+        arkInfoState:'',
         isOpenDoorShow:false,
         isSuccessShow:false,
       }
     },
     methods: {
+//        获取订单详情
       getOrderDetail(){
         this.$get('/wechat/order/getOrderDetail',{
           id:this.orderId
         }).then(res=>{
-          console.log(res)
           this.consumerOrder=res.consumerOrder
           this.consumerProjectInfos=res.consumerProjectInfos
         })
       },
+
       // 获取我的会员卡
       getMyCard(){
         this.$get('/wechat/wxuser/getMyCards',{
@@ -115,6 +117,29 @@
         }).then(res=>{
           console.log(res)
         })
+      },
+
+//      选择支付方式
+      choosePayWay(){
+        this.$createActionSheet({
+          title: '请选择支付方式',
+          data: [
+            {
+              content: '微信支付',
+              align: 'left'
+            },
+            {
+              content: '会员卡支付',
+              align: 'left'
+            }
+          ],
+          onSelect: (item, index) => {
+            this.$createToast({
+              txt: `Clicked ${item.content}`,
+              time: 1000
+            }).show()
+          }
+        }).show()
       },
 
       onCopy(){
@@ -153,15 +178,44 @@
             console.log('取消')
           },
           onCancel: () => {
-            this.cancelOrderService()
+            this.cancelAndGetKey()
           }
         }).show()
       },
 
+      // 确认取消取走钥匙
+      cancelAndGetKey(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '是否现在开柜？',
+          content: '取消订单需要先取走钥匙',
+          confirmBtn: {
+            text: '是，在柜前',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '否，不在柜前',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+             this.cancelOrderService()
+          },
+          onCancel: () => {
+            console.log('取消')
+          }
+        }).show()
+      },
+
+//      跳转到订单跟踪
       orderTracking(){
         this.$router.push({path: '/orderTracking',query:{id:this.orderId}})
       },
 
+//      取消订单
       cancelOrderService(){
         this.$get('/wechat/ark/cancelOrderService',{
           id:this.orderId
@@ -171,14 +225,14 @@
             type: 'txt'
           })
           this.toast.show()
-          setTimeout(function () {
-            this.$router.push({path: '/myOrder'})
-          },2000)
+          this.arkInfoState='cancelOrder'
+          this.getCar()
         })
       },
 
       // 支付
-      wxPay(){
+      toPayOrder(){
+//        先判断支付方式
         this.$post('/wechat/pay/payOrderByWechat',{
           openId: "ojtNs1vQCAHik8kc93vuoAKJlCzs",
           orderId: "A0011902110002",
@@ -186,14 +240,46 @@
         }).then(res=>{
 
         })
+//        完成后提示是否开柜
+        this.isOpenDoor()
+      },
+
+      isOpenDoor(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '是否现在打开柜门？',
+          confirmBtn: {
+            text: '是,在柜前',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '否,不在柜前',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            this.arkInfoState='payOrder'
+            this.getCar()
+          },
+          onCancel: () => {
+            this.$router.push({path:'/myOrder'})
+          }
+        }).show()
       },
 
       // 取车
       getCar(){
+        this.isOpenDoorShow=true
         this.$get('/wechat/ark/orderFinish',{
           id:''
         }).then(res=>{
-
+          this.isSuccessShow=true
+          setTimeout(()=>{
+            this.$router.push({path:'/myOrder'})
+          },3000)
         })
       }
     },

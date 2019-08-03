@@ -23,7 +23,7 @@
       <div class="open-the-door" v-show="item.payState === 2 && item.state === 2">
         <img src="./../../assets/call-service.png" alt="">
         <span>联系客服</span>
-        <button>立即开柜</button>
+        <button @click="openDoor">立即开柜</button>
       </div>
 
       <div class="payment" v-show="item.payState === 1 && item.state === 2">
@@ -71,6 +71,40 @@
 //      显示车照片
       getImg(index){
 
+      },
+
+      openDoor(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '是否现在打开柜门？',
+          confirmBtn: {
+            text: '是,在柜前',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '否,不在柜前',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            this.arkInfoState='payOrder'
+            this.isOpenDoorShow=true
+            this.$get('/wechat/ark/orderFinish',{
+              id:''
+            }).then(res=>{
+              this.isSuccessShow=true
+              setTimeout(()=>{
+                this.$router.push({path:'/myOrder'})
+              },3000)
+            })
+          },
+          onCancel: () => {
+            console.log('取消开柜')
+          }
+        }).show()
       },
 
       // 标题

@@ -37,6 +37,7 @@
       </div>
     </div>
 
+    <button class="big-blue-btn" @click="toPayOrder">确认完成</button>
   </div>
 </template>
 
@@ -95,6 +96,11 @@
           console.log(this.time)
           this.time.forEach()
         })
+      },
+
+//      去支付
+      toPayOrder(){
+        this.$router.push({path:'/payOrder',query:{id:this.orderId}})
       }
     },
     mounted: function () {

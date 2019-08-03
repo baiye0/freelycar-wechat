@@ -160,18 +160,18 @@
 
       // 提交
       submit(){
-        // this.isOpenDoorShow=true
-        // this.$post('/wechat/ark/orderService',{
-        //   consumerOrder:this.consumerOrder,
-        //   consumerProjectInfos:this.consumerProjectInfos,
-        //   arkSn:localStorage.getItem('arkSn'),
-        //   clientOrderImg:this.clientOrderImg
-        // }).then(res=>{
-        //   this.isSuccessShow=true
-        //   setTimeout(()=>{
-        //     this.$router.push({path:'/myOrder'})
-        //   },3000)
-        // })
+         this.isOpenDoorShow=true
+         this.$post('/wechat/ark/orderService',{
+           consumerOrder:this.consumerOrder,
+           consumerProjectInfos:this.consumerProjectInfos,
+           arkSn:localStorage.getItem('arkSn'),
+           clientOrderImg:this.clientOrderImg
+         }).then(res=>{
+           this.isSuccessShow=true
+           setTimeout(()=>{
+             this.$router.push({path:'/myOrder'})
+           },3000)
+         })
       }
     },
     mounted: function () {
