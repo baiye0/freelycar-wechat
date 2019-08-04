@@ -21,7 +21,8 @@
         storeList: [],
         storeName:'',
         chooseStore:null,
-        storeId:''
+        storeId:'',
+        isChooseName:''
       }
     },
     methods: {
@@ -38,8 +39,7 @@
       checkedStore(index){
         this.chooseStore = index
         this.storeId = this.storeList[index].id
-        this.storeName = this.storeList[index].name
-        console.log(this.storeId,this.storeName)
+        this.isChooseName = this.storeList[index].name
       },
 
       // 确认按钮
@@ -48,7 +48,7 @@
           id: localStorage.getItem('id'),//用的是id不是clientid
           defaultStoreId: this.storeId
         }).then(res => {
-          localStorage.setItem('storeName',this.storeName)
+          localStorage.setItem('storeName',this.isChooseName)
           localStorage.setItem('storeId',this.storeId)
           this.$router.push({path:'/userHome'})
         })

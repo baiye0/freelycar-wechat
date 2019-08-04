@@ -10,20 +10,20 @@
       </cube-tab-bar>
     </div>
 
-    <div>
+    <div v-for="(item,index) in orderList">
       <div class="order-card">
         <div class="order-card-head">
           <img src="./../../assets/car-head.png" alt="">
-          <b>订单号：dr111111</b>
-          <span>苏a11111 白色 · 宝马</span>
+          <b>订单号：{{item.id}}</b>
+          <span>{{item.licensePlate}} {{item.carColor}} · {{item.carBrand}}</span>
           <button>接单</button>
         </div>
         <div class="order-card-info">
-          <span>车主姓名 马东东</span>
-          <span>下单时间 2019-1-1 9:00</span>
-          <span>预约项目 <b>普洗</b><b>手工打蜡</b></span>
-          <span>钥匙位置 xx门01号柜</span>
-          <span>车辆停放位置 xxx</span>
+          <span>车主姓名 {{item.clientName}}</span>
+          <span>下单时间 {{item.createTime}}</span>
+          <span>预约项目 <b>普洗</b><b>{{item.projectNames}}</b></span>
+          <span>钥匙位置 {{item.keyLocation}}</span>
+          <span>车辆停放位置 {{item.parkingLocation}}</span>
         </div>
         <img class="order-card-more" src="./../../assets/more.png" alt="">
       </div>
@@ -47,8 +47,8 @@
     </div>
 
     <div class="history-order-search">
-      <input type="text" placeholder="请输入订单号或车牌号来搜索订单">
-      <img src="./../../assets/search.png" alt="">
+      <input v-model="search" type="text" placeholder="请输入订单号或车牌号来搜索订单">
+      <img @click="getOrders" src="./../../assets/search.png" alt="">
     </div>
   </div>
 </template>
@@ -64,17 +64,19 @@
           label: '待服务订单',
         }, {
           label: '已接到订单',
-        }]
+        }],
+        search:'',
+        orderList:[]
       }
     },
     methods: {
       // 待服务
       getOrders(){
         this.$get('/wechat/order/listReservationOrders',{
-          licensePlate:'',
-          storeId:''
+          licensePlate:this.search,
+          storeId:localStorage.getItem('storeId')
         }).then(res=>{
-
+          this.orderList=res
         })
       },
 
@@ -97,7 +99,7 @@
       }
     },
     mounted: function () {
-
+      this.getOrders()
     }
   }
 </script>

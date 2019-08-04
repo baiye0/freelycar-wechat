@@ -36,7 +36,7 @@
     <div class="pay-order-card" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
       <div class="pay-order-card-item" @click="choosePayWay">
         <span>支付方式</span>
-        <span class="pay-order-info-blue">会员卡（000）<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
+        <span class="pay-order-info-blue">{{payWayInfo}}<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
       </div>
       <div class="pay-order-card-item">
         <span>卡内余额</span>
@@ -96,6 +96,7 @@
         arkInfoState:'',
         isOpenDoorShow:false,
         isSuccessShow:false,
+        payWayInfo:''
       }
     },
     methods: {
@@ -134,10 +135,7 @@
             }
           ],
           onSelect: (item, index) => {
-            this.$createToast({
-              txt: `Clicked ${item.content}`,
-              time: 1000
-            }).show()
+            this.payWayInfo=item.content
           }
         }).show()
       },
@@ -244,6 +242,7 @@
         this.isOpenDoor()
       },
 
+//      开柜门
       isOpenDoor(){
         this.$createDialog({
           type: 'confirm',

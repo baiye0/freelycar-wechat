@@ -6,7 +6,7 @@
     <div class="form">
       <div class="form-box">
         <img class="user-info-name" src="./../../assets/car-num.png" alt="">
-        <input type="text" placeholder="请输入车牌号">
+        <input type="text" placeholder="请输入车牌号" v-model="licensePlate">
       </div>
 
       <div class="form-box">
@@ -17,15 +17,22 @@
 
       <div class="form-box">
         <img class="user-info-birth" src="./../../assets/car-img.png" alt="">
-        <div class="upload-text">上传爱车照片</div>
-        <img class="upload-img" src="./../../assets/upload.png" alt="">
+        <div class="upload-text">请上传爱车照片</div>
+        <!--<img class="upload-img" src="./../../assets/upload.png" alt="">-->
       </div>
 
+      <cube-upload v-show="!isImgShow"
+                   ref="upload"
+                   action="https://www.freelycar.com/api/upload/carImg"
+                   :auto="true"
+                   :simultaneous-uploads="1"
+                   @file-success="fileSuccess"></cube-upload>
+      <!--<img v-show="!isImgShow" class="car-info-upload" src="/static/check-no.png" alt="">-->
+      <img v-show="isImgShow" class="car-info-upload" :src="carImageUrl" alt="">
     </div>
 
-    <router-link to="/billingOrder">
-      <button class="big-blue-btn">下一步</button>
-    </router-link>
+
+    <button class="big-blue-btn" @click="addCar">下一步</button>
     <router-link to="/login">
       <button class="big-gray-btn">取消</button>
     </router-link>
@@ -38,30 +45,37 @@
     name: 'userInfo',
     data() {
       return {
-
+        carImageUrl:'',
+        isImgShow:false,
+        licensePlate:''
       }
     },
     methods: {
       // 选择车型车系
+
+
       // 提交
       addCar(){
         this.$post('/wechat/client/addCar',{
-          storeId:1,
-          clientId:"ea8ecbc5694d1d1d01694d2bf15d0001",
-          licensePlate:"苏C74110",
+          storeId:localStorage.getItem('storeId'),
+          clientId:localStorage.getItem('clientId'),
+          licensePlate:this.licensePlate,
           carBrand:"别克凯越",
           carType:"",
           miles:"0",
           lastMiles:"0",
           color:"白色",
-          carImageUrl:''
+          carImageUrl:this.carImageUrl
+        }).then(res=>{
+          this.$router.push({path:'/billingOrder'})
         })
       },
 
-      // 上传图片
-      uploadImg(){
-        this.$post('/upload/carImg')
-      }
+      //上传按钮
+      fileSuccess(e){
+        this.carImageUrl = e.response.data
+        this.isImgShow = true
+      },
     },
     mounted: function () {
 
@@ -77,6 +91,10 @@
 
   w(n)
     n / 7.5vw
+
+  .car-info-upload
+    height w(150)
+    width w(150)
 
   .user-info
     position relative

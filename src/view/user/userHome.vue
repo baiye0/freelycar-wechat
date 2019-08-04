@@ -38,7 +38,7 @@
       <div class="assets-card">
         <img src="./../../assets/my-card.png" alt="">
         <span>我的会员卡</span>
-        <span class="assets-count"><b>{{cardBalance}}</b>元</span>
+        <span class="assets-count"><b>{{cardBalance!==0?cardBalance:'0'}}</b>元</span>
         <router-link to="/buyCard">
           <span class="assets-recharge">立即充值</span>
         </router-link>
@@ -118,7 +118,6 @@
       },
 
       addNewCar(){
-        console.log('1')
         this.$router.push({path: '/addCar'})
       },
       toChangeInfo(){

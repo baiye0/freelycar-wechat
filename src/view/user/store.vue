@@ -25,11 +25,11 @@
       <div class="store-service-title flex-center">门店服务</div>
 
       <div v-for="(item,index) in projects">
-        <div class="store-service-item-title flex-center">
+        <div class="store-service-item-title flex-center" @click="openOrCloseProject(index)">
           <span>{{item.projectTypeName}} <b>共{{item.projectInfos.length}}项</b></span>
-          <img src="./../../assets/up.png" alt="">
+          <img :src="projectListIndex===index?'/static/up.png':'/static/down.png'" alt="">
         </div>
-        <div v-for="(projectItem,projuctIndex) in item.projectInfos" class="flex-center store-service-item">
+        <div v-show="projectListIndex===index" v-for="(projectItem,projuctIndex) in item.projectInfos" class="flex-center store-service-item">
           <div>
             <span class="store-service-items">{{projectItem.name}}</span>
             <span class="store-service-info">{{projectItem.comment}}</span>
@@ -74,10 +74,11 @@
         projects:[],
         cardServices:[],
         time:[],
+        projectListIndex:null
       }
     },
     methods: {
-
+//        获取门店信息
       getStoreDetail(){
         this.$get('/wechat/store/getDetail',{
           id:localStorage.getItem('storeId')
@@ -90,13 +91,28 @@
         })
       },
 
+//      获取门店图片
       getImg(){
         this.$get('/wechat/store/getImgs',{
           storeId:localStorage.getItem('storeId')
         }).then(res=>{
           console.log(res)
         })
-      }
+      },
+
+//      点击打开收起菜单
+      openOrCloseProject(index){
+        if(this.projectListIndex===index){
+          this.projectListIndex=null
+        }else {
+          this.projectListIndex=index
+        }
+      },
+
+      //      微信注入权限
+//      购买会员卡
+//      微信支付
+
     },
     mounted: function () {
       this.getStoreDetail()

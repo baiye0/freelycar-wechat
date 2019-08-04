@@ -10,7 +10,7 @@
 
       <div class="order-info" @click="orderDetail(item.id)">
         <span class="order-info-brand">{{item.licensePlate}}  {{item.carBrand}}</span>
-        <button class="order-info-type">普洗</button>
+        <button class="order-info-type">{{item.projectNames}}</button>
         <span class="order-info-num">订单编号 {{item.id}}</span>
         <img class="order-info-more" src="./../../assets/more.png" alt="">
       </div>
@@ -22,14 +22,18 @@
 
       <div class="open-the-door" v-show="item.payState === 2 && item.state === 2">
         <img src="./../../assets/call-service.png" alt="">
-        <span>联系客服</span>
+        <a :href="['tel:' + storePhone]">
+          <span>联系客服</span>
+        </a>
         <button @click="openDoor">立即开柜</button>
       </div>
 
       <div class="payment" v-show="item.payState === 1 && item.state === 2">
         <span>待付款￥</span><span>120</span>
         <img src="./../../assets/call-service.png" alt="">
-        <span class="payment-call-service">联系客服</span>
+        <a :href="['tel:' + storePhone]">
+          <span class="payment-call-service">联系客服</span>
+        </a>
         <button @click="orderDetail(item.id)">立即支付</button>
       </div>
 
@@ -37,6 +41,13 @@
 
     <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
     <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
+
+    <div class="dialog-layer" v-show="isCarImgShow">
+      <div class="dialog-box-black my-order-dialog-box">
+        <img src="./../../assets/close.png" @click="getImg" class="dialog-box-black-close" alt="">
+        <img src="./../../assets/car.png" class="dialog-car-img" alt="">
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,6 +61,8 @@
         arkInfoState:'billingOrder',
         isOpenDoorShow:false,
         isSuccessShow:false,
+        storePhone:'',
+        isCarImgShow:false
       }
     },
     methods: {
@@ -70,7 +83,7 @@
 
 //      显示车照片
       getImg(index){
-
+        this.isCarImgShow = !this.isCarImgShow
       },
 
       openDoor(){
@@ -130,6 +143,7 @@
     },
     mounted: function () {
       this.clientId = this.$route.query.id
+      this.storePhone = localStorage.getItem('storePhone')
       this.getOrderList()
     },
     computed: {}
@@ -266,6 +280,11 @@
   .payment-call-service
     color #2049BF
     font-size w(23)
+
+  .my-order-dialog-box
+    height h(900)
+    width w(600)
+
 
 
 </style>

@@ -28,15 +28,22 @@
       <div class="align-center">
         <span><img class="billing-order-img" src="./../../assets/img.png" alt="">上传爱车照片</span>
       </div>
-      <img class="billing-order-photo-add" src="./../../assets/add-img.png" alt="">
-      <img class="del-img" src="./../../assets/del-img.png" alt="">
+      <cube-upload v-show="!isImgShow"
+                   ref="upload"
+                   action="https://www.freelycar.com/api/upload/carImg"
+                   :auto="true"
+                   :simultaneous-uploads="1"
+                   @file-success="fileSuccess"></cube-upload>
+      <img v-show="isImgShow" class="billing-order-car-img" :src="carImageUrl" alt="">
+      <!--<img class="billing-order-photo-add" src="./../../assets/add-img.png" alt="">-->
+      <!--<img class="del-img" src="./../../assets/del-img.png" alt="">-->
     </div>
 
-    <div class="align-center billing-order-protocol">
-      <span class="color-blue"><img class="billing-order-img" src="./../../assets/no-checked.png" alt="">同意《小易智能柜使用协议》</span>
+    <div class="align-center billing-order-protocol" @click="changeAgreeState">
+      <span class="color-blue"><img class="billing-order-img" :src="[isAgree?'/static/checked.png':'/static/no-checked.png']" alt="">同意《小易智能柜使用协议》</span>
     </div>
 
-    <button class="big-gray-btn" @click="submit">提交</button>
+    <button class="big-blue-btn" @click="submit">提交</button>
 
     <!--模态框-->
     <div class="dialog-layer" v-show="isDialogShow">
@@ -89,9 +96,9 @@
           }
         ],
         clientOrderImg:{
-          createTime:'2019-06-10 15:45:26',
+          createTime:'',
           delStatus:false,
-          id:2,
+          id:1,
           orderId:'',
           url:"https://freelycar.com/upload/clientorderimg/201906101545263ad8223882ab438fbfcf29338f429e88_lite.jpg"
         },
@@ -102,6 +109,9 @@
         storeName:'',
         isOpenDoorShow:false,
         isSuccessShow:false,
+        carImageUrl:'',
+        isImgShow:false,
+        isAgree:false
       }
     },
     methods: {
@@ -128,8 +138,10 @@
       },
 
       // 上传图片
-      uploadImg(){
-        this.$post('/upload/clientOrderImg',)
+      fileSuccess(e){
+        this.carImageUrl = e.response.data
+        this.clientOrderImg.url = e.response.data
+        this.isImgShow = true
       },
 
       // 选择项目按钮
@@ -153,6 +165,9 @@
       },
 
       // 同意小易智能柜使用协议
+      changeAgreeState(){
+        this.isAgree=!this.isAgree
+      },
 
       // 快速定位
 
@@ -191,6 +206,11 @@
 
   w(n)
     n / 7.5vw
+
+  .billing-order-car-img
+    height w(125)
+    width w(125)
+    margin-left w(50)
 
   .billing-order
     height 100vh
@@ -290,6 +310,7 @@
   .billing-order-protocol
     height h(103)
     margin-left w(42)
+    position absolute
 
   .color-blue
     color #2049BF

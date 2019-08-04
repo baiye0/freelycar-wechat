@@ -53,29 +53,7 @@
           '2019-06-10 16:25:36',
         ],
         orderId:'',
-        msg:[
-          {
-            date:'2019-06-10',
-            time:'16:25:36',
-            title:'订单提交成功',
-            info:'正在为您的爱车安排服务'
-          },{
-            date:'2019-06-10',
-            time:'16:25:36',
-            title:'订单提交成功',
-            info:'正在为您的爱车安排服务'
-          },{
-            date:'2019-06-10',
-            time:'16:25:36',
-            title:'订单提交成功',
-            info:'正在为您的爱车安排服务'
-          },{
-            date:'2019-06-10',
-            time:'16:25:36',
-            title:'订单提交成功',
-            info:'正在为您的爱车安排服务'
-          },
-        ],
+        msg:[],
         consumerOrder:{}
       }
     },
@@ -94,7 +72,36 @@
             this.consumerOrder.deliverTime
           ]
           console.log(this.time)
-          this.time.forEach()
+          for(let i=0;i<this.time.length;i++){
+            if(this.time[i]){
+              let title=''
+              let info=''
+              switch (i) {
+                case 0:{
+                  title='订单提交成功'
+                  info='正在为您的爱车安排服务'
+                }
+                case 1:{
+                  title='接车已接车'
+                  info='正在为您的爱车安排服务'
+                }
+                case 2:{
+                  title='订单完成'
+                  info='正在为您的爱车安排服务'
+                }
+                case 3:{
+                  title='已取车'
+                  info='正在为您的爱车安排服务'
+                }
+              }
+              this.msg.push({
+                date:this.time[i].split(' ')[0],
+                time:this.time[i].split(' ')[1],
+                title:title,
+                info:info
+              })
+            }
+          }
         })
       },
 

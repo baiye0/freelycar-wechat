@@ -11,7 +11,7 @@
       </div>
     </div>
 
-    <div class="switch">
+    <div class="switch" @click="switchService">
       <img v-if="switchValue" src="../../assets/switch-on.png" alt="开">
       <img v-else src="../../assets/switch-off.png" alt="关">
       <span>服务状态</span>
@@ -31,12 +31,14 @@
         </div>
       </router-link>
 
+      <a href="">
+        <div class="menu">
+          <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
+          <span>联系小易</span>
+          <img class="more" src="../../assets/more.png" alt="详细">
+        </div>
+      </a>
 
-      <div class="menu">
-        <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
-        <span>联系小易</span>
-        <img class="more" src="../../assets/more.png" alt="详细">
-      </div>
     </div>
 
   </div>
@@ -56,19 +58,21 @@
       // 切换服务状态
       switchService(){
         this.$get('/wechat/employee/switchServiceStatus',{
-          id:''
+          id:localStorage.getItem('id')
         })
       },
 
       // 个人信息
       getInfo(){
         this.$get('/wechat/employee/detail',{
-          id:''
+          id:localStorage.getItem('id')
+        }).then(res=>{
+
         })
       }
     },
     mounted: function () {
-
+      this.getInfo()
     }
   }
 </script>

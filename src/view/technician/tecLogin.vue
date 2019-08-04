@@ -36,27 +36,29 @@
           nickName:'bwh',
           gender:'女'
         },
+        staffList:[]
       }
     },
     methods: {
 
       // 选择门店
       chooseStore(){
-        this.dialog = this.$createDialog({
-          type: 'prompt',
-          title: '我是标题',
-          prompt: {
-            value: '',
-            placeholder: '请输入'
-          },
-          onConfirm: (e, promptValue) => {
-            this.$createToast({
-              type: 'warn',
-              time: 1000,
-              txt: `Prompt value: ${promptValue || ''}`
-            }).show()
-          }
-        }).show()
+        this.$router.push({path:'/order'})
+//        this.dialog = this.$createDialog({
+//          type: 'prompt',
+//          title: '我是标题',
+//          prompt: {
+//            value: '',
+//            placeholder: '请输入'
+//          },
+//          onConfirm: (e, promptValue) => {
+//            this.$createToast({
+//              type: 'warn',
+//              time: 1000,
+//              txt: `Prompt value: ${promptValue || ''}`
+//            }).show()
+//          }
+//        }).show()
       },
 
       // 确认选择的门店
@@ -83,6 +85,17 @@
         }).then(res=>{
           this.axios.defaults.headers.common["Authorization"] = res.jwt
           localStorage.setItem('jwt',res.jwt)
+          localStorage.setItem('id',res.employee.id)
+          localStorage.setItem('province',res.employee.province)
+          localStorage.setItem('city',res.employee.city)
+          localStorage.setItem('trueName',res.employee.trueName)
+          localStorage.setItem('phone',res.employee.phone)
+          localStorage.setItem('gender',res.employee.gender)
+          localStorage.setItem('headImgUrl',res.employee.headImgUrl)
+          localStorage.setItem('openId',res.employee.openId)
+          this.staffList=res.staffList
+//          选择门店
+          this.chooseStore()
         })
       }
 

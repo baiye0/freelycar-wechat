@@ -2,14 +2,14 @@
   <div class="history-order">
     <div class="history-order-card" v-for="(item,index) in msg">
       <img src="./../../assets/car-head.png" alt="">
-      <span class="history-order-num">订单号：<b>{{item.num}}</b></span>
-      <span class="history-order-info">{{item.carNum}} {{item.color}} · {{item.carBrand}}</span>
+      <span class="history-order-num">订单号：<b>{{item.id}}</b></span>
+      <span class="history-order-info">{{item.licensePlate}} {{item.color}} · {{item.carBrand}}</span>
       <span class="history-order-state">已交付</span>
     </div>
 
     <div class="history-order-search">
-      <input type="text" placeholder="请输入订单号或车牌号来搜索订单">
-      <img src="./../../assets/search.png" alt="">
+      <input v-model="keyword" type="text" placeholder="请输入订单号或车牌号来搜索订单">
+      <img src="./../../assets/search.png" alt="" @click="getOrderList">
     </div>
   </div>
 </template>
@@ -111,20 +111,23 @@
             color:'白色',
             carNum:'苏a11111'
           },
-        ]
+        ],
+        keyword:''
       }
     },
     methods: {
       // 获取订单列表
       getOrderList(){
         this.$get('/wechat/employee/listHistoryOrders',{
-          staffId:'',
-          keyword:''
+          staffId:localStorage.getItem('staffId'),
+          keyword:this.keyword
+        }).then(res=>{
+          this.msg = res
         })
       }
     },
     mounted: function () {
-
+      this.getOrderList()
     }
   }
 </script>

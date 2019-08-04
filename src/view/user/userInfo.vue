@@ -11,12 +11,14 @@
 
       <div class="form-box">
         <img class="user-info-sex" src="./../../assets/sex.png" alt="">
+        <div class="change-order-form-gender">
+          <span @click="chooseGender('男')"><img :src="[gender==='男'?'/static/checked.png':'/static/no-checked.png']" alt="">男士</span>
+          <span @click="chooseGender('女')"><img :src="[gender==='女'?'/static/checked.png':'/static/no-checked.png']" alt="">女士</span>
+        </div>
       </div>
     </div>
 
-    <router-link to="/carInfo">
-      <button class="big-blue-btn">下一步</button>
-    </router-link>
+    <button class="big-blue-btn" @click="submit">下一步</button>
     <router-link to="/login">
       <button class="big-gray-btn">取消</button>
     </router-link>
@@ -29,19 +31,25 @@
     name: 'userInfo',
     data() {
       return {
-        name:''
+        name:'',
+        gender:''
       }
     },
     methods: {
 //        选择性别
+      chooseGender(gender){
+        this.gender = gender
+      },
 
 //        提交
       submit(){
         this.$post('/wechat/wxuser/saveUserInfo',{
-          id:"ea8ecbc5692ce32f01692d8d47fd0000",
+          id:localStorage.getItem('id'),
           trueName:this.name,
-          nickName:null,
-          gender:"男"
+          nickName:localStorage.getItem('nickName'),
+          gender:this.gender
+        }).then(res=>{
+          this.$router.push({path:'/carInfo'})
         })
       }
     },
@@ -102,6 +110,18 @@
     display flex
     align-items center
     margin-bottom h(54)
+
+  .change-order-form-gender
+    display flex
+    align-items center
+    span
+      display flex
+      align-items center
+      margin 0 w(10)
+    img
+      height w(30)
+      width w(30)
+      margin 0 w(20)
 
   .user-info-name
     height h(47)
