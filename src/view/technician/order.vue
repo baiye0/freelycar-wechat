@@ -5,23 +5,23 @@
         v-model="selectedLabelDefault"
         :data="tabs"
         show-slider
-        @click="clickHandler"
-        @change="changeHandler">
+        @click="clickHandler">
       </cube-tab-bar>
     </div>
 
-    <div v-for="(item,index) in orderList">
+    <!--待服务订单-->
+    <div v-show="tabBar==='待服务订单'" v-for="(item,index) in orderList">
       <div class="order-card">
         <div class="order-card-head">
           <img src="./../../assets/car-head.png" alt="">
           <b>订单号：{{item.id}}</b>
           <span>{{item.licensePlate}} {{item.carColor}} · {{item.carBrand}}</span>
-          <button>接单</button>
+          <button @click="takeOrder(item.licensePlate,item.id)" :class="[item.arkSn===arkSn?'bg-blue':'bg-gray']">接单</button>
         </div>
-        <div class="order-card-info">
+        <div class="order-card-info" @click="orderDetail(item.id,item.arkSn)">
           <span>车主姓名 {{item.clientName}}</span>
           <span>下单时间 {{item.createTime}}</span>
-          <span>预约项目 <b>普洗</b><b>{{item.projectNames}}</b></span>
+          <span>预约项目 <b>{{item.projectNames}}</b></span>
           <span>钥匙位置 {{item.keyLocation}}</span>
           <span>车辆停放位置 {{item.parkingLocation}}</span>
         </div>
@@ -29,22 +29,28 @@
       </div>
     </div>
 
-    <div>
-      <div class="order-card">
+    <!--已接到订单-->
+    <div v-show="tabBar==='已接到订单'">
+      <div class="order-card" v-for="(item,index) in myOrderList"
+           @click="myOrderDetail(item.id,item.arkSn)">
         <div class="order-card-head">
           <img src="./../../assets/car-head.png" alt="">
-          <b>订单号：dr111111</b>
-          <span>苏a11111 白色 · 宝马</span>
+          <b>订单号：{{item.id}}</b>
+          <span>{{item.licensePlate}} {{item.carColor}} · {{item.carBrand}}</span>
         </div>
         <div class="order-card-myorder">
-          <div>预约项目<span>普洗</span><span>手工打蜡</span></div>
-          <div>接单时间<span>2019-1-1</span></div>
+          <div>预约项目<span>{{item.projectNames}}</span></div>
+          <div>接单时间<span>{{item.pickTime}}</span></div>
           <div>订单状态<span>已接车</span></div>
           <button>确认完工</button>
         </div>
         <img class="order-card-myorder-more" src="./../../assets/more.png" alt="">
       </div>
     </div>
+
+    <!--开门成功-->
+    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
 
     <div class="history-order-search">
       <input v-model="search" type="text" placeholder="请输入订单号或车牌号来搜索订单">
@@ -66,7 +72,13 @@
           label: '已接到订单',
         }],
         search:'',
-        orderList:[]
+        orderList:[],
+        myOrderList:[],
+        tabBar:'待服务订单',
+        arkSn:'',
+        isOpenDoorShow:false,
+        isSuccessShow:false,
+        arkInfoState:'tecGetKey',
       }
     },
     methods: {
@@ -83,23 +95,79 @@
       // 已接到
       getFinishOrders(){
         this.$get('/wechat/order/listServicingOrders',{
-          licensePlate:'',
-          storeId:''
+          licensePlate:this.search,
+          storeId:localStorage.getItem('storeId')
         }).then(res=>{
-
+          this.myOrderList =res
         })
       },
 
+      // 切换菜单
       clickHandler (label) {
-        // if you clicked home tab, then print 'Home'
-        console.log(label)
+        this.tabBar = label
       },
-      changeHandler (label) {
-        // if you clicked different tab, this methods can be emitted
-      }
+
+      // 订单详情
+      orderDetail(id,arkSn){
+        this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:0,arkSn:arkSn}})
+      },
+
+      // 接单
+      takeOrder(licensePlate){
+        this.$createDialog({
+          type: 'confirm',
+          title: '您是否确认在柜前开始'+licensePlate+'的订单？',
+          confirmBtn: {
+            text: '确认',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            this.pickOpen(id)
+          },
+          onCancel: () => {
+            console.log('取消')
+          }
+        }).show()
+      },
+
+      // 接车的一键开柜
+      pickOpen(id){
+        this.arkInfoState = 'tecGetKey'
+        this.isOpenDoorShow=true
+        this.$get('/wechat/ark/pickCar',{
+          orderId:id,
+          staffId:localStorage.getItem('staffId')
+        }).then(res=>{
+          this.isSuccessShow=true
+          // setTimeout(()=>{
+          //   this.$router.push({path:'/myOrder'})
+          // },3000)
+        })
+      },
+
+      // 已经到订单详情
+      myOrderDetail(id,arkSn){
+        this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:1,arkSn:arkSn}})
+      },
+
+
+      // changeHandler (label) {
+      //   // if you clicked different tab, this methods can be emitted
+      //   console.log(label)
+      // }
     },
     mounted: function () {
       this.getOrders()
+      this.getFinishOrders()
+      this.arkSn=localStorage.getItem('arkSn')
     }
   }
 </script>
@@ -121,6 +189,12 @@
 
   .order-tab
     background white
+
+  .bg-blue
+    background #2049BF
+
+  .bg-gray
+    background darkgray
 
   .history-order-search
     height h(138)
@@ -170,7 +244,6 @@
     button
       height h(46)
       width w(110)
-      background #2049BF
       color white
       border-radius h(25)
       border transparent

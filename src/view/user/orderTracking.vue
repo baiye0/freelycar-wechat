@@ -80,18 +80,22 @@
                 case 0:{
                   title='订单提交成功'
                   info='正在为您的爱车安排服务'
+                  break
                 }
                 case 1:{
                   title='接车已接车'
-                  info='正在为您的爱车安排服务'
+                  info='您的爱车由'+this.consumerOrder.pickCarStaffName+'接单'
+                  break
                 }
                 case 2:{
                   title='订单完成'
                   info='正在为您的爱车安排服务'
+                  break
                 }
                 case 3:{
                   title='已取车'
                   info='正在为您的爱车安排服务'
+                  break
                 }
               }
               this.msg.push({

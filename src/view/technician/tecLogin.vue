@@ -17,6 +17,7 @@
         <button :class="loginBtn" @click="logIn">登录</button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -43,7 +44,11 @@
 
       // 选择门店
       chooseStore(){
-        this.$router.push({path:'/order'})
+        localStorage.setItem('staffId',this.staffList[0].id)
+        localStorage.setItem('storeId',this.staffList[0].storeId)
+        localStorage.setItem('storeName',this.staffList[0].storeName)
+        this.submitStore()
+
 //        this.dialog = this.$createDialog({
 //          type: 'prompt',
 //          title: '我是标题',
@@ -64,9 +69,11 @@
       // 确认选择的门店
       submitStore(){
         this.$post('/wechat/employee/selectStore',{
-          id:"ea8ecbc56c0408c3016c040c68b10000",
-          defaultStoreId:"1",
-          defaultStaffId:''
+          id:localStorage.getItem('employeeId'),
+          defaultStoreId:localStorage.getItem('storeId'),
+          defaultStaffId:localStorage.getItem('staffId')
+        }).then(res=>{
+          this.$router.push({path:'/order'})
         })
       },
 
@@ -85,7 +92,7 @@
         }).then(res=>{
           this.axios.defaults.headers.common["Authorization"] = res.jwt
           localStorage.setItem('jwt',res.jwt)
-          localStorage.setItem('id',res.employee.id)
+          localStorage.setItem('employeeId',res.employee.id)
           localStorage.setItem('province',res.employee.province)
           localStorage.setItem('city',res.employee.city)
           localStorage.setItem('trueName',res.employee.trueName)

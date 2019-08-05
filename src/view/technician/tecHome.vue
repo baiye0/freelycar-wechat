@@ -1,23 +1,23 @@
 <template>
   <div class="user-home">
     <div class="my-info">
-      <img class="my-info-photo" src="../../assets/photo.png" alt="头像">
-      <span class="name">王师傅</span>
-      <span class="my-info-other">男  ·  江苏  ·  南京</span>
+      <img class="my-info-photo" :src="staffInfo.headImgUrl" alt="头像">
+      <span class="name">{{staffInfo.name}}</span>
+      <span class="my-info-other">{{staffInfo.gender}}  ·  {{staffInfo.province}}  ·  {{staffInfo.city}}</span>
       <div class="my-info-position">
         <img src="../../assets/position.png" alt="位置">
-        <span>服务门店：徐庄研发三区店</span>
+        <span>服务门店：{{storeName}}</span>
         <button>更换</button>
       </div>
     </div>
 
-    <div class="switch" @click="switchService">
-      <img v-if="switchValue" src="../../assets/switch-on.png" alt="开">
+    <div class="switch">
+      <img v-if="staffInfo.notification" src="../../assets/switch-on.png" alt="开">
       <img v-else src="../../assets/switch-off.png" alt="关">
       <span>服务状态</span>
 
-      <span :class="[switchValue?'switch-info switch-info-blue':'switch-info switch-info-gray']">{{switchValue?'接单中':'停止接单'}}</span>
-      <mt-switch class="switch-btn" v-model="switchValue"></mt-switch>
+      <span :class="[staffInfo.notification?'switch-info switch-info-blue':'switch-info switch-info-gray']">{{staffInfo.notification?'接单中':'停止接单'}}</span>
+      <mt-switch class="switch-btn"  @change="switchService" v-model="staffInfo.notification"></mt-switch>
 
     </div>
 
@@ -52,26 +52,30 @@
         switchValue: false,
         selected: '',
         options: ['服务状态'],
+        staffInfo:{},
+        storeName:''
       }
     },
     methods: {
       // 切换服务状态
       switchService(){
         this.$get('/wechat/employee/switchServiceStatus',{
-          id:localStorage.getItem('id')
+          id:localStorage.getItem('employeeId')
+        }).then(res=>{
         })
       },
 
       // 个人信息
       getInfo(){
         this.$get('/wechat/employee/detail',{
-          id:localStorage.getItem('id')
+          id:localStorage.getItem('employeeId')
         }).then(res=>{
-
+          this.staffInfo=res
         })
       }
     },
     mounted: function () {
+      this.storeName=localStorage.getItem('storeName')
       this.getInfo()
     }
   }

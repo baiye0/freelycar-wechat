@@ -3,47 +3,68 @@
     <div class="order-detail-card">
       <div class="order-detail-head">
         <span>订单编号</span>
-        <span>dr111111 <b v-clipboard:copy="orderId"
+        <span>{{orderId}} <b v-clipboard:copy="orderId"
                           v-clipboard:success="onCopy"
                           v-clipboard:error="onError">复制</b></span>
       </div>
+
       <div class="order-detail-info">
-        <div>车牌号 <span>苏a11111</span></div>
-        <div>品牌车系 <span>白色 · 宝马</span></div>
-        <div>车主名字 <span>马东东</span></div>
-        <div>下单时间 <span>2019-1-1 1:11</span></div>
-        <div class="order-detail-item">预约项目 <span>普洗</span><span>手工打蜡</span></div>
-        <div>钥匙位置 <span>xx门1号柜 <img src="./../../assets/position-blue2.png" alt=""></span></div>
-        <div>停放位置 <span>xxx</span></div>
+        <div>车牌号 <span>{{consumerOrder.licensePlate}}</span></div>
+        <div>品牌车系 <span>{{consumerOrder.carColor}} · {{consumerOrder.carBrand}}</span></div>
+        <div>车主名字 <span>{{consumerOrder.clientName}}</span></div>
+        <div>下单时间 <span>{{consumerOrder.createTime}}</span></div>
+        <div class="order-detail-item">预约项目 <span v-for="(item,index) in orderInfo.consumerProjectInfos">{{item.projectName}}</span></div>
+        <div>钥匙位置 <span @click="toLocationInfo">{{tabBar===0?consumerOrder.userKeyLocation:consumerOrder.staffKeyLocation}}<img src="./../../assets/position-blue2.png" alt=""></span></div>
+        <div>停放位置 <span>{{consumerOrder.parkingLocation}}</span></div>
       </div>
 
       <div class="order-detail-other">
-        <span><img src="./../../assets/call-service.png" alt="">联系车主</span>
-        <span><img src="./../../assets/my-car-img.png" alt="">车辆照片</span>
+        <span @click="callUser"><img src="./../../assets/call-service.png" alt="">联系车主</span>
+        <span @click="showCarImg"><img src="./../../assets/my-car-img.png" alt="">车辆照片</span>
       </div>
     </div>
 
-    <div class="order-detail-position">
+    <div class="order-detail-position" v-show="tabBar===1">
       <div class="order-detail-position-head">
         <span><img src="./../../assets/position-blue.png" alt="">车辆所在位置</span>
         <span class="order-detail-position-orange">快速定位</span>
       </div>
-
+      <cube-textarea v-model="parkingLocation"></cube-textarea>
     </div>
 
-    <div class="order-detail-photo">
+    <div class="order-detail-photo" v-show="tabBar===1">
       <div class="order-detail-position-head">
         <span><img src="./../../assets/img.png" alt="">上传车辆照片</span>
-        <img src="./../../assets/add1.png" alt="">
+        <!--<img src="./../../assets/add1.png" alt="">-->
       </div>
-      <img class="order-detail-photo-img" src="./../../assets/car-info-head.png" alt="">
-      <img class="order-detail-photo-del" src="./../../assets/del-img.png" alt="">
+      <cube-upload v-show="!isImgShow"
+                   ref="upload"
+                   action="https://www.freelycar.com/api/upload/carImg"
+                   :auto="true"
+                   :simultaneous-uploads="1"
+                   @file-success="fileSuccess"></cube-upload>
+      <img v-show="isImgShow" class="order-detail-photo-img" :src="staffOrderImg.url" alt="">
+      <!--<img class="order-detail-photo-del" src="./../../assets/del-img.png" alt="">-->
     </div>
 
     <div class="order-detail-btn">
-      <button class="big-blue-btn">接单</button>
-      <button class="big-gray-btn">取消</button>
+      <button v-show="arkSn!==orderArkSn && tabBar===0" class="can-not-click">非当前智能柜，不可接单</button>
+      <button v-show="arkSn===orderArkSn && tabBar===0" class="big-blue-btn" @click="takeOrder">接单</button>
+      <button v-show="tabBar===1" class="big-blue-btn" @click="finishOrder">一键开柜</button>
+      <button class="big-gray-btn" @click="cancelBtn">取消</button>
     </div>
+
+    <!--查看图片模态框-->
+    <div class="dialog-layer" v-show="isCarImgShow">
+      <div class="dialog-box-black my-order-dialog-box">
+        <img src="./../../assets/close.png" @click="showCarImg" class="dialog-box-black-close" alt="">
+        <img :src="consumerOrder.carImageUrl" class="dialog-car-img" alt="">
+      </div>
+    </div>
+
+    <!--开门成功-->
+    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
   </div>
 </template>
 
@@ -53,18 +74,26 @@
     data() {
       return {
         msg: '',
-        consumerOrder:{
-          i: "A0011902280001",
-          parkingLocation: "停在原位"
-        },
+        arkInfoState:'tecGetKey',
+        orderArkSn:'',
         arkSn:'',
+        orderId:'',
+        tabBar:'',
+        isImgShow:false,
+        carImageUrl:'',
         staffOrderImg:{
           createTime: "2019-06-10 15:45:26",
           delStatus: false,
           id: 2,
           orderId: "",
           url:''
-        }
+        },
+        orderInfo:{},
+        consumerOrder:{},
+        isCarImgShow:false,
+        isOpenDoorShow:false,
+        isSuccessShow:false,
+        parkingLocation:''
       }
     },
     methods: {
@@ -74,7 +103,17 @@
 
         })
       },
+      // 获取订单详情
+      getOrderDetail(){
+        this.$get('/wechat/order/getOrderDetail',{
+          id:this.orderId
+        }).then(res=>{
+          this.orderInfo=res
+          this.consumerOrder=res.consumerOrder
+        })
+      },
 
+      // 复制
       onCopy(){
         console.log('复制成功')
       },
@@ -82,11 +121,85 @@
         console.log('复制失败')
       },
 
+      // 查看钥匙位置
+      toLocationInfo(){
+        this.$router.push({path:'/locationInfo'})
+      },
+
+      // 查看车辆照片
+      showCarImg(){
+        this.isCarImgShow = !this.isCarImgShow
+      },
+
+      // 联系车主
+      callUser(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '您是否确认'+this.consumerOrder.licensePlate+'拨打车主电话？',
+          confirmBtn: {
+            text: '确认',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            window.location.href = "tel:10086"
+          },
+          onCancel: () => {
+            console.log('取消')
+          }
+        }).show()
+      },
+
+      // 取消按钮
+      cancelBtn(){
+        this.$router.go(-1)
+      },
+
+      // 接单
+      takeOrder(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '您是否确认在柜前开始'+this.consumerOrder.licensePlate+'的订单？',
+          confirmBtn: {
+            text: '确认',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            this.pickOpen()
+          },
+          onCancel: () => {
+            console.log('取消')
+          }
+        }).show()
+      },
+
       // 接车的一键开柜
       pickOpen(){
+        this.arkInfoState = 'tecGetKey'
+        this.isOpenDoorShow=true
         this.$get('/wechat/ark/pickCar',{
-          orderId:'',
-          staffId:''
+          orderId:this.orderId,
+          staffId:localStorage.getItem('staffId')
+        }).then(res=>{
+          this.isSuccessShow=true
+          // setTimeout(()=>{
+          //   this.$router.push({path:'/myOrder'})
+          // },3000)
         })
       },
 
@@ -97,17 +210,61 @@
         })
       },
 
+      // 确认完工
+      finishOrder(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '您是否确认在柜前结束'+this.consumerOrder.licensePlate+'的订单？',
+          confirmBtn: {
+            text: '确认',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            this.finishOpen()
+          },
+          onCancel: () => {
+            console.log('取消')
+          }
+        }).show()
+      },
+
       // 确认完工的一键开柜
       finishOpen(){
+        this.arkInfoState = 'tecFinish'
+        this.isOpenDoorShow=true
         this.$post('/wechat/ark/finishCar',{
-          consumerOrder:this.consumerOrder,
+          consumerOrder:{
+            id:this.orderId,
+            parkingLocation:this.parkingLocation
+          },
           arkSn:this.arkSn ,
           staffOrderImg:this.staffOrderImg
+        }).then(res=>{
+          this.isSuccessShow=true
         })
-      }
+      },
+
+      //上传按钮
+      fileSuccess(e){
+        this.staffOrderImg.url = e.response.data
+        this.isImgShow = true
+        console.log(e)
+      },
     },
     mounted: function () {
-
+      this.orderId=this.$route.query.orderId
+      this.tabBar=this.$route.query.tabBar
+      this.orderArkSn=this.$route.query.arkSn
+      this.arkSn=localStorage.getItem('arkSn')
+      this.getOrderDetail()
     }
   }
 </script>
@@ -121,8 +278,25 @@
   w(n)
     n / 7.5vw
 
+  .my-order-dialog-box
+    height h(900)
+    width w(600)
+
   .order-detail
     padding-bottom h(333)
+
+  .can-not-click
+    height h(84)
+    width w(579)
+    border-radius w(40)
+    border transparent
+    color white
+    font-size w(32)
+    background #A0A0A0
+    position fixed
+    transform translate(-50%,0)
+    left 50%
+    bottom h(190)
 
   .order-detail-card
     background white
@@ -182,7 +356,7 @@
 
   .order-detail-position
     background white
-    height h(220)
+    height h(300)
     width w(727)
     padding h(25) w(30)
     box-sizing border-box
@@ -192,6 +366,7 @@
     display flex
     justify-content space-between
     align-items center
+    margin-bottom h(30)
     span
       img
         height h(33)
@@ -209,7 +384,7 @@
 
   .order-detail-photo
     background white
-    height h(290)
+    height h(350)
     width w(727)
     padding h(25) w(30)
     box-sizing border-box
