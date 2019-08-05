@@ -1,7 +1,7 @@
 <template>
   <div class="order-tracking">
     <div class="order-tracking-head">
-      <span>爱车正送往门店</span>
+      <span>{{title}}</span>
     </div>
 
     <div class="order-tracking-card">
@@ -13,8 +13,8 @@
         </div>
         <div class="order-tracking-card-state">
           <img src="./../../assets/car-state.png" alt="">
-          <span>已还车</span>
-          <p>您的爱车钥匙已放入001号柜</p>
+          <span>{{state}}</span>
+          <p>您的爱车钥匙已放入{{consumerOrder.userKeyLocation}}</p>
         </div>
       </div>
       <div class="order-tracking-card-button">
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <button class="big-blue-btn" @click="toPayOrder">确认完成</button>
+    <!--<button class="big-blue-btn" @click="toPayOrder">确认完成</button>-->
   </div>
 </template>
 
@@ -49,12 +49,12 @@
         time: [
           '2019-06-10 16:25:36',
           '2019-06-10 16:25:36',
-          '2019-06-10 16:25:36',
-          '2019-06-10 16:25:36',
         ],
         orderId:'',
         msg:[],
-        consumerOrder:{}
+        consumerOrder:{},
+        title:'',
+        state:''
       }
     },
     methods: {
@@ -67,10 +67,10 @@
           this.consumerOrder = res.consumerOrder
           this.time=[
             this.consumerOrder.createTime,
-            this.consumerOrder.pickTime,
-            this.consumerOrder.finishTime,
-            this.consumerOrder.deliverTime
+            this.consumerOrder.pickTime
           ]
+//          this.consumerOrder.finishTime,
+//            this.consumerOrder.deliverTime
           console.log(this.time)
           for(let i=0;i<this.time.length;i++){
             if(this.time[i]){
@@ -80,23 +80,27 @@
                 case 0:{
                   title='订单提交成功'
                   info='正在为您的爱车安排服务'
+                  this.title='爱车正在安排服务'
+                  this.state='已下单'
                   break
                 }
                 case 1:{
                   title='接车已接车'
                   info='您的爱车由'+this.consumerOrder.pickCarStaffName+'接单'
+                  this.title='爱车正送往门店'
+                  this.state='已接车'
                   break
                 }
-                case 2:{
-                  title='订单完成'
-                  info='正在为您的爱车安排服务'
-                  break
-                }
-                case 3:{
-                  title='已取车'
-                  info='正在为您的爱车安排服务'
-                  break
-                }
+//                case 2:{
+//                  title='订单完成'
+//                  info='正在为您的爱车安排服务'
+//                  break
+//                }
+//                case 3:{
+//                  title='已取车'
+//                  info='正在为您的爱车安排服务'
+//                  break
+//                }
               }
               this.msg.push({
                 date:this.time[i].split(' ')[0],
