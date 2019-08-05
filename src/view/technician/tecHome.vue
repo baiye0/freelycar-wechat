@@ -7,7 +7,7 @@
       <div class="my-info-position">
         <img src="../../assets/position.png" alt="位置">
         <span>服务门店：{{storeName}}</span>
-        <button>更换</button>
+        <button @click="toChooseStore">更换</button>
       </div>
     </div>
 
@@ -53,10 +53,24 @@
         selected: '',
         options: ['服务状态'],
         staffInfo:{},
-        storeName:''
+        storeName:'',
+        storeList:[],
+        pickerList:[]
       }
     },
     methods: {
+      // 获取门店列表
+      getStoreList(){
+        this.$get('/wechat/employee/listStaffByPhone',{
+          phone:localStorage.getItem('phone')
+        }).then(res=>{
+          this.storeList = res
+          this.storeList.map(item=>{
+            this.pickerList.push({text:item.storeName,value:item.storeId})
+          })
+        })
+      },
+
       // 切换服务状态
       switchService(){
         this.$get('/wechat/employee/switchServiceStatus',{
@@ -72,11 +86,44 @@
         }).then(res=>{
           this.staffInfo=res
         })
+      },
+
+      // 更换门店按钮
+      toChooseStore(){
+        let data = this.pickerList
+        this.picker = this.$createPicker({
+          title: '请选择服务门店',
+          data: [data],
+          onSelect: this.selectHandle,
+          onCancel: this.cancelHandle
+        })
+        this.picker.show()
+      },
+      selectHandle(selectedVal, selectedIndex, selectedText) {
+        console.log(selectedVal, selectedIndex, selectedText)
+        this.$post('/wechat/employee/selectStore',{
+          id:localStorage.getItem('employeeId'),
+          defaultStoreId:selectedVal[0],
+          defaultStaffId:this.storeList[selectedIndex].id
+        }).then(res=>{
+          localStorage.setItem('staffId',this.storeList[selectedIndex].id)
+          localStorage.setItem('storeId',selectedVal[0])
+          localStorage.setItem('storeName',selectedText[0])
+          this.storeName=selectedText[0]
+        })
+      },
+      cancelHandle() {
+        // this.$createToast({
+        //   type: 'correct',
+        //   txt: 'Picker canceled',
+        //   time: 1000
+        // }).show()
       }
     },
     mounted: function () {
       this.storeName=localStorage.getItem('storeName')
       this.getInfo()
+      this.getStoreList()
     }
   }
 </script>

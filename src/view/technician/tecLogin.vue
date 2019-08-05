@@ -37,7 +37,8 @@
           nickName:'bwh',
           gender:'女'
         },
-        staffList:[]
+        staffList:[],
+        pickerList:[]
       }
     },
     methods: {
@@ -49,21 +50,6 @@
         localStorage.setItem('storeName',this.staffList[0].storeName)
         this.submitStore()
 
-//        this.dialog = this.$createDialog({
-//          type: 'prompt',
-//          title: '我是标题',
-//          prompt: {
-//            value: '',
-//            placeholder: '请输入'
-//          },
-//          onConfirm: (e, promptValue) => {
-//            this.$createToast({
-//              type: 'warn',
-//              time: 1000,
-//              txt: `Prompt value: ${promptValue || ''}`
-//            }).show()
-//          }
-//        }).show()
       },
 
       // 确认选择的门店
@@ -101,6 +87,9 @@
           localStorage.setItem('headImgUrl',res.employee.headImgUrl)
           localStorage.setItem('openId',res.employee.openId)
           this.staffList=res.staffList
+          this.staffList.map(item=>{
+            this.pickerList.push({text:item.storeName,value:item.storeId})
+          })
 //          选择门店
           this.chooseStore()
         })
