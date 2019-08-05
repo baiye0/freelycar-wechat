@@ -45,20 +45,25 @@
 
       // 选择门店
       chooseStore(){
-        localStorage.setItem('staffId',this.staffList[0].id)
-        localStorage.setItem('storeId',this.staffList[0].storeId)
-        localStorage.setItem('storeName',this.staffList[0].storeName)
-        this.submitStore()
-
+        this.picker = this.$createPicker({
+          title: '请选择服务门店',
+          data: [this.pickerList],
+          onSelect: this.selectHandle,
+          onCancel: this.cancelHandle
+        })
+        this.picker.show()
       },
 
-      // 确认选择的门店
-      submitStore(){
+//      确认选择的门店
+      selectHandle(selectedVal, selectedIndex, selectedText) {
         this.$post('/wechat/employee/selectStore',{
           id:localStorage.getItem('employeeId'),
-          defaultStoreId:localStorage.getItem('storeId'),
-          defaultStaffId:localStorage.getItem('staffId')
+          defaultStoreId:selectedVal[0],
+          defaultStaffId:this.staffList[selectedIndex].id
         }).then(res=>{
+          localStorage.setItem('staffId',this.staffList[selectedIndex].id)
+          localStorage.setItem('storeId',selectedVal[0])
+          localStorage.setItem('storeName',selectedText[0])
           this.$router.push({path:'/order'})
         })
       },

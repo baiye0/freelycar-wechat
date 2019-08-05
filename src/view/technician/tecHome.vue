@@ -100,7 +100,6 @@
         this.picker.show()
       },
       selectHandle(selectedVal, selectedIndex, selectedText) {
-        console.log(selectedVal, selectedIndex, selectedText)
         this.$post('/wechat/employee/selectStore',{
           id:localStorage.getItem('employeeId'),
           defaultStoreId:selectedVal[0],
