@@ -96,7 +96,7 @@
           delStatus:false,
           id:1,
           orderId:'',
-          url:"https://freelycar.com/upload/clientorderimg/201906101545263ad8223882ab438fbfcf29338f429e88_lite.jpg"
+          url:""
         },
         projects:[],
         wxUserInfo:{},
