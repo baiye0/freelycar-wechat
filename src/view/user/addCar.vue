@@ -5,14 +5,14 @@
       <input type="text" placeholder="请输入车牌号" v-model="licensePlate">
     </div>
 
-    <div @click="showDrawer" class="add-car-item">
+    <div @click="showDrawer(licensePlate,clientId,storeId)" class="add-car-item">
       <span>品牌车系</span>
-      <span class="color-blue">选择品牌<img src="./../../assets/more.png" alt=""></span>
+      <span class="color-blue">{{chooseBrand.carline?chooseBrand.carline:'选择品牌'}}<img src="./../../assets/more.png" alt=""></span>
     </div>
 
-    <div class="add-car-item">
+    <div class="add-car-item" @click="chooseColor">
       <span>车辆颜色</span>
-      <span class="color-blue">选择颜色<img src="./../../assets/more.png" alt=""></span>
+      <span class="color-blue">{{color?color:'选择颜色'}}<img src="./../../assets/more.png" alt=""></span>
     </div>
 
     <div class="add-car-item">
@@ -33,14 +33,7 @@
 
     <button class="big-blue-btn" @click="addCar">保存</button>
 
-    <cube-drawer
-      ref="drawer"
-      title="请选择"
-      :data="data"
-      :selected-index="selectedIndex"
-      @change="changeHandler"
-      @select="selectHandler"
-      @cancel="cancelHandler"></cube-drawer>
+
   </div>
 </template>
 
@@ -53,47 +46,40 @@
         carImageUrl:'',
         isImgShow:false,
         licensePlate:'',
-        selectedIndex:[],
-        data: []
+        clientId:'',
+        storeId:'',
+        chooseBrand:{},
+        color:'',
+        colorList:[
+          {text:'黑色',value:'黑色'},
+          {text:'白色',value:'白色'},
+          {text:'红色',value:'红色'},
+          {text:'蓝色',value:'蓝色'},
+          {text:'银灰色',value:'银灰色'},
+          {text:'其他',value:'其他'}]
       }
     },
     methods: {
-//      获取车型车系
-      getAllCarBrand(){
-        this.$get('/wechat/carBrand/getAllCarBrand').then(res=>{
-          console.log(res)
-          this.data=res
-        })
-      },
       // 选择车型车系
-      showDrawer() {
-        this.$refs.drawer.show()
-        console.log('show')
+      showDrawer(licensePlate,clientId,storeId){
+        this.$router.push( {path: '/choosebrand',
+          query:{licensePlate,clientId,storeId,from:'/addCar',color:this.color,img:this.carImageUrl}})
       },
-      changeHandler(index, item, selectedVal, selectedIndex, selectedText) {
-        // fake request
-        setTimeout(() => {
-          let data
-          if (index === 0) {
-            // procince change, get city data
-            data = cityList[item.value]
-          } else {
-            // city change, get area data
-            data = areaList[item.value]
-          }
-          // refill panel(index + 1) data
-          this.$refs.drawer.refill(index + 1, data)
-        }, 200)
+
+      // 选颜色
+      chooseColor(){
+        this.picker = this.$createPicker({
+          title: '请选择服务门店',
+          data: [this.colorList],
+          onSelect: this.selectHandle,
+          onCancel: this.cancelHandle
+        })
+        this.picker.show()
       },
-      selectHandler(selectedVal, selectedIndex, selectedText) {
-        this.$createDialog({
-          type: 'warn',
-          content: `Selected Item: <br/> - value: ${selectedVal.join(', ')} <br/> - index: ${selectedIndex.join(', ')} <br/> - text: ${selectedText.join(' ')}`,
-          icon: 'cubeic-alert'
-        }).show()
-      },
-      cancelHandler() {
-        console.log('cancel')
+
+      // 选颜色确认按钮
+      selectHandle(selectedVal, selectedIndex, selectedText) {
+        this.color=selectedVal[0]
       },
 
       //上传按钮
@@ -108,11 +94,11 @@
           storeId:localStorage.getItem('storeId'),
           clientId:localStorage.getItem('clientId'),
           licensePlate:this.licensePlate,
-          carBrand:"别克凯越",
+          carBrand:this.chooseBrand.carline,
           carType:"",
           miles:"0",
           lastMiles:"0",
-          color:"白色",
+          color:this.color,
           carImageUrl:this.carImageUrl
         }).then(res=>{
           this.$router.go(-1)
@@ -121,7 +107,18 @@
 
     },
     mounted: function () {
-      this.getAllCarBrand()
+      this.clientId=localStorage.getItem('clientId')
+      this.storeId=localStorage.getItem('storeId')
+      this.chooseBrand.carbrandid = this.$route.query.carbrandid
+      this.chooseBrand.carline = this.$route.query.carline
+      this.chooseBrand.bgname = this.$route.query.bgname
+      this.licensePlate = this.$route.query.licensePlate
+      this.carImageUrl = this.$route.query.img
+      this.color = this.$route.query.color
+      if(this.carImageUrl){
+        this.isImgShow=true
+      }
+      console.log(this.chooseBrand)
     }
   }
 </script>

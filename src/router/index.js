@@ -18,6 +18,7 @@ import changeUserInfo from '@/view/user/changeUserInfo.vue'
 import openDoor from '@/view/components/openDoor.vue'
 import success from '@/view/components/success.vue'
 import roleSelection from '@/view/components/role-selection.vue'
+import chooseBrand from '@/view/components/chooseBrand.vue'
 
 
 import tecHome from '@/view/technician/tecHome.vue'
@@ -42,7 +43,13 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: order
-    },{
+    },
+    {
+      path: '/chooseBrand',
+      name: 'chooseBrand',
+      component: chooseBrand
+    },
+    {
       path: '/orderDetail',
       name: 'orderDetail',
       component: orderDetail

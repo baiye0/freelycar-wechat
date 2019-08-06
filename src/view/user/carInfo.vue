@@ -9,9 +9,9 @@
         <input type="text" placeholder="请输入车牌号" v-model="licensePlate">
       </div>
 
-      <div class="form-box">
+      <div @click="showDrawer(licensePlate,clientId,storeId)" class="form-box">
         <img class="user-info-sex" src="./../../assets/car-band.png" alt="">
-        <input type="text" placeholder="请选择品牌车系">
+        <input type="text" placeholder="请选择品牌车系" v-model="chooseBrand.carline">
         <img class="car-band" src="./../../assets/more.png" alt="">
       </div>
 
@@ -47,12 +47,18 @@
       return {
         carImageUrl:'',
         isImgShow:false,
-        licensePlate:''
+        licensePlate:'',
+        clientId:'',
+        storeId:'',
+        chooseBrand:{},
       }
     },
     methods: {
       // 选择车型车系
-
+      showDrawer(licensePlate,clientId,storeId){
+        this.$router.push( {path: '/choosebrand',
+          query:{licensePlate,clientId,storeId,from:'/carInfo',color:this.color,img:this.carImageUrl}})
+      },
 
       // 提交
       addCar(){
@@ -60,7 +66,7 @@
           storeId:localStorage.getItem('storeId'),
           clientId:localStorage.getItem('clientId'),
           licensePlate:this.licensePlate,
-          carBrand:"别克凯越",
+          carBrand:this.chooseBrand.carline,
           carType:"",
           miles:"0",
           lastMiles:"0",
@@ -78,7 +84,17 @@
       },
     },
     mounted: function () {
-
+      this.clientId=localStorage.getItem('clientId')
+      this.storeId=localStorage.getItem('storeId')
+      this.chooseBrand.carbrandid = this.$route.query.carbrandid
+      this.chooseBrand.carline = this.$route.query.carline
+      this.chooseBrand.bgname = this.$route.query.bgname
+      this.licensePlate = this.$route.query.licensePlate
+      this.carImageUrl = this.$route.query.img
+      this.color = this.$route.query.color
+      if(this.carImageUrl){
+        this.isImgShow=true
+      }
     }
   }
 </script>
