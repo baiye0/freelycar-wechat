@@ -2,7 +2,7 @@
   <div class="billing-order">
     <div class="billing-order-card billing-order-user align-center">
       <span><img class="billing-order-img" src="./../../assets/name1.png" alt="">{{msg.name}}</span>
-      <span class="billing-order-user-info">{{msg.number}}<img src="./../../assets/change.png" alt=""><b>切换</b></span>
+      <span @click="changeCar" class="billing-order-user-info">{{msg.number}}<img src="./../../assets/change.png" alt=""><b>切换</b></span>
     </div>
 
     <div class="billing-order-card billing-order-project">
@@ -10,9 +10,9 @@
         <span><img class="billing-order-img" src="./../../assets/setting-blue.png" alt="">本次预约项目</span>
         <button @click="chooseProject">项目选择</button>
       </div>
-      <span class="billing-order-project-item">普洗</span>
-      <span class="billing-order-project-item">手工打蜡</span>
-      <span class="billing-order-project-count">合计费用： 0元</span>
+      <span class="billing-order-project-item"
+            v-for="(item,index) in consumerProjectInfos">{{item.projectName}}</span>
+      <span class="billing-order-project-count">合计费用： {{trueOrderPrice}}元</span>
     </div>
 
     <div class="billing-order-card billing-order-position">
@@ -53,15 +53,17 @@
           <img @click="closeDialog" src="./../../assets/close-black.png" alt="">
         </div>
         <div class="billing-order-dialog-content">
+
           <div @click="selectProject(index)" class="billing-order-dialog-item" v-for="(item,index) in projects">
-            <img src="/static/check-no.png" alt="">
+            <img :src="[checkedId.indexOf(item.id)!==-1?'/static/check-yellow.png':'/static/check-no.png']" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
             <div>{{item.comment}}</div>
           </div>
+
         </div>
         <div class="billing-order-dialog-footer">
-          <span><b>￥</b>120</span>
+          <span><b>￥</b>{{orderPrice}}</span>
           <span class="billing-order-footer-project">普洗</span>
           <button @click="selectProjectBtn">确认</button>
         </div>
@@ -88,13 +90,7 @@
           clientId:'',
           parkingLocation:'e'
         },
-        consumerProjectInfos:[
-          {
-            price:"0.01",
-            projectId: "ea8ecbc5692da05101692da5c6630002",
-            projectName: "测试项目"
-          }
-        ],
+        consumerProjectInfos:[],
         clientOrderImg:{
           createTime:'',
           delStatus:false,
@@ -111,7 +107,10 @@
         isSuccessShow:false,
         carImageUrl:'',
         isImgShow:false,
-        isAgree:false
+        isAgree:false,
+        consumerProjectList:[],
+        checkedId:[],
+        idList:[]
       }
     },
     methods: {
@@ -123,8 +122,13 @@
           this.wxUserInfo = res.wxUserInfo
           this.cars = res.cars
           this.msg.name = res.wxUserInfo.trueName
-          this.msg.number = res.cars[0].licensePlate
-          this.consumerOrder.carId=res.cars[0].id
+          if(this.$route.query.licensePlate){
+            this.msg.number = this.$route.query.licensePlate
+            this.consumerOrder.carId=this.$route.query.id
+          } else {
+            this.msg.number = res.cars[0].licensePlate
+            this.consumerOrder.carId=res.cars[0].id
+          }
         })
       },
 
@@ -146,6 +150,8 @@
 
       // 选择项目按钮
       chooseProject(){
+        this.consumerProjectList=this.consumerProjectInfos
+        this.checkedId=this.idList
         this.isDialogShow=true
       },
 
@@ -156,17 +162,46 @@
 
       // 选择项目
       selectProject(index){
-
+        // 购物车consumerProjectList。全部列表projects
+        // 先看购物车里有没有点击的这个，
+        let haveThisProject = false
+        this.consumerProjectList.map(item=>{
+          if(item.projectId===this.projects[index].id){
+            haveThisProject=true
+          }
+        })
+        //有就去掉，没有就加进去
+        if(haveThisProject){
+          let newList = this.consumerProjectList.filter(item=>item.projectId!==this.projects[index].id)
+          let newIdList = this.checkedId.filter(item=>item!==this.projects[index].id)
+          this.consumerProjectList=newList
+          this.checkedId=newIdList
+        }else {
+          this.consumerProjectList.push({
+            price:this.projects[index].price,
+            projectId: this.projects[index].id,
+            projectName: this.projects[index].name
+          })
+          this.checkedId.push(this.projects[index].id)
+        }
       },
 
       // 确认按钮
       selectProjectBtn(){
+        // 赋值给正主consumerProjectInfos
+        this.consumerProjectInfos=this.consumerProjectList
+        this.idList=this.checkedId
         this.closeDialog()
       },
 
       // 同意小易智能柜使用协议
       changeAgreeState(){
         this.isAgree=!this.isAgree
+      },
+
+      // 切换车
+      changeCar(){
+        this.$router.push({path:'/changeCar'})
       },
 
       // 快速定位
@@ -194,6 +229,22 @@
       this.consumerOrder.clientId=localStorage.getItem('clientId')
       this.getUserInfo()
       this.getStoreProject()
+    },
+    computed:{
+      orderPrice:function () {
+        let price=0
+        this.consumerProjectList.map(item=>{
+          price=price+item.price
+        })
+        return price
+      },
+      trueOrderPrice:function () {
+        let price=0
+        this.consumerProjectInfos.map(item=>{
+          price=price+item.price
+        })
+        return price
+      }
     }
   }
 </script>

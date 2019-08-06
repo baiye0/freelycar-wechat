@@ -40,7 +40,7 @@
       </div>
       <div class="pay-order-card-item">
         <span>卡内余额</span>
-        <span class="pay-order-info-blue">1元</span>
+        <span class="pay-order-info-blue">{{myCard[0].balance}}元</span>
       </div>
       <!--<div class="pay-order-card-item">-->
         <!--<span>抵用券</span>-->
@@ -63,7 +63,8 @@
         <!--<span class="pay-order-info-yellow">???-￥10</span>-->
       <!--</div>-->
       <div class="pay-order-card-item">
-        <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}} <img class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b></span>
+        <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}} <img
+          class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b></span>
         <span>实付<b class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</b></span>
       </div>
     </div>
@@ -96,7 +97,8 @@
         arkInfoState:'',
         isOpenDoorShow:false,
         isSuccessShow:false,
-        payWayInfo:''
+        payWayInfo:'',
+        myCard:[]
       }
     },
     methods: {
@@ -113,10 +115,10 @@
       // 获取我的会员卡
       getMyCard(){
         this.$get('/wechat/wxuser/getMyCards',{
-          id:localStorage.getItem('id'),
+          id:localStorage.getItem('clientId'),
           storeId:localStorage.getItem('storeId')
         }).then(res=>{
-          console.log(res)
+          this.myCard=res
         })
       },
 

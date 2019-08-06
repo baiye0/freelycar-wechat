@@ -270,6 +270,7 @@
       return {
         value: '',
         img:'',
+        backTo:'',
         from:'',
         carbrand: [],
         A: [],
@@ -317,6 +318,7 @@
       this.from = this.$route.query.from
       this.img = this.$route.query.img
       this.color = this.$route.query.color
+      this.backTo = this.$route.query.backTo
       this.$get('/wechat/carBrand/getAllCarBrand').then(response => {
         this.carbrand = response
         this.carbrand = response.map(item => {
@@ -480,7 +482,8 @@
       //选择车系，然后跳转到添加爱车界面
       choosedcarline(carbrandid, carline, licensePlate, clientId, storeId, bgname) {
         this.$router.push({path: this.from,
-          query: {carbrandid, carline, licensePlate, bgname,color:this.color,img:this.img}})
+          query: {carbrandid, carline, licensePlate, bgname,backTo:this.backTo,
+            color:this.color,img:this.img}})
       },
       rechoose() {
         this.isshow = !this.isshow;

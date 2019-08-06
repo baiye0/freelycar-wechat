@@ -118,7 +118,7 @@
       },
 
       addNewCar(){
-        this.$router.push({path: '/addCar'})
+        this.$router.push({path: '/addCar',query:{backTo:'/userHome'}})
       },
       toChangeInfo(){
         this.$router.push({path: '/changeUserInfo'})

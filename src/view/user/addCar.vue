@@ -101,7 +101,7 @@
           color:this.color,
           carImageUrl:this.carImageUrl
         }).then(res=>{
-          this.$router.go(-1)
+          this.$router.push({path:this.backTo})
         })
       },
 
@@ -115,6 +115,7 @@
       this.licensePlate = this.$route.query.licensePlate
       this.carImageUrl = this.$route.query.img
       this.color = this.$route.query.color
+      this.backTo = this.$route.query.backTo
       if(this.carImageUrl){
         this.isImgShow=true
       }

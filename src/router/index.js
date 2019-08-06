@@ -13,6 +13,7 @@ import billingOrder from '@/view/user/billingOrder.vue'
 import orderTracking from '@/view/user/orderTracking.vue'
 import store from '@/view/user/store.vue'
 import changeUserInfo from '@/view/user/changeUserInfo.vue'
+import changeCar from '@/view/user/changeCar.vue'
 
 
 import openDoor from '@/view/components/openDoor.vue'
@@ -48,6 +49,10 @@ export default new Router({
       path: '/chooseBrand',
       name: 'chooseBrand',
       component: chooseBrand
+    },{
+      path: '/changeCar',
+      name: 'changeCar',
+      component: changeCar
     },
     {
       path: '/orderDetail',
