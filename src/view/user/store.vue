@@ -9,7 +9,7 @@
         </a>
         <div class="store-head-img">
           <img src="./../../assets/distance.png" alt="">
-          <span>10.9km</span>
+          <span>{{distance}}km</span>
         </div>
 
         <hr>
@@ -29,7 +29,8 @@
           <span>{{item.projectTypeName}} <b>共{{item.projectInfos.length}}项</b></span>
           <img :src="projectListIndex===index?'/static/up.png':'/static/down.png'" alt="">
         </div>
-        <div v-show="projectListIndex===index" v-for="(projectItem,projuctIndex) in item.projectInfos" class="flex-center store-service-item">
+        <div v-show="projectListIndex===index" v-for="(projectItem,projuctIndex) in item.projectInfos"
+             class="flex-center store-service-item">
           <div>
             <span class="store-service-items">{{projectItem.name}}</span>
             <span class="store-service-info">{{projectItem.comment}}</span>
@@ -47,13 +48,15 @@
       <span>会员卡</span>
       <div class="store-card-box">
 
-        <div class="store-card-box-scroll">
-          <div class="store-card-item-box" v-for="(item,index) in cardServices">
+        <div class="store-card-box-scroll" >
+          <div class="store-card-item-box"
+               @click="buyCard(item.id,item.price)"
+               v-for="(item,index) in cardServices">
             <div class="store-card-item">
-              <span class="store-card-item-price"><b>￥</b>{{item.price}}</span>
+              <span class="store-card-item-price"><b>￥</b>{{item.actualPrice}}</span>
               <div><span>点击购买</span></div>
             </div>
-            <div class="store-card-item-info">购买价 ￥{{item.actualPrice}}</div>
+            <div class="store-card-item-info">购买价 ￥{{item.price}}</div>
           </div>
         </div>
 
@@ -63,60 +66,181 @@
 </template>
 
 <script>
+  import wx from 'weixin-js-sdk'
+
   export default {
     name: 'store',
     data() {
       return {
-        storeImgs:[{
-          url:''
+        storeImgs: [{
+          url: ''
         }],
-        store:{},
-        projects:[],
-        cardServices:[],
-        time:[],
-        projectListIndex:null
+        store: {},
+        projects: [],
+        cardServices: [],
+        time: [],
+        projectListIndex: null,
+        configInfo: {},
+        distance:null
       }
     },
     methods: {
 //        获取门店信息
-      getStoreDetail(){
-        this.$get('/wechat/store/getDetail',{
-          id:localStorage.getItem('storeId')
-        }).then(res=>{
+      getStoreDetail() {
+        this.$get('/wechat/store/getDetail', {
+          id: localStorage.getItem('storeId')
+        }).then(res => {
           this.storeImgs = res.storeImgs
           this.store = res.store
           this.projects = res.projects
           this.cardServices = res.cardServices
-          this.time=[this.store.openingTime.split(' ')[1],this.store.closingTime.split(' ')[1]]
+          this.time = [this.store.openingTime.split(' ')[1], this.store.closingTime.split(' ')[1]]
         })
       },
 
 //      获取门店图片
-      getImg(){
-        this.$get('/wechat/store/getImgs',{
-          storeId:localStorage.getItem('storeId')
-        }).then(res=>{
+      getImg() {
+        this.$get('/wechat/store/getImgs', {
+          storeId: localStorage.getItem('storeId')
+        }).then(res => {
           console.log(res)
         })
       },
 
 //      点击打开收起菜单
-      openOrCloseProject(index){
-        if(this.projectListIndex===index){
-          this.projectListIndex=null
-        }else {
-          this.projectListIndex=index
+      openOrCloseProject(index) {
+        if (this.projectListIndex === index) {
+          this.projectListIndex = null
+        } else {
+          this.projectListIndex = index
         }
       },
 
-      //      微信注入权限
-//      购买会员卡
-//      微信支付
+      // 微信注入权限
+      wxConfig() {
+        this.$get('/wechat/config/getJSSDKConfig',
+        ).then(res => {
+          this.configInfo = res
+          wx.config({
+            debug: false,
+            appId: this.configInfo.appId,
+            timestamp: this.configInfo.timestamp,
+            nonceStr: this.configInfo.nonceStr,
+            signature: this.configInfo.signature,
+            jsApiList: [
+              'checkJsApi',
+              'chooseWXPay',
+              'openLocation',
+              'getLocation'
+            ]
+          })
+          // 需要检测的JS接口列表
+          wx.checkJsApi({
+            jsApiList: ['chooseWXPay','getLocation'],
+            success: function (res) {
+              console.log(res)
+            },
+            fail: function (error) {
+              console.log(error)
+            }
+          })
+          wx.ready(function () {
+            console.log('微信接口成功')
+            this.getUserLocation()
+          })
+          wx.error(function (res) {
+            console.log(res)
+          })
+        })
+      },
 
+//      购买会员卡
+      buyCard(id,price){
+        this.$get('/wechat/card/generateCardOrder',{
+          clientId:localStorage.getItem('clientId'),
+          cardServiceId:id
+        }).then(res=>{
+          let cardId=res
+          this.$post('/wechat/pay/payOrderByWechat',{
+            openId: localStorage.getItem('openId'),
+            orderId: cardId,
+            totalPrice: price
+          }).then(res=>{
+            console.log(res)
+            let payInfo = res
+            wx.chooseWXPay({
+              timestamp: payInfo.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+              nonceStr: payInfo.nonceStr, // 支付签名随机串，不长于 32 位
+              package: payInfo.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+              signType: payInfo.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+              paySign: payInfo.paySign, // 支付签名
+              success: (res)=> {
+                // 支付成功后的回调函数
+                alert('购买成功')
+              },
+              fail:(error)=>{
+                alert('支付失败')
+              },
+              cancel:(res)=>{
+                alert('用户取消支付')
+              }
+            })
+          })
+        })
+      },
+
+      // 地理位置
+      getUserLocation(){
+        wx.getLocation({
+          type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+          success: function (res) {
+            console.log(res)
+            let latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+            let longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+            // var speed = res.speed; // 速度，以米/每秒计
+            // var accuracy = res.accuracy; // 位置精度
+            this.locationInfo = {latitude:latitude,longitude:longitude}
+            this.distance = this.getShortDistance(longitude,latitude,this.store.longitude,this.store.latitude)
+          },
+          cancel: function (res) {
+            alert('用户拒绝授权获取地理位置');
+          }
+        })
+      },
+
+      //根据经纬度计算距离，单位米
+      getShortDistance(lon1, lat1, lon2, lat2) {
+        var DEF_PI = 3.14159265359; // PI
+        var DEF_2PI = 6.28318530712; // 2*PI
+        var DEF_PI180 = 0.01745329252; // PI/180.0
+        var DEF_R = 6370693.5; // radius of earth
+        var ew1, ns1, ew2, ns2;
+        var dx, dy, dew;
+        var distance;
+        // 角度转换为弧度
+        ew1 = lon1 * DEF_PI180;
+        ns1 = lat1 * DEF_PI180;
+        ew2 = lon2 * DEF_PI180;
+        ns2 = lat2 * DEF_PI180;
+        // 经度差
+        dew = ew1 - ew2;
+        // 若跨东经和西经180 度，进行调整
+        if (dew > DEF_PI)
+          dew = DEF_2PI - dew;
+        else if (dew < -DEF_PI)
+          dew = DEF_2PI + dew;
+        dx = DEF_R * Math.cos(ns1) * dew; // 东西方向长度(在纬度圈上的投影长度)
+        dy = DEF_R * (ns1 - ns2); // 南北方向长度(在经度圈上的投影长度)
+        // 勾股定理求斜边长
+        distance = Math.sqrt(dx * dx + dy * dy).toFixed(0);
+        //console.log(distance)
+        return distance;
+      },
     },
     mounted: function () {
       this.getStoreDetail()
       this.getImg()
+      this.wxConfig()
     }
   }
 </script>
@@ -301,7 +425,7 @@
   .store-card-item-price
     font-size w(42)
     position absolute
-    transform translate(-50%,-50%)
+    transform translate(-50%, -50%)
     top 30%
     left 45%
     b

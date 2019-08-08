@@ -54,7 +54,8 @@
         </div>
         <div class="billing-order-dialog-content">
 
-          <div @click="selectProject(index)" class="billing-order-dialog-item" v-for="(item,index) in projects">
+          <div @click="selectProject(index)"
+               class="billing-order-dialog-item" v-for="(item,index) in projects">
             <img :src="[checkedId.indexOf(item.id)!==-1?'/static/check-yellow.png':'/static/check-no.png']" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
@@ -76,6 +77,8 @@
 </template>
 
 <script>
+  import wx from 'weixin-js-sdk'
+
   export default {
     name: 'billingOrder',
     data() {
@@ -150,8 +153,6 @@
 
       // 选择项目按钮
       chooseProject(){
-        this.consumerProjectList=this.consumerProjectInfos
-        this.checkedId=this.idList
         this.isDialogShow=true
       },
 
@@ -204,8 +205,53 @@
         this.$router.push({path:'/changeCar'})
       },
 
-      // 快速定位
+      // 微信注入权限
+      wxConfig() {
+        this.$get('/wechat/config/getJSSDKConfig',
+        ).then(res => {
+          this.configInfo = res
+          wx.config({
+            debug: false,
+            appId: this.configInfo.appId,
+            timestamp: this.configInfo.timestamp,
+            nonceStr: this.configInfo.nonceStr,
+            signature: this.configInfo.signature,
+            jsApiList: [
+              'checkJsApi',
+              'openLocation',
+              'getLocation'
+            ]
+          })
+          // 需要检测的JS接口列表
+          wx.checkJsApi({
+            jsApiList: ['getLocation'],
+            success: function (res) {
+              console.log(res)
+            },
+            fail: function (error) {
+              console.log(error)
+            }
+          })
+          wx.ready(function () {
+            console.log('微信接口成功')
+          })
+          wx.error(function (res) {
+            console.log(res)
+          })
+        })
+      },
 
+      // 快速定位
+      // addlocation(){
+      //   this.$get('/wechat/ark/getCurrentArkLocation',{'arkSn':this.arkSn}).then(response=>{
+      //     this.ArkLocation = response.data
+      //     this.desc = response.data
+      //     this.txtVal = this.desc.length;
+      //     this.remnant = 200-this.txtVal;
+      //     this.islocation = true
+      //   })
+      //
+      // },
       // 删除照片
 
       // 提交
@@ -229,6 +275,7 @@
       this.consumerOrder.clientId=localStorage.getItem('clientId')
       this.getUserInfo()
       this.getStoreProject()
+      this.wxConfig()
     },
     computed:{
       orderPrice:function () {

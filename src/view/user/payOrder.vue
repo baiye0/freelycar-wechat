@@ -85,6 +85,8 @@
 
 <script>
   import { MessageBox } from 'mint-ui'
+  import wx from 'weixin-js-sdk'
+
   export default {
     name: 'payOrder',
     data() {
@@ -230,6 +232,43 @@
         })
       },
 
+      // 微信注入权限
+      wxConfig() {
+        this.$get('/wechat/config/getJSSDKConfig',
+        ).then(res => {
+          this.configInfo = res
+          wx.config({
+            debug: false,
+            appId: this.configInfo.appId,
+            timestamp: this.configInfo.timestamp,
+            nonceStr: this.configInfo.nonceStr,
+            signature: this.configInfo.signature,
+            jsApiList: [
+              'checkJsApi',
+              'chooseWXPay',
+              'openLocation',
+              'getLocation'
+            ]
+          })
+          // 需要检测的JS接口列表
+          wx.checkJsApi({
+            jsApiList: ['chooseWXPay','getLocation'],
+            success: function (res) {
+              console.log(res)
+            },
+            fail: function (error) {
+              console.log(error)
+            }
+          })
+          wx.ready(function () {
+            console.log('微信接口成功')
+          })
+          wx.error(function (res) {
+            console.log(res)
+          })
+        })
+      },
+
       // 支付
       toPayOrder(){
 //        先判断支付方式
@@ -282,13 +321,14 @@
             this.$router.push({path:'/myOrder'})
           },3000)
         })
-      }
+      },
     },
     mounted: function () {
       this.orderId = this.$route.query.orderId
       this.storeName = localStorage.getItem('storeName')
       this.getOrderDetail()
       this.getMyCard()
+      this.wxConfig()
     },
     computed:{
       payWay:function () {

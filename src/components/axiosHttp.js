@@ -1,4 +1,64 @@
 import axios from 'axios'
+import router from '../router'
+
+
+//设置默认请求头
+//部署上线
+// axios.defaults.baseURL ='https://www.freelycar.com/api'
+//本地调试
+// axios.defaults.baseURL ='/api'
+// axios.defaults.timeout = 60000
+// axios.defaults.headers = {
+//   'Content-Type': 'application/json'
+// }
+//请求数据拦截
+// axios.interceptors.request.use(
+//   config => {
+//     if (localStorage.getItem('Authorization')) {
+//       config.headers.Authorization = localStorage.getItem('Authorization');
+//     }
+//     return config;
+//   },
+//   error => {
+//     return Promise.reject(error);
+//   }
+// );
+
+//响应拦截器异常处理
+// axios.interceptors.response.use(response => {
+//   console.log(response.data.message)
+//   //console.log(localStorage.getItem('wxinfo'))
+//   if(response.data.message=="JWT Expired"){
+//     localStorage.removeItem('Authorization')
+//     if(localStorage.getItem('wxinfo')){
+//       console.log(router.currentRoute.fullPath)
+//       localStorage.removeItem('wxinfo');
+//       localStorage.removeItem('wxuserjwt');
+//       router.replace({
+//         path: '/client-login',
+//         query: {
+//           redirect: router.currentRoute.fullPath
+//         }
+//       })
+//
+//     }
+//     if(localStorage.getItem('staffinfo')){
+//       localStorage.removeItem('staffinfo');
+//       localStorage.removeItem('staffjwt');
+//       router.replace({
+//         path: '/technic-login',
+//         query: {
+//           redirect: router.currentRoute.fullPath
+//         }
+//       })
+//     }
+//   }
+//   return response
+// }, error => {
+//   return Promise.resolve(error.response)
+// })
+
+
 
 export function get(url, params = {}) {
   return new Promise((resolve, reject) => {

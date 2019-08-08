@@ -2,7 +2,7 @@
   <div class="buy-card">
     <span class="buy-card-store">以下会员卡仅限于{{store}}门店使用</span>
 
-    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(index)">
+    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(item.id,item.price)">
       <div class="buy-card-title">
         <span>小易会员VIP</span>
         <span>点击购买>></span>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+  import wx from 'weixin-js-sdk'
+
   export default {
     name: 'buyCard',
     data() {
@@ -34,17 +36,81 @@
       },
 
       // 买卡
-      buyCard(index){
+      buyCard(id,price){
         this.$get('/wechat/card/generateCardOrder',{
           clientId:localStorage.getItem('clientId'),
-          cardServiceId:this.msg[index].id
+          cardServiceId:id
         }).then(res=>{
           let cardId=res
+          this.$post('/wechat/pay/payOrderByWechat',{
+            openId: localStorage.getItem('openId'),
+            orderId: cardId,
+            totalPrice: price
+          }).then(res=>{
+            console.log(res)
+            let payInfo = res
+            wx.chooseWXPay({
+              timestamp: payInfo.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+              nonceStr: payInfo.nonceStr, // 支付签名随机串，不长于 32 位
+              package: payInfo.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+              signType: payInfo.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+              paySign: payInfo.paySign, // 支付签名
+              success: (res)=> {
+                // 支付成功后的回调函数
+                alert('购买成功')
+                this.$router.go(-1)
+              },
+              fail:(error)=>{
+                alert('支付失败')
+              },
+              cancel:(res)=>{
+                alert('用户取消支付')
+              }
+            })
+          })
         })
-      }
+      },
+
+      // 微信注入权限
+      wxConfig() {
+        this.$get('/wechat/config/getJSSDKConfig',
+        ).then(res => {
+          this.configInfo = res
+          wx.config({
+            debug: false,
+            appId: this.configInfo.appId,
+            timestamp: this.configInfo.timestamp,
+            nonceStr: this.configInfo.nonceStr,
+            signature: this.configInfo.signature,
+            jsApiList: [
+              'checkJsApi',
+              'chooseWXPay',
+              'openLocation',
+              'getLocation'
+            ]
+          })
+          // 需要检测的JS接口列表
+          wx.checkJsApi({
+            jsApiList: ['chooseWXPay','getLocation'],
+            success: function (res) {
+              console.log(res)
+            },
+            fail: function (error) {
+              console.log(error)
+            }
+          })
+          wx.ready(function () {
+            console.log('微信接口成功')
+          })
+          wx.error(function (res) {
+            console.log(res)
+          })
+        })
+      },
     },
     mounted: function () {
       this.getStoreDetail()
+      this.wxConfig()
     }
   }
 </script>

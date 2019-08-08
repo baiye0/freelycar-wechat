@@ -32,14 +32,31 @@
         passwordInfo: '获取验证码',
         isGetCode: false,
         userInfo:{
-          openId:'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
-          headImgUrl:'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
-          nickName:'bwh',
-          gender:'女'
+          // openId:'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
+          // headImgUrl:'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
+          // nickName:'bwh',
+          // gender:'女',
+          headimgurl: "http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132",
+          message: "success",
+          nickname: "bwh",
+          openid: "oBaSqs8EjiGhwLVaaoHNar5Znvx4",
+          subscribe: true
         },
         staffList:[],
         pickerList:[]
       }
+    },
+    created(){
+
+      // console.log(localStorage.getItem('frompage'))
+      this.redirect = this.$route.query.redirect
+      //获取redirect的值并缓存，当值存在并改变时，改变redirect的值
+      if(typeof(this.$route.query.redirect) !== "undefined"){
+        localStorage.setItem('redirect',this.redirect)
+      }
+      console.log(localStorage.getItem('redirect'))
+      this.isweixin()
+
     },
     methods: {
 
@@ -73,11 +90,11 @@
         this.$post('/wechat/employee/login',{
           account:this.account,
           password:this.password,
-          openId:this.userInfo.openId,
-          nickName:this.userInfo.nickName,
+          openId:this.userInfo.openid,
+          nickName:this.userInfo.nickname,
           phone:this.account,
-          headImgUrl:this.userInfo.headImgUrl,
-          gender:this.userInfo.gender,
+          headImgUrl:this.userInfo.headimgurl,
+          gender:'男',
           province:"江苏",
           city:"南京"
         }).then(res=>{
@@ -91,6 +108,7 @@
           localStorage.setItem('gender',res.employee.gender)
           localStorage.setItem('headImgUrl',res.employee.headImgUrl)
           localStorage.setItem('openId',res.employee.openId)
+          // localStorage.setItem('Authorization', "Bearer " + res.jwt)
           this.staffList=res.staffList
           this.staffList.map(item=>{
             this.pickerList.push({text:item.storeName,value:item.storeId})
@@ -98,7 +116,85 @@
 //          选择门店
           this.chooseStore()
         })
-      }
+      },
+
+      //判断受否是微信内置浏览器
+      isweixin() {
+        //判断是否是微信浏览器
+        let ua = window.navigator.userAgent.toLowerCase()
+        console.log('ua',ua)
+        if(ua.indexOf('micromessenger') !== -1){
+
+          //判断是否存在code参数
+          if(this.getQueryString("code")!=null){
+            console.log(this.getQueryString("code"))
+            this.code = this.getQueryString("code")
+            console.log("第一次code"+this.code)
+
+            // 页面里的code和localstorage里的一样
+            if(this.code===localStorage.getItem("code")){
+              this.userInfo.openid=localStorage.getItem('openId')
+              this.userInfo.headimgurl=localStorage.getItem('headImgUrl')
+              this.userInfo.nickname=localStorage.getItem('nickName')
+              this.userInfo.subscribe=localStorage.getItem('subscribe')
+              // this.userInfo =JSON.parse(localStorage.getItem("userinfo"))
+              // localStorage.setItem('openid',this.userinfo.openid)
+              // localStorage.setItem('subscribe',this.userinfo.subscribe)
+              console.log(localStorage.getItem('subscribe'))
+
+              if(localStorage.getItem('subscribe') == "false"){
+                window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNDMwNDc3Mw==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
+              }
+            }else{
+              //将code保存起来
+              localStorage.setItem("code",this.code)
+              console.log("第二次code"+this.code)
+              //获取个人信息
+              this.$get('/wechat/config/getWeChatUserInfo',{
+                code:this.code
+              }).then(res=>{
+                console.log(res)
+                this.userInfo = res
+                // localStorage.setItem("userinfo",JSON.stringify(this.userInfo))
+                console.log("第一次"+this.userInfo.openid)
+                console.log("第二次"+this.userInfo.openid)
+                //this.saveopenid({openid:this.userInfo.openid})//保存openid
+                localStorage.setItem('openId',this.userInfo.openid)
+                localStorage.setItem('subscribe',this.userInfo.subscribe)
+                localStorage.setItem('nickName',this.userInfo.nickname)
+                localStorage.setItem('headImgUrl',this.userInfo.headimgurl)
+                console.log(localStorage.getItem('subscribe'))
+
+                if(localStorage.getItem('subscribe') == "false"){
+                  window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNDMwNDc3Mw==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
+                }
+
+              })
+            }
+          }else{
+            //console.log('未授权')
+            window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3A%2F%2Fwww.freelycar.com%2Fwechat%2F%23%2Fclient-login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+            //window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+this.appId+"&redirect_uri=http%3A%2F%2Fwww.freelycar.cn%2F%23%2Fclient-login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+
+          }
+
+        } else {
+          console.log("请在微信客户端打开！")
+          return false
+        }
+        console.log(this.userInfo)
+      },
+
+      //判断参数是否存在
+      getQueryString(name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+          return unescape(r[2]);
+        }
+        return null;
+      },
+
 
 
     },
