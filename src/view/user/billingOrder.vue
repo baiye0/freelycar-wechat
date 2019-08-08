@@ -18,10 +18,10 @@
     <div class="billing-order-card billing-order-position">
       <div class="align-center">
         <span><img class="billing-order-img" src="./../../assets/position-blue.png" alt="">车辆所在位置</span>
-        <span class="billing-order-position-button">快速定位</span>
+        <span class="billing-order-position-button" @click="addLocation">快速定位</span>
       </div>
 
-      <textarea class="billing-order-position-input" placeholder="请输入位置" name="" id="" cols="38" rows="3"></textarea>
+      <textarea v-model="consumerOrder.parkingLocation" class="billing-order-position-input" placeholder="请输入位置" name="" id="" cols="38" rows="3"></textarea>
     </div>
 
     <div class="billing-order-card billing-order-photo">
@@ -91,7 +91,7 @@
         consumerOrder:{
           carId:'',
           clientId:'',
-          parkingLocation:'e'
+          parkingLocation:''
         },
         consumerProjectInfos:[],
         clientOrderImg:{
@@ -113,7 +113,7 @@
         isAgree:false,
         consumerProjectList:[],
         checkedId:[],
-        idList:[]
+        idList:[],
       }
     },
     methods: {
@@ -241,17 +241,14 @@
         })
       },
 
-      // 快速定位
-      // addlocation(){
-      //   this.$get('/wechat/ark/getCurrentArkLocation',{'arkSn':this.arkSn}).then(response=>{
-      //     this.ArkLocation = response.data
-      //     this.desc = response.data
-      //     this.txtVal = this.desc.length;
-      //     this.remnant = 200-this.txtVal;
-      //     this.islocation = true
-      //   })
-      //
-      // },
+//       快速定位
+       addLocation(){
+         this.$get('/wechat/ark/getCurrentArkLocation',{
+             arkSn:localStorage.getItem('arkSn')
+         }).then(res=>{
+           this.consumerOrder.parkingLocation=res
+         })
+       },
       // 删除照片
 
       // 提交
