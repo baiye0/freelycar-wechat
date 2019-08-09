@@ -148,5 +148,6 @@ export default new Router({
       component: carInfo
     }
   ],
+  base:'/wechat/',
   mode: 'history',
 })

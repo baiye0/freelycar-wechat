@@ -6,7 +6,7 @@ import router from '../router'
 //部署上线
 // axios.defaults.baseURL ='https://www.freelycar.com/api'
 // 本地调试
-axios.defaults.baseURL ='/api'
+// axios.defaults.baseURL ='/api'
 axios.defaults.timeout = 60000
 axios.defaults.headers = {
   'Content-Type': 'application/json'

@@ -110,6 +110,7 @@
             + '&nickName=' + this.userInfo.nickname).then(res => {
             console.log(res)
             this.wxUserInfo = res.wxUserInfo
+            console.log(res.jwt)
             this.axios.defaults.headers.common["Authorization"] = res.jwt
             localStorage.setItem('jwt', res.jwt)
             localStorage.setItem('phone', this.wxUserInfo.phone)
@@ -207,7 +208,6 @@
           }
         }else{
           //console.log('未授权')
-        //window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3A%2F%2Fwww.freelycar.com%2Fwechat%2Flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
           window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3a%2f%2fwww.freelycar.com%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
         }
       },
