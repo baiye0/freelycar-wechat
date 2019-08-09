@@ -8,6 +8,8 @@
   export default {
     data() {
       return {
+        trueName:'',
+        arkSn:''
       }
     },
     mounted:function(){
@@ -20,7 +22,9 @@
       isLogin(){
         console.log(this.$route.params.arkSn)
         let arkSn = this.$route.params.arkSn
+        let clientid=localStorage.getItem('clientId')
         localStorage.setItem('arkSn', arkSn)
+
 
         if (localStorage.getItem('jwt')) {
           //如果技师已经登录，直接去接单页
@@ -38,7 +42,7 @@
           } else {
             //通过扫码进来的要判断门店id与用户默认id是否相同
             this.$get('/wechat/ark/getArkInfo', {
-              arkSn: this.arkSn
+              arkSn: arkSn
             }).then(res => {
               localStorage.setItem('storeId', res.storeId)
               localStorage.setItem('storeName', res.name)
@@ -55,7 +59,7 @@
               } else {
                 // 更新门店信息
                 this.$post('/wechat/wxuser/chooseDefaultStore', {
-                  id: this.wxUserInfo.id,
+                  id: localStorage.getItem('id'),
                   defaultStoreId: res.storeId
                 }).then(res => {
                   this.$get('/wechat/ark/getActiveOrder', {
