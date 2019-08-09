@@ -7,14 +7,14 @@
 <script>
   export default {
     name: 'App',
-    beforeCreate(){
-      if (localStorage.getItem('jwt')) {
-        console.log('有jwt')
-        this.axios.defaults.headers.common["Authorization"] = localStorage.getItem('jwt')
-      } else{
-        console.log('无jwt')
-      }
-    }
+    // beforeCreate(){
+    //   if (localStorage.getItem('jwt')) {
+    //     console.log('有jwt')
+    //     this.axios.defaults.headers.common["Authorization"] = localStorage.getItem('jwt')
+    //   } else{
+    //     console.log('无jwt')
+    //   }
+    // }
   }
 </script>
 
