@@ -25,7 +25,7 @@
         <a :href="['tel:' + storePhone]">
           <span>联系客服</span>
         </a>
-        <button @click="openDoor">立即开柜</button>
+        <button @click="openDoor(item.id)">立即开柜</button>
       </div>
 
       <div class="payment" v-show="item.payState === 1 && item.state === 2">
@@ -86,7 +86,7 @@
         this.isCarImgShow = !this.isCarImgShow
       },
 
-      openDoor(){
+      openDoor(id){
         this.$createDialog({
           type: 'confirm',
           title: '是否现在打开柜门？',
@@ -106,7 +106,7 @@
             this.arkInfoState='payOrder'
             this.isOpenDoorShow=true
             this.$get('/wechat/ark/orderFinish',{
-              id:''
+              id:id
             }).then(res=>{
               this.isSuccessShow=true
               setTimeout(()=>{
