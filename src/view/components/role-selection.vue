@@ -48,9 +48,9 @@
               localStorage.setItem('storeName', res.name)
               if (res.storeId === localStorage.getItem('storeId')) {
                 this.$get('/wechat/ark/getActiveOrder', {
-                  clientId: clientid
+                  clientId: localStorage.getItem('clientId')
                 }).then(res => {
-                  if (localStorage.getItem('trueName')) {
+                  if (res && res.length > 0) {
                     this.$router.push({ path: "/myOrder"});
                   } else {
                     this.$router.push( {path: '/billingOrder' })
@@ -65,7 +65,7 @@
                   this.$get('/wechat/ark/getActiveOrder', {
                     clientId: clientid
                   }).then(res => {
-                    if (localStorage.getItem('trueName')) {
+                    if (res && res.length > 0) {
                       this.$router.push({ path: "/myOrder"});
                     } else {
                       this.$router.push( {path: '/billingOrder' })
