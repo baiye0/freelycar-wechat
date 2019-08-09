@@ -54,7 +54,8 @@
         },
         arkSn: 862057048957259,
         wxUserInfo: {},
-        redirect:''
+        redirect:'',
+        code:''
       }
     },
     created(){
@@ -115,7 +116,7 @@
             localStorage.setItem('clientId', this.wxUserInfo.defaultClientId)
             localStorage.setItem('id', this.wxUserInfo.id)
             localStorage.setItem('openId', this.wxUserInfo.openId)
-            // localStorage.setItem('Authorization', "Bearer " + res.jwt)
+            localStorage.setItem('Authorization', "Bearer " + res.jwt)
             // 判断是否存在柜子码
             if (localStorage.getItem('arkSn')) {
               // 检查柜子信息，看是否需要换门店
@@ -160,65 +161,56 @@
         let ua = window.navigator.userAgent.toLowerCase()
         console.log('ua',ua)
         if(ua.indexOf('micromessenger') !== -1){
-
-          //判断是否存在code参数
-          if(this.getQueryString("code")!=null){
-            console.log(this.getQueryString("code"))
-            this.code = this.getQueryString("code")
-            console.log("第一次code"+this.code)
-
-            // 页面里的code和localstorage里的一样
-            if(this.code===localStorage.getItem("code")){
-              this.userInfo.openid=localStorage.getItem('openId')
-              this.userInfo.headimgurl=localStorage.getItem('headImgUrl')
-              this.userInfo.nickname=localStorage.getItem('nickName')
-              this.userInfo.subscribe=localStorage.getItem('subscribe')
-              // this.userInfo =JSON.parse(localStorage.getItem("userinfo"))
-              // localStorage.setItem('openid',this.userinfo.openid)
-              // localStorage.setItem('subscribe',this.userinfo.subscribe)
-              console.log(localStorage.getItem('subscribe'))
-
-              if(localStorage.getItem('subscribe') == "false"){
-                window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNDMwNDc3Mw==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
-              }
-            }else{
-              //将code保存起来
-              localStorage.setItem("code",this.code)
-              console.log("第二次code"+this.code)
-              //获取个人信息
-              this.$get('/wechat/config/getWeChatUserInfo',{
-                code:this.code
-              }).then(res=>{
-                console.log(res)
-                this.userInfo = res
-                // localStorage.setItem("userinfo",JSON.stringify(this.userInfo))
-                console.log("第一次"+this.userInfo.openid)
-                console.log("第二次"+this.userInfo.openid)
-                //this.saveopenid({openid:this.userInfo.openid})//保存openid
-                localStorage.setItem('openId',this.userInfo.openid)
-                localStorage.setItem('subscribe',this.userInfo.subscribe)
-                localStorage.setItem('nickName',this.userInfo.nickname)
-                localStorage.setItem('headImgUrl',this.userInfo.headimgurl)
-                console.log(localStorage.getItem('subscribe'))
-
-                if(localStorage.getItem('subscribe') == "false"){
-                  window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNDMwNDc3Mw==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
-                }
-
-              })
-            }
-          }else{
-            //console.log('未授权')
-            window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3A%2F%2Fwww.freelycar.com%2Fwechat%2F%23%2Fclient-login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
-            //window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+this.appId+"&redirect_uri=http%3A%2F%2Fwww.freelycar.cn%2F%23%2Fclient-login&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
-
-          }
-
+          this.isCode()
         } else {
           console.log("请在微信客户端打开！")
           return false
         }
-        console.log(this.userInfo)
+      },
+
+      //判断是否存在code参数
+      isCode(){
+        debugger
+        if(this.getQueryString("code")!=null){
+          this.code = this.getQueryString("code")
+          console.log("第一次code"+this.code)
+          // 页面里的code和localstorage里的一样
+          if(this.code===localStorage.getItem("code")){
+            this.userInfo.openid=localStorage.getItem('openId')
+            this.userInfo.headimgurl=localStorage.getItem('headImgUrl')
+            this.userInfo.nickname=localStorage.getItem('nickName')
+            this.userInfo.subscribe=localStorage.getItem('subscribe')
+            console.log(localStorage.getItem('subscribe'))
+
+            // 是否关注公众号
+            if(localStorage.getItem('subscribe') == "false"){
+              window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNDMwNDc3Mw==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
+            }
+          }else{
+            //将code保存起来
+            localStorage.setItem("code",this.code)
+            console.log("第二次code"+this.code)
+            //获取个人信息
+            this.$get('/wechat/config/getWeChatUserInfo',{
+              code:this.code
+            }).then(res=>{
+              console.log(res)
+              this.userInfo = res
+              localStorage.setItem('openId',this.userInfo.openid)
+              localStorage.setItem('subscribe',this.userInfo.subscribe)
+              localStorage.setItem('nickName',this.userInfo.nickname)
+              localStorage.setItem('headImgUrl',this.userInfo.headimgurl)
+              // 是否关注公众号
+              if(localStorage.getItem('subscribe') == "false"){
+                window.location.href = "https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzAxNDMwNDc3Mw==&scene=126&bizpsid=0&subscene=0#wechat_redirect"
+              }
+            })
+          }
+        }else{
+          //console.log('未授权')
+        //window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3A%2F%2Fwww.freelycar.com%2Fwechat%2Flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+          window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid%3dwxfd188f8284ee297b%26redirect_uri%3dhttps%3a%2f%2fwww.freelycar.com%2fwechat%2flogin%26response_type%3dcode%26scope%3dsnsapi_userinfo%26state%3dSTATE%23wechat_redirect'
+        }
       },
 
       //判断参数是否存在

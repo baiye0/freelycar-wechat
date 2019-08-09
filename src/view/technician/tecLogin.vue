@@ -108,7 +108,7 @@
           localStorage.setItem('gender',res.employee.gender)
           localStorage.setItem('headImgUrl',res.employee.headImgUrl)
           localStorage.setItem('openId',res.employee.openId)
-          // localStorage.setItem('Authorization', "Bearer " + res.jwt)
+          localStorage.setItem('Authorization', "Bearer " + res.jwt)
           this.staffList=res.staffList
           this.staffList.map(item=>{
             this.pickerList.push({text:item.storeName,value:item.storeId})
