@@ -98,7 +98,7 @@
           province:"江苏",
           city:"南京"
         }).then(res=>{
-          this.axios.defaults.headers.common["Authorization"] = res.jwt
+          // this.axios.defaults.headers.common["Authorization"] = res.jwt
           localStorage.setItem('jwt',res.jwt)
           localStorage.setItem('employeeId',res.employee.id)
           localStorage.setItem('province',res.employee.province)

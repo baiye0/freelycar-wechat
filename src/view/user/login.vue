@@ -111,7 +111,7 @@
             console.log(res)
             this.wxUserInfo = res.wxUserInfo
             console.log(res.jwt)
-            this.axios.defaults.headers.common["Authorization"] = res.jwt
+            // this.axios.defaults.headers.common["Authorization"] = res.jwt
             localStorage.setItem('jwt', res.jwt)
             localStorage.setItem('phone', this.wxUserInfo.phone)
             localStorage.setItem('clientId', this.wxUserInfo.defaultClientId)
