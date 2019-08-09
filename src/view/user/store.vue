@@ -96,6 +96,7 @@
           this.projects = res.projects
           this.cardServices = res.cardServices
           this.time = [this.store.openingTime.split(' ')[1], this.store.closingTime.split(' ')[1]]
+          localStorage.setItem('storePhone',this.store.phone)
         })
       },
 
