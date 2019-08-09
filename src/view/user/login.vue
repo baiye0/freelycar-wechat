@@ -170,7 +170,6 @@
 
       //判断是否存在code参数
       isCode(){
-        debugger
         if(this.getQueryString("code")!=null){
           this.code = this.getQueryString("code")
           console.log("第一次code"+this.code)
@@ -209,7 +208,7 @@
         }else{
           //console.log('未授权')
         //window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3A%2F%2Fwww.freelycar.com%2Fwechat%2Flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
-          window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid%3dwxfd188f8284ee297b%26redirect_uri%3dhttps%3a%2f%2fwww.freelycar.com%2fwechat%2flogin%26response_type%3dcode%26scope%3dsnsapi_userinfo%26state%3dSTATE%23wechat_redirect'
+          window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3a%2f%2fwww.freelycar.com%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
         }
       },
 

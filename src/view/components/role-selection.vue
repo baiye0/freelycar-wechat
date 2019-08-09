@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+
+  </div>
 </template>
 
 <script>
@@ -8,7 +10,7 @@
       return {
       }
     },
-    created(){
+    mounted:function(){
 
       this.isLogin()
 
@@ -19,13 +21,15 @@
         console.log(this.$route.params.arkSn)
         let arkSn = this.$route.params.arkSn
         localStorage.setItem('arkSn', arkSn)
-        //如果技师已经登录，直接去接单页
-        if (localStorage.getItem('staffId') !== null && localStorage.getItem('jwt') !== null) {
-          this.$router.push({path: '/order' })
-//        window.location.href = "https://www.freelycar.com/wechat/#/techome"
-        }
-        //如果用户已经登录，
-        if (localStorage.getItem('jwt') !== null && localStorage.getItem('clientId') !== null) {
+
+        if (localStorage.getItem('jwt')) {
+          //如果技师已经登录，直接去接单页
+          if (localStorage.getItem('staffId') !== null && localStorage.getItem('jwt') !== null) {
+            this.$router.push({path: '/order' })
+  //        window.location.href = "https://www.freelycar.com/wechat/#/techome"
+          }
+          //如果用户已经登录，
+          if (localStorage.getItem('jwt') !== null && localStorage.getItem('clientId') !== null) {
           this.trueName = localStorage.getItem('trueName')
           //若用户没有填写真实姓名，则先让其填写真实姓名
           if (this.trueName === '' || this.trueName === null) {
@@ -67,6 +71,9 @@
               }
             })
           }
+        }
+        } else{
+          this.$router.push({path:'/login'})
         }
 
       },
