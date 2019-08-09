@@ -46,7 +46,7 @@
                 this.$get('/wechat/ark/getActiveOrder', {
                   clientId: clientid
                 }).then(res => {
-                  if (res !== null) {
+                  if (localStorage.getItem('trueName')) {
                     this.$router.push({ path: "/myOrder"});
                   } else {
                     this.$router.push( {path: '/billingOrder' })
@@ -61,7 +61,7 @@
                   this.$get('/wechat/ark/getActiveOrder', {
                     clientId: clientid
                   }).then(res => {
-                    if (res !== null) {
+                    if (localStorage.getItem('trueName')) {
                       this.$router.push({ path: "/myOrder"});
                     } else {
                       this.$router.push( {path: '/billingOrder' })

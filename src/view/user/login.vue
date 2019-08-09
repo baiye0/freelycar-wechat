@@ -224,7 +224,7 @@
 
       // 检查是否第一次登录
       isNewUser() {
-        if (this.wxUserInfo.trueName) {
+        if (localStorage.getItem('trueName')) {
           this.$router.push({path: '/myOrder',query:{id:this.wxUserInfo.defaultClientId}})
         } else {
           this.$router.push({path: '/userInfo',query:{id:this.wxUserInfo.defaultClientId}})
