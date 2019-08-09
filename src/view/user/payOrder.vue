@@ -273,7 +273,15 @@
         if(this.payWayInfo==='微信支付'){
           this.wxPay()
         } else {
-          this.vipCardPay()
+          if(this.myCard[0].balance>=this.consumerOrder.actualPrice){
+            this.vipCardPay()
+          }else {
+            this.toast = this.$createToast({
+              txt: '会员卡余额不足',
+              type: 'txt'
+            })
+            this.toast.show()
+          }
         }
       },
 

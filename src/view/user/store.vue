@@ -81,7 +81,8 @@
         time: [],
         projectListIndex: null,
         configInfo: {},
-        distance:null
+        distance:null,
+        myCard:[]
       }
     },
     methods: {
@@ -95,6 +96,16 @@
           this.projects = res.projects
           this.cardServices = res.cardServices
           this.time = [this.store.openingTime.split(' ')[1], this.store.closingTime.split(' ')[1]]
+        })
+      },
+
+      // 检查有没有卡
+      getMyCard(){
+        this.$get('/wechat/wxuser/getMyCards',{
+          id:localStorage.getItem('clientId'),
+          storeId:localStorage.getItem('storeId')
+        }).then(res=>{
+          this.myCard=res
         })
       },
 
@@ -156,35 +167,51 @@
 
 //      购买会员卡
       buyCard(id,price){
-        this.$get('/wechat/card/generateCardOrder',{
-          clientId:localStorage.getItem('clientId'),
-          cardServiceId:id
-        }).then(res=>{
-          let cardId=res
-          this.$post('/wechat/pay/payOrderByWechat',{
-            openId: localStorage.getItem('openId'),
-            orderId: cardId,
-            totalPrice: price
+        if(this.myCard.length>0){
+          this.$get('/wechat/card/generateRechargeOrder',{
+            clientId:localStorage.getItem('clientId'),
+            cardServiceId:id,
+            cardId:this.myCard[0].id
           }).then(res=>{
-            console.log(res)
-            let payInfo = res
-            wx.chooseWXPay({
-              timestamp: payInfo.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-              nonceStr: payInfo.nonceStr, // 支付签名随机串，不长于 32 位
-              package: payInfo.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-              signType: payInfo.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-              paySign: payInfo.paySign, // 支付签名
-              success: (res)=> {
-                // 支付成功后的回调函数
-                alert('购买成功')
-              },
-              fail:(error)=>{
-                alert('支付失败')
-              },
-              cancel:(res)=>{
-                alert('用户取消支付')
-              }
-            })
+            let cardId=res
+            this.wxPayCard(cardId,price)
+          })
+        }else {
+          this.$get('/wechat/card/generateCardOrder',{
+            clientId:localStorage.getItem('clientId'),
+            cardServiceId:id
+          }).then(res=>{
+            let cardId=res
+            this.wxPayCard(cardId,price)
+          })
+        }
+      },
+
+      // 微信支付功能
+      wxPayCard(cardId,price){
+        this.$post('/wechat/pay/payOrderByWechat',{
+          openId: localStorage.getItem('openId'),
+          orderId: cardId,
+          totalPrice: price
+        }).then(res=>{
+          console.log(res)
+          let payInfo = res
+          wx.chooseWXPay({
+            timestamp: payInfo.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+            nonceStr: payInfo.nonceStr, // 支付签名随机串，不长于 32 位
+            package: payInfo.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+            signType: payInfo.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: payInfo.paySign, // 支付签名
+            success: (res)=> {
+              // 支付成功后的回调函数
+              alert('购买成功')
+            },
+            fail:(error)=>{
+              alert('支付失败')
+            },
+            cancel:(res)=>{
+              alert('用户取消支付')
+            }
           })
         })
       },
@@ -241,6 +268,7 @@
       this.getStoreDetail()
       this.getImg()
       this.wxConfig()
+      this.getMyCard()
     }
   }
 </script>
