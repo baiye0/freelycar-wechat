@@ -100,7 +100,7 @@
         isOpenDoorShow:false,
         isSuccessShow:false,
         payWayInfo:'',
-        myCard:[],
+        myCard:[{balance:0}]
       }
     },
     methods: {
@@ -120,9 +120,7 @@
           id:localStorage.getItem('clientId'),
           storeId:localStorage.getItem('storeId')
         }).then(res=>{
-            if (null == res) {
-                this.myCard = [{balance:0}]
-            }else {
+            if (null != res) {
                 this.myCard=res;
             }
         })
