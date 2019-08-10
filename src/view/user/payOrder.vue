@@ -100,7 +100,7 @@
         isOpenDoorShow:false,
         isSuccessShow:false,
         payWayInfo:'',
-        myCard:[]
+        myCard:[],
       }
     },
     methods: {
@@ -120,7 +120,11 @@
           id:localStorage.getItem('clientId'),
           storeId:localStorage.getItem('storeId')
         }).then(res=>{
-          this.myCard=res
+            if (null == res) {
+                this.myCard = [{balance:0}]
+            }else {
+                this.myCard=res;
+            }
         })
       },
 
