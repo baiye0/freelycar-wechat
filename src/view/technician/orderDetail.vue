@@ -14,7 +14,7 @@
         <div>车主名字 <span>{{consumerOrder.clientName}}</span></div>
         <div>下单时间 <span>{{consumerOrder.createTime}}</span></div>
         <div class="order-detail-item">预约项目 <span v-for="(item,index) in orderInfo.consumerProjectInfos">{{item.projectName}}</span></div>
-        <div>钥匙位置 <span @click="toLocationInfo">{{tabBar===0?consumerOrder.userKeyLocation:consumerOrder.staffKeyLocation}}<img src="./../../assets/position-blue2.png" alt=""></span></div>
+        <div>钥匙位置 <span class="order-detail-key">{{tabBar===0?consumerOrder.userKeyLocation:consumerOrder.staffKeyLocation}}<img src="./../../assets/position-blue2.png" alt=""></span></div>
         <div>停放位置 <span>{{consumerOrder.parkingLocation}}</span></div>
       </div>
 
@@ -123,7 +123,7 @@
 
       // 查看钥匙位置
       toLocationInfo(){
-        this.$router.push({path:'/locationInfo'})
+//        this.$router.push({path:'/locationInfo'})
       },
 
       // 查看车辆照片
@@ -277,6 +277,9 @@
 
   w(n)
     n / 7.5vw
+
+  .order-detail-key
+    font-size w(22)
 
   .my-order-dialog-box
     height h(900)

@@ -47,38 +47,14 @@
               localStorage.setItem('storeId', res.storeId)
               localStorage.setItem('storeName', res.name)
               if (res.storeId === localStorage.getItem('storeId')) {
-                this.$get('/wechat/ark/getActiveOrder', {
-                  clientId: localStorage.getItem('clientId')
-                }).then(res => {
-                    if (res && res.length > 0) {
-                        if (res[0].state < 3) {
-                            this.$router.push({ path: "/myOrder"});
-                        }else{
-                            this.$router.push( {path: '/billingOrder' })
-                        }
-                    } else {
-                        this.$router.push( {path: '/billingOrder' })
-                    }
-                })
+                this.getOrderState()
               } else {
                 // 更新门店信息
                 this.$post('/wechat/wxuser/chooseDefaultStore', {
                   id: localStorage.getItem('id'),
                   defaultStoreId: res.storeId
                 }).then(res => {
-                  this.$get('/wechat/ark/getActiveOrder', {
-                    clientId: clientid
-                  }).then(res => {
-                    if (res && res.length > 0) {
-                        if (res[0].state < 3) {
-                            this.$router.push({ path: "/myOrder"});
-                        }else{
-                            this.$router.push( {path: '/billingOrder' })
-                        }
-                    } else {
-                      this.$router.push( {path: '/billingOrder' })
-                    }
-                  })
+                  this.getOrderState()
                 })
               }
             })
@@ -89,6 +65,25 @@
         }
 
       },
+
+//      判断当前最新订单状态
+      getOrderState(){
+        this.$get('/wechat/order/listOrders', {
+          clientId: localStorage.getItem('clientId'),
+          type: 'ark'
+        }).then(res => {
+          if (res && res.length > 0) {
+            if (res[0].state < 3) {
+              this.$router.push({ path: "/myOrder"});
+            }else{
+              this.$router.push( {path: '/billingOrder' })
+            }
+          } else {
+            this.$router.push( {path: '/billingOrder' })
+          }
+        })
+      }
+
 
     },
   };
