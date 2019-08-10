@@ -50,11 +50,15 @@
                 this.$get('/wechat/ark/getActiveOrder', {
                   clientId: localStorage.getItem('clientId')
                 }).then(res => {
-                  if (res && res.length > 0) {
-                    this.$router.push({ path: "/myOrder"});
-                  } else {
-                    this.$router.push( {path: '/billingOrder' })
-                  }
+                    if (res && res.length > 0) {
+                        if (res[0].state < 3) {
+                            this.$router.push({ path: "/myOrder"});
+                        }else{
+                            this.$router.push( {path: '/billingOrder' })
+                        }
+                    } else {
+                        this.$router.push( {path: '/billingOrder' })
+                    }
                 })
               } else {
                 // 更新门店信息
@@ -66,7 +70,11 @@
                     clientId: clientid
                   }).then(res => {
                     if (res && res.length > 0) {
-                      this.$router.push({ path: "/myOrder"});
+                        if (res[0].state < 3) {
+                            this.$router.push({ path: "/myOrder"});
+                        }else{
+                            this.$router.push( {path: '/billingOrder' })
+                        }
                     } else {
                       this.$router.push( {path: '/billingOrder' })
                     }
