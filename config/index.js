@@ -9,22 +9,24 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    // assetsPublicPath: '/wechat/',    //开发
+    assetsPublicPath: '/',  //部署
     proxyTable: {
-      '/api': {  //使用"/api"来代替"https://www.freelycar.com"
-        target: 'https://www.freelycar.com', //源地址
-        // target: 'http://192.168.0.163', //源地址
-        changeOrigin: true,//改变源
-        // withCredentials: false,
-        // secure: false,
-        //pathRewrite: {
-          // '^/api': '' //路径重写
-        //}
-      }
-    },
+    '/api': {  //使用"/api"来代替"https://www.freelycar.com"
+      target: 'https://www.freelycar.com', //源地址
+      // target: 'http://192.168.0.163', //源地址
+      changeOrigin: true,//改变源
+      // withCredentials: false,
+      // secure: false,
+      //pathRewrite: {
+      // '^/api': '' //路径重写
+      //}
+    }
+  },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: 'localhost', //
+    // host: 'www.freelycar.cn', // 开发
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
@@ -49,10 +51,12 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../dist/index.html'),  //部署
+    // index: path.resolve('E:\\nginx-1.16.0\\html', 'wechat/index.html'),   //开发
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../dist'),  //部署
+    // assetsRoot: path.resolve('E:\\nginx-1.16.0\\html', 'wechat'),   //开发
     assetsSubDirectory: 'static',
     assetsPublicPath: '/wechat/',
 

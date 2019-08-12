@@ -69,11 +69,11 @@ export function get(url, params = {}) {
         if (response.data.code === 1) {
           resolve(response.data.data)
         } else {
-          alert(response.data.msg)
+          conssole.log('response.data.msg:'+response.data.msg)
         }
       })
       .catch(err => {
-        alert(err)
+        conssole.log('err:'+err)
       })
   })
 }
@@ -90,13 +90,13 @@ export function post(url, data = {}) {
           }
         } else {
           if (response.data.message) {
-            alert(response.data.message)
+            conssole.log('response.data.message:'+response.data.message)
           } else {
-            alert(response.data.msg)
+            conssole.log('response.data.msg:'+response.data.msg)
           }
         }
       }, err => {
-        alert(err)
+        conssole.log('err:'+err)
       })
   })
 }
@@ -120,7 +120,7 @@ export function getExcel(url, params = {}) {
         link.click()
       })
       .catch(err => {
-        alert(err)
+        conssole.log('err:'+err)
       })
   })
 }
@@ -140,7 +140,7 @@ export function postExcel(url, data = {}) {
         document.body.appendChild(link)
         link.click()
       }, err => {
-        alert(err)
+        conssole.log('err:'+err)
       })
   })
 }

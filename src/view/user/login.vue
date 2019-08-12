@@ -36,23 +36,13 @@
         data: {},
         getCodeInfoTime: 60,
         userInfo: {
-          headimgurl: "http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132",
-          message: "success",
-          nickname: "bwh",
-          openid: "oBaSqs8EjiGhwLVaaoHNar5Znvx4",
+          headimgurl: "",
+          message: "",
+          nickname: "",
+          openid: "",
           subscribe: true
-          // openId: 'oBaSqs8EjiGhwLVaaoHNar5Znvx4',
-          // headImgUrl: 'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
-          // nickName: 'bwh',
-          // defaultClientId: "ea8ecbc56a2a7de1016a446857530019",
-          // defaultStoreId: "1",
-          // gender: "女",
-          // id: "ea8ecbc56a2a7de1016a4467bce80018",
-          // phone: "13833131704",
-          // trueName: "白",
-          // subscribe:true
         },
-        arkSn: 862057048957259,
+        arkSn: null,
         wxUserInfo: {},
         redirect:'',
         code:''
@@ -209,6 +199,10 @@
           }
         }else{
           //console.log('未授权')
+          // 测试
+          // window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=http%3a%2f%2fwww.freelycar.cn%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+
+          // 线上
           window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3a%2f%2fwww.freelycar.com%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
         }
       },

@@ -141,10 +141,14 @@
         }
       }
     },
-    mounted: function () {
-      this.clientId = this.$route.query.id
-      this.storePhone = localStorage.getItem('storePhone')
-      this.getOrderList()
+    beforeCreate: function(){
+      if(localStorage.getItem('staffId')){
+        this.$router.push({path:'/order'})
+      }else {
+        this.clientId = this.$route.query.id
+        this.storePhone = localStorage.getItem('storePhone')
+        this.getOrderList()
+      }
     },
     computed: {}
   }

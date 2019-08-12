@@ -36,10 +36,10 @@
           // headImgUrl:'http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132',
           // nickName:'bwh',
           // gender:'女',
-          headimgurl: "http://thirdwx.qlogo.cn/mmopen/vi_32/MTFxlqUXArWp0jneoRvhXqPxhSziblzr6UFbgxateq5Ab2U1QgX57YINiac4qD2nGcNokWgtBdbdmuibVicGzkickFg/132",
-          message: "success",
-          nickname: "bwh",
-          openid: "oBaSqs8EjiGhwLVaaoHNar5Znvx4",
+          headimgurl: "",
+          message: "",
+          nickname: "",
+          openid: "",
           subscribe: true
         },
         staffList:[],
@@ -173,6 +173,11 @@
             }
           }else{
             //console.log('未授权')
+
+            //开发
+            // window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=http%3A%2F%2Fwww.freelycar.cn%2Fwechat%2FtecLogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+
+            // 部署
             window.location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3A%2F%2Fwww.freelycar.com%2Fwechat%2FtecLogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
 
           }

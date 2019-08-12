@@ -125,10 +125,14 @@
       },
 
     },
-    mounted: function () {
-      this.storePhone=localStorage.getItem('storePhone')
-      this.storeName=localStorage.getItem('storeName')
-      this.getAllInfo()
+    beforeCreate: function(){
+      if(localStorage.getItem('staffId')){
+        this.$router.push({path:'/tecHome'})
+      }else {
+        this.storePhone=localStorage.getItem('storePhone')
+        this.storeName=localStorage.getItem('storeName')
+        this.getAllInfo()
+      }
     }
   }
 </script>
