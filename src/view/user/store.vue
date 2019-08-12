@@ -27,7 +27,7 @@
       <div v-for="(item,index) in projects">
         <div class="store-service-item-title flex-center" @click="openOrCloseProject(index)">
           <span>{{item.projectTypeName}} <b>共{{item.projectInfos.length}}项</b></span>
-          <img :src="projectListIndex===index?'/static/up.png':'/static/down.png'" alt="">
+          <img :src="projectListIndex===index?'./static/up.png':'./static/down.png'" alt="">
         </div>
         <div v-show="projectListIndex===index" v-for="(projectItem,projuctIndex) in item.projectInfos"
              class="flex-center store-service-item">

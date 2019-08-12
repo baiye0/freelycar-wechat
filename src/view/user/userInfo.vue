@@ -12,8 +12,8 @@
       <div class="form-box">
         <img class="user-info-sex" src="./../../assets/sex.png" alt="">
         <div class="change-order-form-gender">
-          <span @click="chooseGender('男')"><img :src="[gender==='男'?'/static/checked.png':'/static/no-checked.png']" alt="">男士</span>
-          <span @click="chooseGender('女')"><img :src="[gender==='女'?'/static/checked.png':'/static/no-checked.png']" alt="">女士</span>
+          <span @click="chooseGender('男')"><img :src="[gender==='男'?'./static/checked.png':'./static/no-checked.png']" alt="">男士</span>
+          <span @click="chooseGender('女')"><img :src="[gender==='女'?'./static/checked.png':'./static/no-checked.png']" alt="">女士</span>
         </div>
       </div>
     </div>

@@ -40,7 +40,7 @@
     </div>
 
     <div class="align-center billing-order-protocol" @click="changeAgreeState">
-      <span class="color-blue"><img class="billing-order-img" :src="[isAgree?'/static/checked.png':'/static/no-checked.png']" alt="">同意《小易智能柜使用协议》</span>
+      <span class="color-blue"><img class="billing-order-img" :src="[isAgree?'./static/checked.png':'./static/no-checked.png']" alt="">同意《小易智能柜使用协议》</span>
     </div>
 
     <button class="big-blue-btn" @click="submit">提交</button>
@@ -56,7 +56,7 @@
 
           <div @click="selectProject(index)"
                class="billing-order-dialog-item" v-for="(item,index) in projects">
-            <img :src="[checkedId.indexOf(item.id)!==-1?'/static/check-yellow.png':'/static/check-no.png']" alt="">
+            <img :src="[checkedId.indexOf(item.id)!==-1?'./static/check-yellow.png':'./static/check-no.png']" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
             <div>{{item.comment}}</div>

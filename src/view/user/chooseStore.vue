@@ -7,7 +7,7 @@
       <img class="store-img" :src="[item.headUrl]" alt="">
       <span class="store-title">{{item.name}}</span>
       <span class="store-local">门店地址：{{item.address}}</span>
-      <img class="checkbox" :src="index===chooseStore?'/static/check-yellow.png':'/static/check-no.png'" alt="">
+      <img class="checkbox" :src="index===chooseStore?'./static/check-yellow.png':'./static/check-no.png'" alt="">
     </div>
     <button class="big-blue-btn" @click="submit">确认</button>
   </div>

@@ -12,8 +12,8 @@
     <div class="change-order-form">
       <span>性别</span>
       <div class="change-order-form-gender">
-        <span @click="chooseGender('男')"><img :src="[msg.gender==='男'?'/static/checked.png':'/static/no-checked.png']" alt="">男</span>
-        <span @click="chooseGender('女')"><img :src="[msg.gender==='女'?'/static/checked.png':'/static/no-checked.png']" alt="">女</span>
+        <span @click="chooseGender('男')"><img :src="[msg.gender==='男'?'./static/checked.png':'./static/no-checked.png']" alt="">男</span>
+        <span @click="chooseGender('女')"><img :src="[msg.gender==='女'?'./static/checked.png':'./static/no-checked.png']" alt="">女</span>
       </div>
     </div>
     <div class="change-order-form">

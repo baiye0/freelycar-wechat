@@ -27,7 +27,7 @@
                    :auto="true"
                    :simultaneous-uploads="1"
                    @file-success="fileSuccess"></cube-upload>
-      <!--<img v-show="!isImgShow" class="car-info-upload" src="/static/check-no.png" alt="">-->
+      <!--<img v-show="!isImgShow" class="car-info-upload" src="./static/check-no.png" alt="">-->
       <img v-show="isImgShow" class="car-info-upload" :src="carImageUrl" alt="">
     </div>
 
