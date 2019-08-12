@@ -43,14 +43,22 @@
 
 //        提交
       submit(){
-        this.$post('/wechat/wxuser/saveUserInfo',{
-          id:localStorage.getItem('id'),
-          trueName:this.name,
-          nickName:localStorage.getItem('nickName'),
-          gender:this.gender
-        }).then(res=>{
-          this.$router.push({path:'/carInfo'})
-        })
+        if(this.name!==''&&this.gender!==''){
+          this.$post('/wechat/wxuser/saveUserInfo',{
+            id:localStorage.getItem('id'),
+            trueName:this.name,
+            nickName:localStorage.getItem('nickName'),
+            gender:this.gender
+          }).then(res=>{
+            this.$router.push({path:'/carInfo'})
+          })
+        } else {
+          this.toast = this.$createToast({
+            txt: '您有信息未填写',
+            type: 'txt'
+          })
+          this.toast.show()
+        }
       }
     },
     mounted: function () {
