@@ -141,13 +141,15 @@
         }
       }
     },
-    beforeCreate: function(){
+    created: function(){
       if(localStorage.getItem('staffId')){
         this.$router.push({path:'/order'})
-      }else {
+      }else if(localStorage.getItem('clientId')){
         this.clientId = this.$route.query.id
         this.storePhone = localStorage.getItem('storePhone')
         this.getOrderList()
+      }else {
+        this.$router.push({path:'/login'})
       }
     },
     computed: {}

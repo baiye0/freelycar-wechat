@@ -125,13 +125,15 @@
       },
 
     },
-    beforeCreate: function(){
+    created: function(){
       if(localStorage.getItem('staffId')){
         this.$router.push({path:'/tecHome'})
-      }else {
+      }else if(localStorage.getItem('clientId')){
         this.storePhone=localStorage.getItem('storePhone')
         this.storeName=localStorage.getItem('storeName')
         this.getAllInfo()
+      }else {
+        this.$router.push({path:'/login'})
       }
     }
   }
