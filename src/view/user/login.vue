@@ -199,11 +199,10 @@
           }
         }else{
           //console.log('未授权')
-          // 测试
+          // 开发
           // window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=http%3a%2f%2fwww.freelycar.cn%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
-
-          // 线上
           window.location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxfd188f8284ee297b&redirect_uri=https%3a%2f%2fwww.freelycar.com%2fwechat%2flogin&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+          // 线上
         }
       },
 
@@ -220,10 +219,28 @@
       // 检查是否第一次登录
       isNewUser() {
         if (this.wxUserInfo.trueName) {
-          this.$router.push({path: '/myOrder',query:{id:this.wxUserInfo.defaultClientId}})
+          this.getOrderState()
         } else {
           this.$router.push({path: '/userInfo',query:{id:this.wxUserInfo.defaultClientId}})
         }
+      },
+
+      //      判断当前最新订单状态
+      getOrderState(){
+        this.$get('/wechat/order/listOrders', {
+          clientId: localStorage.getItem('clientId'),
+          type: 'ark'
+        }).then(res => {
+          if (res && res.length > 0) {
+            if (res[0].state < 3) {
+              this.$router.push({ path: "/myOrder"});
+            }else{
+              this.$router.push( {path: '/billingOrder' })
+            }
+          } else {
+            this.$router.push( {path: '/billingOrder' })
+          }
+        })
       }
 
     },
