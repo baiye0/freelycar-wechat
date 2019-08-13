@@ -107,6 +107,8 @@
             localStorage.setItem('clientId', this.wxUserInfo.defaultClientId)
             localStorage.setItem('id', this.wxUserInfo.id)
             localStorage.setItem('openId', this.wxUserInfo.openId)
+            localStorage.setItem('storeId', this.wxUserInfo.defaultStoreId)
+            localStorage.setItem('storeName', this.wxUserInfo.defaultStoreName)
             localStorage.setItem('trueName', this.wxUserInfo.trueName)
             localStorage.setItem('Authorization', "Bearer " + res.jwt)
             // 判断是否存在柜子码
@@ -131,8 +133,7 @@
         this.$get('/wechat/ark/getArkInfo', {
           arkSn: localStorage.getItem('arkSn')
         }).then(res => {
-          localStorage.setItem('storeId', res.storeId)
-          localStorage.setItem('storeName', res.name)
+          localStorage.setItem('arkName', res.name)
           if (res.storeId === this.wxUserInfo.defaultStoreId) {
             this.isNewUser()
           } else {
@@ -141,6 +142,10 @@
               id: this.wxUserInfo.id,
               defaultStoreId: res.storeId
             }).then(res => {
+              localStorage.setItem('clientId', res.defaultClientId)
+              localStorage.setItem('storeId', this.wxUserInfo.defaultStoreId)
+              localStorage.setItem('storeName', this.wxUserInfo.defaultStoreName)
+              // localStorage.setItem('storeId',)
               this.isNewUser()
             })
           }
