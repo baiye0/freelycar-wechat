@@ -50,6 +50,7 @@
         }).then(res => {
           localStorage.setItem('storeName',this.isChooseName)
           localStorage.setItem('storeId',this.storeId)
+          localStorage.setItem('clientId',res.defaultClientId)
           this.$router.push({path:'/userHome'})
         })
       }

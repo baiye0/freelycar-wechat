@@ -61,7 +61,7 @@ const SERVER_LIST = [
     port: 22,
     username: 'Administrator',
     password: 'Freelycar2017',
-    path: '/cygdrive/c/nginx/html/deploytest/'
+    path: '/cygdrive/c/nginx/html/wechat/'
   }
 ];
 

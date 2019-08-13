@@ -116,6 +116,9 @@
               // 检查柜子信息，看是否需要换门店
               this.getArkInfo()
             } else {
+              if(!this.wxUserInfo.defaultStoreId) {
+                  this.$router.push({path: '/chooseStore'})
+              }
               this.$router.push({path: '/userHome'})
             }
           })
