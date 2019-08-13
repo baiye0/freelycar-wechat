@@ -40,7 +40,7 @@
       </div>
       <div class="pay-order-card-item">
         <span>卡内余额</span>
-        <span class="pay-order-info-blue">{{myCard[0].balance}}元</span>
+        <span class="pay-order-info-blue">{{myCard.length>0?myCard[0].balance:0}}元</span>
       </div>
       <!--<div class="pay-order-card-item">-->
         <!--<span>抵用券</span>-->
