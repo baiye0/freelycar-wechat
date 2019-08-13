@@ -50,6 +50,7 @@
         storeId:'',
         chooseBrand:{},
         color:'',
+        backTo:'',
         colorList:[
           {text:'黑色',value:'黑色'},
           {text:'白色',value:'白色'},
@@ -90,19 +91,32 @@
 
       // 提交
       addCar(){
-        this.$post('/wechat/client/addCar',{
-          storeId:localStorage.getItem('storeId'),
-          clientId:localStorage.getItem('clientId'),
-          licensePlate:this.licensePlate,
-          carBrand:this.chooseBrand.carline,
-          carType:"",
-          miles:"0",
-          lastMiles:"0",
-          color:this.color,
-          carImageUrl:this.carImageUrl
-        }).then(res=>{
-          this.$router.push({path:this.backTo})
-        })
+        if(this.licensePlate&&this.chooseBrand.carline){
+          this.$post('/wechat/client/addCar',{
+            storeId:localStorage.getItem('storeId'),
+            clientId:localStorage.getItem('clientId'),
+            licensePlate:this.licensePlate,
+            carBrand:this.chooseBrand.carline,
+            carType:"",
+            miles:"0",
+            lastMiles:"0",
+            color:this.color,
+            carImageUrl:this.carImageUrl
+          }).then(res=>{
+            this.toast = this.$createToast({
+              txt: '添加成功',
+              type: 'txt'
+            })
+            this.toast.show()
+            this.$router.push({path:this.backTo})
+          })
+        }else {
+          this.toast = this.$createToast({
+            txt: '请将车牌号和品牌车系填写完整',
+            type: 'txt'
+          })
+          this.toast.show()
+        }
       },
 
     },

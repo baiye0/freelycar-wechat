@@ -38,7 +38,7 @@
       <div class="assets-card">
         <img src="./../../assets/my-card.png" alt="">
         <span>我的会员卡</span>
-        <span class="assets-count"><b>{{cardBalance!==0?cardBalance:'0'}}</b>元</span>
+        <span class="assets-count"><b>{{cardBalance?cardBalance:'0'}}</b>元</span>
         <router-link to="/buyCard">
           <span class="assets-recharge">立即充值</span>
         </router-link>
@@ -246,9 +246,14 @@
   .my-car-brand
     font-size w(22)
     line-height w(50)
-    left w(7)
-    top h(60)
+    left w(135)
+    top h(10)
     position relative
+    width w(150)
+    display block
+    overflow hidden
+    text-overflow ellipsis
+    white-space nowrap
 
   .my-car-del
     height w(35)

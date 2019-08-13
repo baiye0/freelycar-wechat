@@ -114,6 +114,7 @@
         consumerProjectList:[],
         checkedId:[],
         idList:[],
+        toastTxt:''
       }
     },
     methods: {
@@ -253,18 +254,46 @@
 
       // 提交
       submit(){
-         this.isOpenDoorShow=true
-         this.$post('/wechat/ark/orderService',{
-           consumerOrder:this.consumerOrder,
-           consumerProjectInfos:this.consumerProjectInfos,
-           arkSn:localStorage.getItem('arkSn'),
-           clientOrderImg:this.clientOrderImg
-         }).then(res=>{
-           this.isSuccessShow=true
-           setTimeout(()=>{
-             this.$router.push({path:'/myOrder'})
-           },3000)
-         })
+        if(!this.consumerOrder.carId){
+          this.toastTxt='请选择车辆'
+          this.showTxt()
+        }else if(this.consumerProjectInfos.length<=0){
+          this.toastTxt='请选择项目'
+          this.showTxt()
+        }else if(!this.consumerOrder.parkingLocation){
+          this.toastTxt='请填写汽车位置'
+          this.showTxt()
+        }else if(!this.isAgree){
+          this.toastTxt='请勾选同意使用协议'
+          this.showTxt()
+        } else {
+          this.submitHttp()
+        }
+      },
+
+      // 显示提示信息
+      showTxt(){
+        this.toast = this.$createToast({
+          txt: this.toastTxt,
+          type: 'txt'
+        })
+        this.toast.show()
+      },
+
+      // 提交下单的接口
+      submitHttp(){
+        this.isOpenDoorShow=true
+        this.$post('/wechat/ark/orderService',{
+          consumerOrder:this.consumerOrder,
+          consumerProjectInfos:this.consumerProjectInfos,
+          arkSn:localStorage.getItem('arkSn'),
+          clientOrderImg:this.clientOrderImg
+        }).then(res=>{
+          this.isSuccessShow=true
+          setTimeout(()=>{
+            this.$router.push({path:'/myOrder'})
+          },3000)
+        })
       }
     },
     mounted: function () {

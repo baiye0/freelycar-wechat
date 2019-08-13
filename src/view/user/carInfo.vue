@@ -62,19 +62,27 @@
 
       // 提交
       addCar(){
-        this.$post('/wechat/client/addCar',{
-          storeId:localStorage.getItem('storeId'),
-          clientId:localStorage.getItem('clientId'),
-          licensePlate:this.licensePlate,
-          carBrand:this.chooseBrand.carline,
-          carType:"",
-          miles:"0",
-          lastMiles:"0",
-          color:"白色",
-          carImageUrl:this.carImageUrl
-        }).then(res=>{
-          this.$router.push({path:'/billingOrder'})
-        })
+        if(this.licensePlate&&this.chooseBrand.carline){
+          this.$post('/wechat/client/addCar',{
+            storeId:localStorage.getItem('storeId'),
+            clientId:localStorage.getItem('clientId'),
+            licensePlate:this.licensePlate,
+            carBrand:this.chooseBrand.carline,
+            carType:"",
+            miles:"0",
+            lastMiles:"0",
+            color:"白色",
+            carImageUrl:this.carImageUrl
+          }).then(res=>{
+            this.$router.push({path:'/billingOrder'})
+          })
+        } else {
+          this.toast = this.$createToast({
+            txt: '请将车牌号和品牌车系填写完整',
+            type: 'txt'
+          })
+          this.toast.show()
+        }
       },
 
       //上传按钮
