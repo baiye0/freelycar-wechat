@@ -15,66 +15,82 @@
     data() {
       return {
         arkInfo: {},
-        msg: 3
+        msg: null
       }
     },
     props: [
       'arkInfoState'
     ],
-    methods: {},
-    mounted: function () {
-      switch (this.arkInfoState) {
-        case 'billingOrder': {
-          this.msg = null
-          this.arkInfo = {
-            text1: '预约成功',
-            text2: '我们已通知服务人员',
-            text3: '将在30分钟内为您服务',
-            text4: '感谢您使用',
-            text5: '小易智能柜预约服务！'
+    methods: {
+      changeTxt(state){
+        console.log('被调用success')
+        console.log(state)
+        switch (state) {
+          case 'billingOrder': {
+            console.log(this.arkInfoState)
+            this.msg = null
+            this.arkInfo = {
+              text1: '预约成功',
+              text2: '我们已通知服务人员',
+              text3: '将在30分钟内为您服务',
+              text4: '感谢您使用',
+              text5: '小易智能柜预约服务！'
+            }
           }
-        }
-        case 'cancelOrder': {
-          this.msg = 3
-          this.arkInfo = {
-            text1: '订单取消成功',
-            text2: '谢谢您的支持，期待您下次使用！',
-            text3: '',
-            text4: '秒',
-            text5: '返回微信公众页'
+            break
+          case 'cancelOrder': {
+            console.log(this.arkInfoState)
+            this.msg = 3
+            this.arkInfo = {
+              text1: '订单取消成功',
+              text2: '谢谢您的支持，期待您下次使用！',
+              text3: '',
+              text4: '秒',
+              text5: '返回微信公众页'
+            }
           }
-        }
-        case 'payOrder': {
-          this.msg = 3
-          this.arkInfo = {
-            text1: '订单已完成',
-            text2: '谢谢您的支持，期待您下次使用！',
-            text3: '',
-            text4: '秒',
-            text5: '返回微信公众页'
+            break
+          case 'payOrder': {
+            console.log(this.arkInfoState)
+            this.msg = 3
+            this.arkInfo = {
+              text1: '订单已完成',
+              text2: '谢谢您的支持，期待您下次使用！',
+              text3: '',
+              text4: '秒',
+              text5: '返回微信公众页'
+            }
           }
-        }
-        case 'tecGetKey': {
-          this.msg = null
-          this.arkInfo = {
-            text1: '接单成功',
-            text2: '我们已通知服务车主订单状态',
-            text3: '请尽快将车辆送往门店',
-            text4: '',
-            text5: ''
+            break
+          case 'tecGetKey': {
+            console.log(this.arkInfoState)
+            this.msg = null
+            this.arkInfo = {
+              text1: '接单成功',
+              text2: '我们已通知服务车主订单状态',
+              text3: '请尽快将车辆送往门店',
+              text4: '',
+              text5: ''
+            }
           }
-        }
-        case 'tecFinish': {
-          this.msg = null
-          this.arkInfo = {
-            text1: '订单完成',
-            text2: '小易爱车感谢您的服务！',
-            text3: '',
-            text4: '',
-            text5: ''
+            break
+          case 'tecFinish': {
+            console.log(this.arkInfoState)
+            this.msg = null
+            this.arkInfo = {
+              text1: '订单完成',
+              text2: '小易爱车感谢您的服务！',
+              text3: '',
+              text4: '',
+              text5: ''
+            }
           }
+            break
         }
+        console.log(this.arkInfo)
       }
+    },
+    mounted: function () {
     }
   }
 </script>

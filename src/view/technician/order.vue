@@ -49,8 +49,8 @@
     </div>
 
     <!--开门成功-->
-    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
-    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
+    <open-door ref="openDoor" :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success ref="success" :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
 
     <div class="history-order-search">
       <input v-model="search" type="text" placeholder="请输入订单号或车牌号来搜索订单">
@@ -141,6 +141,8 @@
       // 接车的一键开柜
       pickOpen(id){
         this.arkInfoState = 'tecGetKey'
+        this.$refs.openDoor.changeTxt()
+        this.$refs.success.changeTxt()
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/pickCar',{
           orderId:id,

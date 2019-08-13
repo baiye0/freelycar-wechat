@@ -24,25 +24,34 @@
     props: [
       'arkInfoState'
     ],
-    methods: {},
-    mounted: function () {
-      switch (this.arkInfoState){
-        case 'billingOrder':{
-          this.arkInfo={text1:'柜门正在打开，请勿离开', text2:'柜门打开，请取走钥匙，并关闭柜门'}
-        }
-        case 'cancelOrder':{
-          this.arkInfo={text1:'柜门打开，请取走钥匙，并关闭柜门', text2:''}
-        }
-        case 'payOrder':{
-          this.arkInfo={text1:'柜门打开，请取走钥匙，并关闭柜门', text2:'谢谢您的支持！'}
-        }
-        case 'tecGetKey':{
-          this.arkInfo={text1:'柜门正在打开，请勿离开', text2:'柜门打开，请取走钥匙，并关闭柜门'}
-        }
-        case 'tecFinish':{
-          this.arkInfo={text1:'柜门已打开', text2:'请将钥匙放入柜内，并关闭柜门'}
+    methods: {
+      changeTxt(state){
+        switch (state){
+          case 'billingOrder':{
+            this.arkInfo={text1:'柜门正在打开，请勿离开', text2:'柜门打开，请取走钥匙，并关闭柜门'}
+          }
+            break
+          case 'cancelOrder':{
+            this.arkInfo={text1:'柜门打开，请取走钥匙，并关闭柜门', text2:''}
+          }
+            break
+          case 'payOrder':{
+            this.arkInfo={text1:'柜门打开，请取走钥匙，并关闭柜门', text2:'谢谢您的支持！'}
+          }
+            break
+          case 'tecGetKey':{
+            this.arkInfo={text1:'柜门正在打开，请勿离开', text2:'柜门打开，请取走钥匙，并关闭柜门'}
+          }
+            break
+          case 'tecFinish':{
+            this.arkInfo={text1:'柜门已打开', text2:'请将钥匙放入柜内，并关闭柜门'}
+          }
+            break
         }
       }
+    },
+    mounted: function () {
+
     }
   }
 </script>

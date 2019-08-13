@@ -71,8 +71,8 @@
       </div>
     </div>
 
-    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
-    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
+    <open-door ref="openDoor" :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success ref="successArk" :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
   </div>
 </template>
 
@@ -282,6 +282,9 @@
 
       // 提交下单的接口
       submitHttp(){
+        this.arkInfoState='billingOrder'
+        this.$refs.openDoor.changeTxt('billingOrder')
+        this.$refs.successArk.changeTxt('billingOrder')
         this.isOpenDoorShow=true
         this.$post('/wechat/ark/orderService',{
           consumerOrder:this.consumerOrder,

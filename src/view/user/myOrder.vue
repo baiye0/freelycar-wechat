@@ -41,8 +41,8 @@
 
     </div>
 
-    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
-    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
+    <open-door ref="openDoor" :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success ref="successArk" :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
 
     <div class="dialog-layer" v-show="isCarImgShow">
       <div class="dialog-box-black my-order-dialog-box">
@@ -106,6 +106,8 @@
           },
           onConfirm: () => {
             this.arkInfoState='payOrder'
+            this.$refs.openDoor.changeTxt('payOrder')
+            this.$refs.successArk.changeTxt('payOrder')
             this.isOpenDoorShow=true
             this.$get('/wechat/ark/orderFinish',{
               id:id

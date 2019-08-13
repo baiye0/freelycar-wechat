@@ -81,8 +81,8 @@
     <button class="blue-btn" v-show="consumerOrder.state===0 || consumerOrder.state===1" @click="orderTracking">订单跟踪</button>
     <button class="gray-btn" v-show="consumerOrder.state===0" @click="cancelOrder">取消订单</button>
 
-    <open-door :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
-    <success :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
+    <open-door ref="openDoor" :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
+    <success ref="successArk" :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
   </div>
 </template>
 
@@ -232,16 +232,17 @@
 
 //      取消订单
       cancelOrderService(){
+        this.arkInfoState='cancelOrder'
+        this.$refs.openDoor.changeTxt('cancelOrder')
+        this.$refs.successArk.changeTxt('cancelOrder')
+        this.isOpenDoorShow=true
         this.$get('/wechat/ark/cancelOrderService',{
           id:this.orderId
         }).then(res=>{
-          this.toast = this.$createToast({
-            txt: '取消成功',
-            type: 'txt'
-          })
-          this.toast.show()
-          this.arkInfoState='cancelOrder'
-          this.getCar()
+          this.isSuccessShow=true
+          setTimeout(()=>{
+            this.$router.push({path:'/myOrder'})
+          },3000)
         })
       },
 
@@ -364,6 +365,8 @@
           },
           onConfirm: () => {
             this.arkInfoState='payOrder'
+            this.$refs.openDoor.changeTxt('payOrder')
+            this.$refs.successArk.changeTxt('payOrder')
             this.getCar()
           },
           onCancel: () => {
@@ -374,6 +377,9 @@
 
       // 取车
       getCar(){
+        this.arkInfoState='tecGetKey'
+        this.$refs.openDoor.changeTxt('tecGetKey')
+        this.$refs.successArk.changeTxt('tecGetKey')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/orderFinish',{
           id:this.orderId
