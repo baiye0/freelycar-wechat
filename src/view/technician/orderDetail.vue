@@ -191,8 +191,8 @@
       // 接车的一键开柜
       pickOpen(){
         this.arkInfoState = 'tecGetKey'
-        this.$refs.openDoor.changeTxt()
-        this.$refs.success.changeTxt()
+        this.$refs.openDoor.changeTxt('tecGetKey')
+        this.$refs.success.changeTxt('tecGetKey')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/pickCar',{
           orderId:this.orderId,
@@ -241,8 +241,8 @@
       // 确认完工的一键开柜
       finishOpen(){
         this.arkInfoState = 'tecFinish'
-        this.$refs.openDoor.changeTxt()
-        this.$refs.success.changeTxt()
+        this.$refs.openDoor.changeTxt('tecFinish')
+        this.$refs.success.changeTxt('tecFinish')
         this.isOpenDoorShow=true
         this.$post('/wechat/ark/finishCar',{
           consumerOrder:{

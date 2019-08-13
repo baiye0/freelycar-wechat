@@ -113,7 +113,7 @@
       },
 
       // 接单
-      takeOrder(licensePlate){
+      takeOrder(licensePlate,id){
         this.$createDialog({
           type: 'confirm',
           title: '您是否确认在柜前开始'+licensePlate+'的订单？',
@@ -141,8 +141,8 @@
       // 接车的一键开柜
       pickOpen(id){
         this.arkInfoState = 'tecGetKey'
-        this.$refs.openDoor.changeTxt()
-        this.$refs.success.changeTxt()
+        this.$refs.openDoor.changeTxt('tecGetKey')
+        this.$refs.success.changeTxt('tecGetKey')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/pickCar',{
           orderId:id,
