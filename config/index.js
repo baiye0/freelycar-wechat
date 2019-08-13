@@ -9,8 +9,7 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    // assetsPublicPath: '/wechat/',    //开发
-    assetsPublicPath: '/',  //部署
+    assetsPublicPath: '/wechat/',    //开发
     proxyTable: {
     '/api': {  //使用"/api"来代替"https://www.freelycar.com"
       target: 'https://www.freelycar.com', //源地址
@@ -25,8 +24,7 @@ module.exports = {
   },
 
     // Various Dev Server settings
-    host: 'localhost', //
-    // host: 'www.freelycar.cn', // 开发
+    host: 'www.freelycar.cn', // 开发
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
