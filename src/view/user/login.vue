@@ -118,8 +118,9 @@
             } else {
               if(!this.wxUserInfo.defaultStoreId) {
                   this.$router.push({path: '/chooseStore'})
+              }else {
+                this.$router.push({path: '/userHome'})
               }
-              this.$router.push({path: '/userHome'})
             }
           })
         } else {

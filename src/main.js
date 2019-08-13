@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
-import {get, post, getExcel, postExcel} from "./components/axiosHttp";
+import {get, post} from "./components/axiosHttp";
 import Cube from 'cube-ui'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
@@ -23,14 +23,14 @@ Vue.prototype.axios = axios
 // 引入封装接口
 Vue.prototype.$get = get
 Vue.prototype.$post = post
-Vue.prototype.$getExcel = getExcel
-Vue.prototype.$postExcel = postExcel
 
 Vue.component('openDoor', openDoor)
 Vue.component('success', success)
 
 
-
+router.afterEach((to, from, next) => {
+  window.scrollTo(0, 0)
+})
 
 /* eslint-disable no-new */
 new Vue({
