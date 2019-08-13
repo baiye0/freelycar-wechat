@@ -69,11 +69,13 @@ export function get(url, params = {}) {
         if (response.data.code === 1) {
           resolve(response.data.data)
         } else {
-          conssole.log('response.data.msg:'+response.data.msg)
+          if (response.data.msg) {
+            alert('msg:'+response.data.msg)
+          }
         }
       })
       .catch(err => {
-        conssole.log('err:'+err)
+        alert('err:'+err)
       })
   })
 }
@@ -89,58 +91,12 @@ export function post(url, data = {}) {
             resolve(response.data.data)
           }
         } else {
-          if (response.data.message) {
-            conssole.log('response.data.message:'+response.data.message)
-          } else {
-            conssole.log('response.data.msg:'+response.data.msg)
+          if (response.data.msg) {
+            alert('msg:'+response.data.msg)
           }
         }
       }, err => {
-        conssole.log('err:'+err)
-      })
-  })
-}
-
-export function getExcel(url, params = {}) {
-  return new Promise((resolve, reject) => {
-    axios.get('/api' + url, {
-      params: params,
-      responseType: 'blob',
-    })
-      .then(res => {
-        if (!res) {
-          return
-        }
-        let url = window.URL.createObjectURL(res.data)
-        let link = document.createElement('a')
-        link.style.display = 'none'
-        link.href = url
-        link.setAttribute('download', 'excel.xls')
-        document.body.appendChild(link)
-        link.click()
-      })
-      .catch(err => {
-        conssole.log('err:'+err)
-      })
-  })
-}
-
-export function postExcel(url, data = {}) {
-  return new Promise((resolve, reject) => {
-    axios.post('/api' + url, data, {responseType: 'blob'})
-      .then(res => {
-        if (!res) {
-          return
-        }
-        let url = window.URL.createObjectURL(res.data)
-        let link = document.createElement('a')
-        link.style.display = 'none'
-        link.href = url
-        link.setAttribute('download', 'excel.xls')
-        document.body.appendChild(link)
-        link.click()
-      }, err => {
-        conssole.log('err:'+err)
+        alert('err:'+err)
       })
   })
 }

@@ -22,6 +22,7 @@
     </div>
 
     <button class="big-blue-btn" @click="submit">保存</button>
+    <button class="big-gray-btn" @click="signOut">退出登录</button>
   </div>
 </template>
 
@@ -146,6 +147,33 @@
 //      选择性别
       chooseGender(gender){
         this.msg.gender = gender
+      },
+
+      // 退出登录
+      signOut(){
+        this.$createDialog({
+          type: 'confirm',
+          title: '是否确认退出登录？',
+          confirmBtn: {
+            text: '退出',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: () => {
+            localStorage.clear()
+            this.$router.push({path:'/login'})
+          },
+          onCancel: () => {
+            console.log('取消')
+          }
+        }).show()
       }
     },
     mounted:function () {
