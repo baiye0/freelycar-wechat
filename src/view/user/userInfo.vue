@@ -50,6 +50,7 @@
             nickName:localStorage.getItem('nickName'),
             gender:this.gender
           }).then(res=>{
+            localStorage.setItem('trueName',res.trueName)
             this.$router.push({path:'/carInfo'})
           })
         } else {
