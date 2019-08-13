@@ -51,6 +51,9 @@
             gender:this.gender
           }).then(res=>{
             localStorage.setItem('trueName',res.trueName)
+            localStorage.setItem('storeId',res.defaultStoreId)
+            localStorage.setItem('clientId',res.defaultClientId)
+
             this.$router.push({path:'/carInfo'})
           })
         } else {
