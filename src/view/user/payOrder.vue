@@ -120,8 +120,15 @@
           id:localStorage.getItem('clientId'),
           storeId:localStorage.getItem('storeId')
         }).then(res=>{
-            if (null != res) {
+            if (res) {
                 this.myCard=res;
+                if(this.myCard.length > 0 && this.myCard[0].balance>=this.consumerOrder.actualPrice){
+                    this.payWayInfo = '会员卡支付'
+                }else{
+                    this.payWayInfo = '微信支付'
+                }
+            }else{
+                this.payWayInfo = '微信支付'
             }
         })
       },
@@ -365,7 +372,7 @@
       getCar(){
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/orderFinish',{
-          id:''
+          id:this.orderId
         }).then(res=>{
           this.isSuccessShow=true
           setTimeout(()=>{
