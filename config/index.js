@@ -52,11 +52,9 @@ module.exports = {
   build: {
     // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),  //部署
-    // index: path.resolve('E:\\nginx-1.16.0\\html', 'wechat/index.html'),   //开发
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),  //部署
-    // assetsRoot: path.resolve('E:\\nginx-1.16.0\\html', 'wechat'),   //开发
     assetsSubDirectory: 'static',
     assetsPublicPath: '/wechat/',
 
