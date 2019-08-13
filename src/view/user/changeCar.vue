@@ -3,10 +3,11 @@
     <div v-for="(item,index) in carList"
          @click="chooseCar(item.licensePlate,item.id)"
          class="change-car-card">
-      <img class="change-car-card-img" :src="item.carImageUrl" alt="">
+      <img class="change-car-card-img" :src="[item.carImageUrl?item.carImageUrl:'./static/car.png']" alt="">
+      <!--<img class="change-car-card-img" src="./../../assets/car.png" alt="">-->
       <div>
         <span>{{item.licensePlate}}</span>
-        <span><img src="./../../assets/name1.png" alt="">{{name}}</span>
+        <!--<span><img src="./../../assets/name1.png" alt="">{{name}}</span>-->
       </div>
       <span>{{item.color}} · {{item.carBrand}}</span>
     </div>

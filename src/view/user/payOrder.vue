@@ -63,8 +63,11 @@
         <!--<span class="pay-order-info-yellow">???-￥10</span>-->
       <!--</div>-->
       <div class="pay-order-card-item">
-        <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}} <img
-          class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b></span>
+        <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}}
+          <a :href="['tel:' + storeInfo.phone]">
+            <img class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b>
+          </a>
+        </span>
         <span>实付<b class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</b></span>
       </div>
     </div>
@@ -100,7 +103,8 @@
         isOpenDoorShow:false,
         isSuccessShow:false,
         payWayInfo:'',
-        myCard:[{balance:0}]
+        myCard:[{balance:0}],
+        storeInfo:{}
       }
     },
     methods: {
@@ -111,7 +115,6 @@
         }).then(res=>{
           this.consumerOrder=res.consumerOrder
           this.consumerProjectInfos=res.consumerProjectInfos
-          this.getMyCard()
         })
       },
 
@@ -187,7 +190,7 @@
             href: 'javascript:;'
           },
           onConfirm: () => {
-            console.log('取消')
+            //
           },
           onCancel: () => {
             this.cancelAndGetKey()
@@ -386,6 +389,7 @@
       this.orderId = this.$route.query.orderId
       this.storeName = localStorage.getItem('storeName')
       this.getOrderDetail()
+      this.getMyCard()
       this.wxConfig()
     },
     computed:{

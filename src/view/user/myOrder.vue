@@ -10,7 +10,9 @@
 
       <div class="order-info" @click="orderDetail(item.id)">
         <span class="order-info-brand">{{item.licensePlate}}  {{item.carBrand}}</span>
-        <button class="order-info-type">{{item.projectNames}}</button>
+        <div>
+          <span class="order-info-type" v-for="(itemP,indexP) in item.projectNames.split(',')">{{itemP}}</span>
+        </div>
         <span class="order-info-num">订单编号 {{item.id}}</span>
         <img class="order-info-more" src="./../../assets/more.png" alt="">
       </div>
@@ -213,6 +215,7 @@
   .order-info-num
     font-size w(26)
     color #C0C0C0
+    margin h(20) 0
 
   .order-info-more
     height h(25)
@@ -221,14 +224,14 @@
     right w(41)
 
   .order-info-type
-    height h(55)
-    width w(133)
+    flex none
     border 1px solid #2049BF
     background white
     color #2049BF
     font-size w(24)
     border-radius 28px
-    margin h(36) 0
+    padding h(10) w(20)
+    margin h(30) w(20)
 
   .order-img
     height h(89)

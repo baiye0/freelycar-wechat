@@ -43,7 +43,7 @@
       <span class="color-blue"><img class="billing-order-img" :src="[isAgree?'./static/checked.png':'./static/no-checked.png']" alt="">同意《小易智能柜使用协议》</span>
     </div>
 
-    <button class="big-blue-btn" @click="submit">提交</button>
+    <button class="submit-btn" @click="submit">提交</button>
 
     <!--模态框-->
     <div class="dialog-layer" v-show="isDialogShow">
@@ -331,6 +331,19 @@
   w(n)
     n / 7.5vw
 
+  .submit-btn
+    height h(84)
+    width w(579)
+    border-radius w(40)
+    border transparent
+    color white
+    font-size w(32)
+    background $bt-blue
+    position absolute
+    transform translate(-50%,0)
+    left 50%
+    bottom h(50)
+
   .billing-order-car-img
     height w(125)
     width w(125)
@@ -374,7 +387,7 @@
     color #2049BF
 
   .billing-order-project
-    height h(210)
+    min-height h(210)
     position relative
 
   .billing-order-project button
@@ -397,6 +410,7 @@
     box-sizing border-box
     font-size w(24)
     margin w(24)
+    display inline-block
 
   .billing-order-project-count
     color #B3B3B3
