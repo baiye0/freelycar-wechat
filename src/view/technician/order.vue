@@ -159,7 +159,10 @@
         }).then(res=>{
           this.isSuccessShow=true
           setTimeout(()=>{
-            this.$router.push({path:'/order'})
+            // this.$router.push({path:'/order'})
+            this.isOpenDoorShow=false
+            this.isSuccessShow=false
+            this.tabBar = '已接到订单'
           },3000)
         })
       },
@@ -179,6 +182,9 @@
       this.getOrders()
       this.getFinishOrders()
       this.arkSn=localStorage.getItem('arkSn')
+      if(this.$route.query.tabBar){
+        this.tabBar = this.$route.query.tabBar
+      }
     }
   }
 </script>

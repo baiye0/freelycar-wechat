@@ -210,7 +210,9 @@
         }).then(res=>{
           this.isSuccessShow=true
           setTimeout(()=>{
-            this.$router.push({path:'/order'})
+            this.$router.push({path:'/order',query:{tabBar:'已接到订单'}})
+            this.isOpenDoorShow=false
+            this.isSuccessShow=false
           },3000)
         })
       },
