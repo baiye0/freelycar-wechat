@@ -148,6 +148,7 @@
 
       // 接车的一键开柜
       pickOpen(id){
+        window.scrollTo(0, 0)
         this.arkInfoState = 'tecGetKey'
         this.$refs.openDoor.changeTxt('tecGetKey')
         this.$refs.success.changeTxt('tecGetKey')
@@ -157,9 +158,9 @@
           staffId:localStorage.getItem('staffId')
         }).then(res=>{
           this.isSuccessShow=true
-          // setTimeout(()=>{
-          //   this.$router.push({path:'/myOrder'})
-          // },3000)
+          setTimeout(()=>{
+            this.$router.push({path:'/order'})
+          },3000)
         })
       },
 

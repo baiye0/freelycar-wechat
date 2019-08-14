@@ -47,7 +47,7 @@
     <div class="dialog-layer" v-show="isCarImgShow">
       <div class="dialog-box-black my-order-dialog-box">
         <img src="./../../assets/close.png" @click="getImg" class="dialog-box-black-close" alt="">
-        <img src="./../../assets/car.png" class="dialog-car-img" alt="">
+        <img :src="staffOrderImgUrl" class="dialog-car-img" alt="">
       </div>
     </div>
   </div>
@@ -64,7 +64,8 @@
         isOpenDoorShow:false,
         isSuccessShow:false,
         storePhone:'025-86697165',
-        isCarImgShow:false
+        isCarImgShow:false,
+        staffOrderImgUrl:''
       }
     },
     methods: {
@@ -85,6 +86,9 @@
 
 //      显示车照片
       getImg(index){
+        if(!this.isCarImgShow){
+          this.staffOrderImgUrl=this.msg[index].staffOrderImgUrl
+        }
         this.isCarImgShow = !this.isCarImgShow
       },
 

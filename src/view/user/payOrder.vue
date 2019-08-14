@@ -14,7 +14,7 @@
       </div>
       <div class="pay-order-card-item" v-show="consumerOrder.payState===2">
         <span>支付方式</span>
-        <span class="pay-order-info-gray">{{payWay}}</span>
+        <span class="pay-order-info-gray">{{consumerOrder.firstPayMethod | payWay}}</span>
       </div>
     </div>
 
@@ -401,15 +401,15 @@
       this.getOrderDetail()
       this.wxConfig()
     },
-    computed:{
-      payWay:function () {
-        switch (this.consumerOrder.firstPayMethod) {
-          case '0':return '储值卡'
-          case '1':return '现金'
-          case '2':return '微信'
-          case '3':return '支付宝'
-          case '4':return '易付宝'
-          case '5':return '刷卡'
+    filters:{
+      payWay:function (value) {
+        switch (value) {
+          case 0:return '储值卡支付'
+          case 1:return '现金支付'
+          case 2:return '微信支付'
+          case 3:return '支付宝支付'
+          case 4:return '易付宝支付'
+          case 5:return '刷卡支付'
         }
       }
     }

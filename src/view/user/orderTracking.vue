@@ -9,7 +9,9 @@
         <div>
           <img src="./../../assets/head.png" alt="">
           <span>{{consumerOrder.pickCarStaffName}}</span>
-          <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
+          <a :href="['tel:' + consumerOrder]">
+            <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
+          </a>
         </div>
         <div class="order-tracking-card-state">
           <img src="./../../assets/car-state.png" alt="">
