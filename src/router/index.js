@@ -20,6 +20,7 @@ import openDoor from '@/view/components/openDoor.vue'
 import success from '@/view/components/success.vue'
 import roleSelection from '@/view/components/role-selection.vue'
 import chooseBrand from '@/view/components/chooseBrand.vue'
+import scanCode from '@/view/components/scanCode.vue'
 
 
 import tecHome from '@/view/technician/tecHome.vue'
@@ -44,6 +45,10 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: order
+    },{
+      path: '/scanCode',
+      name: 'scanCode',
+      component: scanCode
     },
     {
       path: '/chooseBrand',
