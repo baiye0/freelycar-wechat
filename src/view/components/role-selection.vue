@@ -29,7 +29,28 @@
         if (localStorage.getItem('jwt')) {
           //如果技师已经登录，直接去接单页
           if (localStorage.getItem('staffId') !== null && localStorage.getItem('jwt') !== null) {
-            this.$router.push({path: '/order' })
+              //判断扫的柜子是哪个门店，帮ta切换过去/提醒他，没有这个柜子的操作权
+              this.$get('/wechat/ark/getArkInfo', {
+                  arkSn: arkSn
+              }).then(res => {
+                  localStorage.setItem('arkName', res.name)
+                  if (res.storeId === localStorage.getItem('storeId')) {
+                      console.log('门店没有切换，直接跳转到order路径')
+                  } else {
+                      // 更新门店信息
+                      this.$post('/wechat/employee/selectStore', {
+                          id:localStorage.getItem('employeeId'),
+                          defaultStoreId: res.storeId
+                      }).then(res => {
+                          if(res){
+                              localStorage.setItem('storeId', res.defaultStoreId)
+                              localStorage.setItem('storeName', res.defaultStoreName)
+                              localStorage.setItem('staffId', res.defaultStaffId)
+                          }
+                      })
+                  }
+              })
+              this.$router.push({path: '/order' })
   //        window.location.href = "https://www.freelycar.com/wechat/#/techome"
           }
           //如果用户已经登录，
@@ -45,7 +66,7 @@
               arkSn: arkSn
             }).then(res => {
               localStorage.setItem('storeId', res.storeId)
-              localStorage.setItem('storeName', res.name)
+              localStorage.setItem('arkName', res.name)
               if (res.storeId === localStorage.getItem('storeId')) {
                 this.getOrderState()
               } else {
@@ -54,6 +75,9 @@
                   id: localStorage.getItem('id'),
                   defaultStoreId: res.storeId
                 }).then(res => {
+                    if (res){
+                        localStorage.setItem('storeName', res.defaultStoreName)
+                    }
                   this.getOrderState()
                 })
               }
