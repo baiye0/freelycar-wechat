@@ -9,7 +9,7 @@
         <div>
           <img src="./../../assets/head.png" alt="">
           <span>{{consumerOrder.pickCarStaffName}}</span>
-          <a :href="['tel:' + staffInfo.phone]">
+          <a :href="['tel:' + staffInfo.phone?staffInfo.phone:'025-86697165']">
             <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
           </a>
         </div>
