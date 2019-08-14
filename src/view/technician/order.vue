@@ -164,6 +164,7 @@
             this.isOpenDoorShow=false
             this.isSuccessShow=false
             this.tabBar = '已接到订单'
+            window.location.reload()
           },3000)
         })
       },

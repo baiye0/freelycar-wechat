@@ -159,7 +159,7 @@
             href: 'javascript:;'
           },
           onConfirm: () => {
-            window.location.href = "tel:10086"
+            window.location.href = "tel:"+this.consumerOrder.phone
           },
           onCancel: () => {
             console.log('取消')
