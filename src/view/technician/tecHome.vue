@@ -26,7 +26,7 @@
         <div class="menu">
           <img class="history-icon" src="../../assets/history-icon.png" alt="历史">
           <span>历史订单</span>
-          <span class="count">总计：30单</span>
+          <span class="count">总计：{{staffInfo.historyOrderCount?staffInfo.historyOrderCount:0}}单</span>
           <img class="more" src="../../assets/more.png" alt="详细">
         </div>
       </router-link>
