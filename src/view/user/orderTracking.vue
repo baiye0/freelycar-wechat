@@ -9,7 +9,7 @@
         <div>
           <img src="./../../assets/head.png" alt="">
           <span>{{consumerOrder.pickCarStaffName}}</span>
-          <a :href="['tel:' + staffInfo.phone?staffInfo.phone:'025-86697165']">
+          <a :href="['tel:' + staffPhone]">
             <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
           </a>
         </div>
@@ -24,7 +24,7 @@
           <span>联系客服</span>
         </a>
         <div></div>
-        <a :href="['tel:' + store.phone?store.phone:'025-86697165']">
+        <a :href="['tel:' + storePhone]">
           <span>联系门店</span>
         </a>
       </div>
@@ -62,7 +62,9 @@
         title:'',
         state:'',
         staffInfo:{},
-        store:{}
+        store:{},
+        staffPhone:'025-86697165',
+        storePhone:'025-86697165'
       }
     },
     methods: {
@@ -75,10 +77,19 @@
           this.consumerOrder = res.consumerOrder
           this.staffInfo = res.staffInfo
           this.store = res.store
+
+            if (this.staffInfo) {
+                this.staffPhone = this.staffInfo.phone
+            }
+
+            if(this.store){
+                this.storePhone = this.store.phone
+            }
+
           this.time=[
             this.consumerOrder.createTime,
             this.consumerOrder.pickTime
-          ]
+          ];
 //          this.consumerOrder.finishTime,
 //            this.consumerOrder.deliverTime
           console.log(this.time)
