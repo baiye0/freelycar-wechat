@@ -8,7 +8,7 @@
       </div>
       <div class="password">
         <img src="../../assets/password2.png" alt="验证码">
-        <input type="text" placeholder="请输入账号密码" v-model="password">
+        <input type="password" placeholder="请输入账号密码" v-model="password">
       </div>
       <div class="btn">
         <router-link to="/login">

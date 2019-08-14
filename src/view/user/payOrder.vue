@@ -115,6 +115,7 @@
         }).then(res=>{
           this.consumerOrder=res.consumerOrder
           this.consumerProjectInfos=res.consumerProjectInfos
+          this.getMyCard()
         })
       },
 
@@ -395,7 +396,6 @@
       this.orderId = this.$route.query.orderId
       this.storeName = localStorage.getItem('storeName')
       this.getOrderDetail()
-      this.getMyCard()
       this.wxConfig()
     },
     computed:{
