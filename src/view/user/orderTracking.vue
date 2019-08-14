@@ -24,7 +24,7 @@
           <span>联系客服</span>
         </a>
         <div></div>
-        <a :href="['tel:' + store.phone]">
+        <a :href="['tel:' + store.phone?store.phone:'025-86697165']">
           <span>联系门店</span>
         </a>
       </div>
