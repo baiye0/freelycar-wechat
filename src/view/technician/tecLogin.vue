@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <img class="logo" src="../../assets/login-bg.png" alt="logo">
+    <img class="logo" src="../../assets/teclogin-bg.png" alt="logo">
     <div class="form">
       <div class="phone">
         <img src="../../assets/people.png" alt="账号">
