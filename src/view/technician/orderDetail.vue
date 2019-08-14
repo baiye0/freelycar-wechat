@@ -39,7 +39,7 @@
       </div>
       <cube-upload v-show="!isImgShow"
                    ref="upload"
-                   action="https://www.freelycar.com/api/upload/carImg"
+                   action="https://www.freelycar.com/api/upload/staffOrderImg"
                    :auto="true"
                    :simultaneous-uploads="1"
                    @file-success="fileSuccess"></cube-upload>
@@ -58,7 +58,7 @@
     <div class="dialog-layer" v-show="isCarImgShow">
       <div class="dialog-box-black my-order-dialog-box">
         <img src="./../../assets/close.png" @click="showCarImg" class="dialog-box-black-close" alt="">
-        <img :src="consumerOrder.carImageUrl" class="dialog-car-img" alt="">
+        <img :src="carImageUrl" class="dialog-car-img" alt="">
       </div>
     </div>
 
@@ -110,15 +110,24 @@
         }).then(res=>{
           this.orderInfo=res
           this.consumerOrder=res.consumerOrder
+          this.carImageUrl = res.clientOrderImg.url
         })
       },
 
       // 复制
       onCopy(){
-        console.log('复制成功')
+        this.toast = this.$createToast({
+          txt: '复制成功',
+          type: 'txt'
+        })
+        this.toast.show()
       },
       onError(){
-        console.log('复制失败')
+        this.toast = this.$createToast({
+          txt: '复制失败',
+          type: 'txt'
+        })
+        this.toast.show()
       },
 
       // 查看钥匙位置
@@ -216,28 +225,36 @@
 
       // 确认完工
       finishOrder(){
-        this.$createDialog({
-          type: 'confirm',
-          title: '您是否确认在柜前结束'+this.consumerOrder.licensePlate+'的订单？',
-          confirmBtn: {
-            text: '确认',
-            active: true,
-            disabled: false,
-            href: 'javascript:;'
-          },
-          cancelBtn: {
-            text: '取消',
-            active: false,
-            disabled: false,
-            href: 'javascript:;'
-          },
-          onConfirm: () => {
-            this.finishOpen()
-          },
-          onCancel: () => {
-            console.log('取消')
-          }
-        }).show()
+        if(this.parkingLocation){
+          this.$createDialog({
+            type: 'confirm',
+            title: '您是否确认在柜前结束'+this.consumerOrder.licensePlate+'的订单？',
+            confirmBtn: {
+              text: '确认',
+              active: true,
+              disabled: false,
+              href: 'javascript:;'
+            },
+            cancelBtn: {
+              text: '取消',
+              active: false,
+              disabled: false,
+              href: 'javascript:;'
+            },
+            onConfirm: () => {
+              this.finishOpen()
+            },
+            onCancel: () => {
+              console.log('取消')
+            }
+          }).show()
+        } else {
+          this.toast = this.$createToast({
+            txt: '请填写车辆所在位置',
+            type: 'txt'
+          })
+          this.toast.show()
+        }
       },
 
       // 确认完工的一键开柜
@@ -261,7 +278,7 @@
 
       //上传按钮
       fileSuccess(e){
-        this.staffOrderImg.url = e.response.data
+        this.staffOrderImg.url = e.response.data.url
         this.isImgShow = true
         console.log(e)
       },

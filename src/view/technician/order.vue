@@ -16,7 +16,7 @@
           <img src="./../../assets/car-head.png" alt="">
           <b>订单号：{{item.id}}</b>
           <span>{{item.licensePlate}} {{item.carColor}} · {{item.carBrand}}</span>
-          <button @click="takeOrder(item.licensePlate,item.id)" :class="[item.arkSn===arkSn?'bg-blue':'bg-gray']">接单</button>
+          <button @click="takeOrder(item.licensePlate,item.id,item.arkSn)" :class="[item.arkSn===arkSn?'bg-blue':'bg-gray']">接单</button>
         </div>
         <div class="order-card-info" @click="orderDetail(item.id,item.arkSn)">
           <span>车主姓名 {{item.clientName}}</span>
@@ -113,29 +113,37 @@
       },
 
       // 接单
-      takeOrder(licensePlate,id){
-        this.$createDialog({
-          type: 'confirm',
-          title: '您是否确认在柜前开始'+licensePlate+'的订单？',
-          confirmBtn: {
-            text: '确认',
-            active: true,
-            disabled: false,
-            href: 'javascript:;'
-          },
-          cancelBtn: {
-            text: '取消',
-            active: false,
-            disabled: false,
-            href: 'javascript:;'
-          },
-          onConfirm: () => {
-            this.pickOpen(id)
-          },
-          onCancel: () => {
-            console.log('取消')
-          }
-        }).show()
+      takeOrder(licensePlate,id,arkSn){
+        if(arkSn===this.arkSn){
+          this.$createDialog({
+            type: 'confirm',
+            title: '您是否确认在柜前开始'+licensePlate+'的订单？',
+            confirmBtn: {
+              text: '确认',
+              active: true,
+              disabled: false,
+              href: 'javascript:;'
+            },
+            cancelBtn: {
+              text: '取消',
+              active: false,
+              disabled: false,
+              href: 'javascript:;'
+            },
+            onConfirm: () => {
+              this.pickOpen(id)
+            },
+            onCancel: () => {
+              console.log('取消')
+            }
+          }).show()
+        }else {
+          this.toast = this.$createToast({
+            txt: '非当前智能柜，不可接单',
+            type: 'txt'
+          })
+          this.toast.show()
+        }
       },
 
       // 接车的一键开柜

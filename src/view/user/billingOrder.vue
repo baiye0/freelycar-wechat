@@ -30,7 +30,7 @@
       </div>
       <cube-upload v-show="!isImgShow"
                    ref="upload"
-                   action="https://www.freelycar.com/api/upload/carImg"
+                   action="https://www.freelycar.com/api/upload/clientOrderImg"
                    :auto="true"
                    :simultaneous-uploads="1"
                    @file-success="fileSuccess"></cube-upload>
@@ -147,8 +147,9 @@
 
       // 上传图片
       fileSuccess(e){
-        this.carImageUrl = e.response.data
-        this.clientOrderImg.url = e.response.data
+        console.log(e)
+        this.carImageUrl = e.response.data.url
+        this.clientOrderImg.url = e.response.data.url
         this.isImgShow = true
       },
 

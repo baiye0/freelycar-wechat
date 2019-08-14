@@ -50,7 +50,7 @@
 
     <div class="pay-order-card">
       <div class="pay-order-card-item">
-        <span>{{storeName}}<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
+        <span>{{storeInfo.name}}<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
       </div>
       <div class="pay-order-card-item-second">
         <div v-for="(item,index) in consumerProjectInfos">
@@ -115,6 +115,7 @@
         }).then(res=>{
           this.consumerOrder=res.consumerOrder
           this.consumerProjectInfos=res.consumerProjectInfos
+          this.storeInfo=res.store
           this.getMyCard()
         })
       },
