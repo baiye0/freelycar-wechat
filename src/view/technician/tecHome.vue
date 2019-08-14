@@ -31,7 +31,7 @@
         </div>
       </router-link>
 
-      <a href="">
+      <a href="tel:025-86697165">
         <div class="menu">
           <img class="call-me-icon" src="../../assets/call-me.png" alt="联系小易">
           <span>联系小易</span>

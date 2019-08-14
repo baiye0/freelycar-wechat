@@ -9,7 +9,7 @@
         <div>
           <img src="./../../assets/head.png" alt="">
           <span>{{consumerOrder.pickCarStaffName}}</span>
-          <a :href="['tel:' + consumerOrder]">
+          <a :href="['tel:' + staffInfo.phone]">
             <span class="order-tracking-card-call"><img src="./../../assets/call-service.png" alt=""><b>联系技师</b></span>
           </a>
         </div>
@@ -20,9 +20,13 @@
         </div>
       </div>
       <div class="order-tracking-card-button">
-        <span>联系客服</span>
+        <a href="tel:025-86697165">
+          <span>联系客服</span>
+        </a>
         <div></div>
-        <span>联系门店</span>
+        <a :href="['tel:' + store.phone]">
+          <span>联系门店</span>
+        </a>
       </div>
     </div>
 
@@ -56,7 +60,9 @@
         msg:[],
         consumerOrder:{},
         title:'',
-        state:''
+        state:'',
+        staffInfo:{},
+        store:{}
       }
     },
     methods: {
@@ -67,6 +73,8 @@
         }).then(res=>{
           console.log(res)
           this.consumerOrder = res.consumerOrder
+          this.staffInfo = res.staffInfo
+          this.store = res.store
           this.time=[
             this.consumerOrder.createTime,
             this.consumerOrder.pickTime
