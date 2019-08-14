@@ -31,7 +31,7 @@
       </div>
 
       <div class="payment" v-show="item.payState === 1 && item.state === 2">
-        <span>待付款￥</span><span>120</span>
+        <span>待付款￥</span><span>{{item.actualPrice}}</span>
         <img src="./../../assets/call-service.png" alt="">
         <a :href="['tel:' + storePhone]">
           <span class="payment-call-service">联系客服</span>
@@ -63,7 +63,7 @@
         arkInfoState:'billingOrder',
         isOpenDoorShow:false,
         isSuccessShow:false,
-        storePhone:'',
+        storePhone:'025-86697165',
         isCarImgShow:false
       }
     },
@@ -150,7 +150,7 @@
         this.$router.push({path:'/order'})
       }else if(localStorage.getItem('clientId')){
         this.clientId = this.$route.query.id
-        this.storePhone = localStorage.getItem('storePhone')
+        // this.storePhone = localStorage.getItem('storePhone')
         this.getOrderList()
       }else {
         this.$router.push({path:'/login'})
