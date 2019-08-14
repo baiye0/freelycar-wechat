@@ -203,6 +203,7 @@
     width 100vw
     background url("./../../assets/search-bg.png")
     background-size 100% 100%
+    z-index 10
     position fixed
     bottom 0
 

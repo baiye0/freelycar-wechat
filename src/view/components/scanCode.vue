@@ -1,10 +1,10 @@
 <template>
-  <div class="scan-code" @click="scan">
-    <img class="center" src="./../../assets/erweima.png" alt="">
+  <div class="scan-code">
+    <img class="center" src="./../../assets/erweima.png" @click="scan" alt="">
     <h2 class="center">请点击并扫描</h2>
     <h1 class="center">智能柜屏幕右下角</h1>
     <h3 class="center">二维码下单</h3>
-    <button class="center">扫码</button>
+    <button class="center" @click="scan">扫码</button>
   </div>
 </template>
 
@@ -37,7 +37,7 @@
           })
           // 需要检测的JS接口列表
           wx.checkJsApi({
-            jsApiList: ['chooseWXPay'],
+            jsApiList: ['scanQRCode'],
             success: function (res) {
               console.log(res)
             },

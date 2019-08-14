@@ -27,7 +27,7 @@
     <div class="order-detail-position" v-show="tabBar===1">
       <div class="order-detail-position-head">
         <span><img src="./../../assets/position-blue.png" alt="">车辆所在位置</span>
-        <span class="order-detail-position-orange">快速定位</span>
+        <span class="order-detail-position-orange" @click="arkLocation">快速定位</span>
       </div>
       <cube-textarea v-model="parkingLocation"></cube-textarea>
     </div>
@@ -47,7 +47,7 @@
       <!--<img class="order-detail-photo-del" src="./../../assets/del-img.png" alt="">-->
     </div>
 
-    <div class="order-detail-btn">
+    <div class="order-detail-btn" v-show="!isOpenDoorShow">
       <button v-show="arkSn!==orderArkSn && tabBar===0" class="can-not-click">非当前智能柜，不可接单</button>
       <button v-show="arkSn===orderArkSn && tabBar===0" class="big-blue-btn" @click="takeOrder">接单</button>
       <button v-show="tabBar===1" class="big-blue-btn" @click="finishOrder">一键开柜</button>
@@ -208,7 +208,9 @@
       // 快速定位
       arkLocation(){
         this.$get('/wechat/ark/getCurrentArkLocation',{
-          arkSn:''
+          arkSn:localStorage.getItem('arkSn')
+        }).then(res=>{
+          this.parkingLocation=res
         })
       },
 
@@ -240,6 +242,7 @@
 
       // 确认完工的一键开柜
       finishOpen(){
+        window.scrollTo(0, 0)
         this.arkInfoState = 'tecFinish'
         this.$refs.openDoor.changeTxt('tecFinish')
         this.$refs.success.changeTxt('tecFinish')
