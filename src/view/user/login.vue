@@ -9,7 +9,7 @@
       </div>
       <div class="password">
         <img src="../../assets/password.png" alt="验证码">
-        <input type="text" placeholder="请输入验证码" v-model="password">
+        <input type="text" maxlength="6" placeholder="请输入验证码" v-model="password">
         <span :class="getCodeInfo" @click="getCode">{{passwordInfo}}</span>
       </div>
       <div class="btn">
