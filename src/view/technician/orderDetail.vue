@@ -144,7 +144,8 @@
       callUser(){
         this.$createDialog({
           type: 'confirm',
-          title: '您是否确认'+this.consumerOrder.licensePlate+'拨打车主电话？',
+          title: '提示',
+          content:'您是否确认'+this.consumerOrder.licensePlate+'拨打车主电话？',
           confirmBtn: {
             text: '确认',
             active: true,
@@ -175,7 +176,8 @@
       takeOrder(){
         this.$createDialog({
           type: 'confirm',
-          title: '您是否确认在柜前开始'+this.consumerOrder.licensePlate+'的订单？',
+          title: '提示',
+          content:'您是否确认在柜前开始'+this.consumerOrder.licensePlate+'的订单？',
           confirmBtn: {
             text: '确认',
             active: true,
@@ -231,7 +233,8 @@
         if(this.parkingLocation){
           this.$createDialog({
             type: 'confirm',
-            title: '您是否确认在柜前结束'+this.consumerOrder.licensePlate+'的订单？',
+            title: '提示',
+            content:'您是否确认在柜前结束'+this.consumerOrder.licensePlate+'的订单？',
             confirmBtn: {
               text: '确认',
               active: true,

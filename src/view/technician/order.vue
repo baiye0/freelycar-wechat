@@ -117,7 +117,8 @@
         if(arkSn===this.arkSn){
           this.$createDialog({
             type: 'confirm',
-            title: '您是否确认在柜前开始'+licensePlate+'的订单？',
+            title: '提示',
+            content:'您是否确认在柜前开始'+licensePlate+'的订单？',
             confirmBtn: {
               text: '确认',
               active: true,
