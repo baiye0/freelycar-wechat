@@ -21,7 +21,9 @@
     methods: {
       // 微信注入权限
       wxConfig() {
-        this.$get('/wechat/config/getJSSDKConfig',
+        this.$get('/wechat/config/getJSSDKConfig',{
+            targetUrl:location.href
+          }
         ).then(res => {
           this.configInfo = res
           wx.config({
