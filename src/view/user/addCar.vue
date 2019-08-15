@@ -22,14 +22,14 @@
       <!--<button>上传</button>-->
     </div>
 
-    <cube-upload v-show="!isImgShow" class="add-car-upload"
+    <cube-upload class="add-car-upload"
       ref="upload"
       action="https://www.freelycar.com/api/upload/carImg"
       :auto="true"
-      :simultaneous-uploads="1"
+      :simultaneous-uploads="1" :max="1" @file-removed="fileRemoved"
       @file-success="fileSuccess"></cube-upload>
 
-    <img v-show="isImgShow" class="add-car-img" :src="carImageUrl" alt="">
+    <!--<img v-show="isImgShow" class="add-car-img" :src="carImageUrl" alt="">-->
 
     <button class="big-blue-btn" @click="addCar">保存</button>
 
@@ -86,7 +86,12 @@
       //上传按钮
       fileSuccess(e){
         this.carImageUrl = e.response.data
-        this.isImgShow = true
+        // this.isImgShow = true
+      },
+
+      // 删除图片
+      fileRemoved(){
+        this.carImageUrl = ''
       },
 
       // 提交
