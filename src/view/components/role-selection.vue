@@ -65,7 +65,6 @@
             this.$get('/wechat/ark/getArkInfo', {
               arkSn: arkSn
             }).then(res => {
-              localStorage.setItem('storeId', res.storeId)
               localStorage.setItem('arkName', res.name)
               if (res.storeId === localStorage.getItem('storeId')) {
                 this.getOrderState()
@@ -77,6 +76,8 @@
                 }).then(res => {
                     if (res){
                         localStorage.setItem('storeName', res.defaultStoreName)
+                        localStorage.setItem('storeId', res.defaultStoreId)
+                        localStorage.setItem('clientId', res.defaultClientId)
                     }
                   this.getOrderState()
                 })
