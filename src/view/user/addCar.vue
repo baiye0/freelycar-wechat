@@ -33,7 +33,6 @@
 
     <button class="big-blue-btn" @click="addCar">保存</button>
 
-
   </div>
 </template>
 
@@ -64,7 +63,7 @@
       // 选择车型车系
       showDrawer(licensePlate,clientId,storeId){
         this.$router.push( {path: '/choosebrand',
-          query:{licensePlate,clientId,storeId,from:'/addCar',color:this.color,img:this.carImageUrl}})
+          query:{licensePlate,clientId,storeId,from:'/addCar',color:this.color,img:this.carImageUrl,backTo:this.backTo}})
       },
 
       // 选颜色

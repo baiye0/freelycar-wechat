@@ -10,6 +10,7 @@
 </template>
 
 <script>
+  import wx from 'weixin-js-sdk'
   export default {
     name: 'success',
     data() {
@@ -41,6 +42,7 @@
           case 'cancelOrder': {
             console.log(this.arkInfoState)
             this.msg = 3
+            this.closeWindow()
             this.arkInfo = {
               text1: '订单取消成功',
               text2: '谢谢您的支持，期待您下次使用！',
@@ -53,6 +55,7 @@
           case 'payOrder': {
             console.log(this.arkInfoState)
             this.msg = 3
+            this.closeWindow()
             this.arkInfo = {
               text1: '订单已完成',
               text2: '谢谢您的支持，期待您下次使用！',
@@ -88,6 +91,18 @@
             break
         }
         console.log(this.arkInfo)
+      },
+
+      // 倒数关闭
+      closeWindow(){
+        let info = setInterval(() => {
+          if (this.msg !== 0) {
+            this.msg -= 1
+          } else {
+            wx.closeWindow()
+            clearInterval(info)
+          }
+        }, 1000)
       }
     },
     mounted: function () {

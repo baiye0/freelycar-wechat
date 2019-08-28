@@ -50,7 +50,7 @@
 
     <div class="pay-order-card">
       <div class="pay-order-card-item">
-        <span>{{storeInfo.name}}<img class="pay-order-more" src="./../../assets/more.png" alt=""></span>
+        <span>{{storeInfo.name}}</span>
       </div>
       <div class="pay-order-card-item-second">
         <div v-for="(item,index) in consumerProjectInfos">
@@ -236,11 +236,11 @@
       cancelOrderService(){
         this.arkInfoState='cancelOrder'
         this.$refs.openDoor.changeTxt('cancelOrder')
-        this.$refs.successArk.changeTxt('cancelOrder')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/cancelOrderService',{
           id:this.orderId
         }).then(res=>{
+          this.$refs.successArk.changeTxt('cancelOrder')
           this.isSuccessShow=true
           setTimeout(()=>{
             this.$router.push({path:'/myOrder'})
@@ -368,9 +368,6 @@
             href: 'javascript:;'
           },
           onConfirm: () => {
-            this.arkInfoState='payOrder'
-            this.$refs.openDoor.changeTxt('payOrder')
-            this.$refs.successArk.changeTxt('payOrder')
             this.getCar()
           },
           onCancel: () => {
@@ -381,13 +378,13 @@
 
       // 取车
       getCar(){
-        this.arkInfoState='tecGetKey'
-        this.$refs.openDoor.changeTxt('tecGetKey')
-        this.$refs.successArk.changeTxt('tecGetKey')
+        this.arkInfoState='payOrder'
+        this.$refs.openDoor.changeTxt('payOrder')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/orderFinish',{
           id:this.orderId
         }).then(res=>{
+          this.$refs.successArk.changeTxt('payOrder')
           this.isSuccessShow=true
           setTimeout(()=>{
             this.$router.push({path:'/myOrder'})

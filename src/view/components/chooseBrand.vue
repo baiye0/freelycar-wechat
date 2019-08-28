@@ -482,8 +482,8 @@
       //选择车系，然后跳转到添加爱车界面
       choosedcarline(carbrandid, carline, licensePlate, clientId, storeId, bgname) {
         this.$router.push({path: this.from,
-          query: {carbrandid, carline, licensePlate, bgname,backTo:this.backTo,
-            color:this.color,img:this.img}})
+          query: {backTo:this.backTo, color:this.color,img:this.img,
+            carbrandid, carline, licensePlate, bgname}})
       },
       rechoose() {
         this.isshow = !this.isshow;

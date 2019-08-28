@@ -24,7 +24,7 @@
       <div class="my-car">
         <div class="my-car-card" v-for="(item,index) in cars">
           <img v-show="isEditCar" @click="delCar(index)" class="my-car-del" src="./../../assets/del.png" alt="">
-          <img class="my-car-head" src="./../../assets/car-head.png" alt="">
+          <img class="my-car-head" :src="[item.carImageUrl?item.carImageUrl:'./static/car-head.png']" alt="">
           <span class="my-car-num">{{item.licensePlate}}</span>
           <span class="my-car-brand">{{item.color}} · {{item.carBrand}}</span>
         </div>

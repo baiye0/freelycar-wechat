@@ -28,7 +28,7 @@
       changeTxt(state){
         switch (state){
           case 'billingOrder':{
-            this.arkInfo={text1:'柜门正在打开，请勿离开', text2:'柜门打开，请取走钥匙，并关闭柜门'}
+            this.arkInfo={text1:'柜门正在打开，请勿离开', text2:'柜门打开，请放入钥匙，并关闭柜门'}
           }
             break
           case 'cancelOrder':{

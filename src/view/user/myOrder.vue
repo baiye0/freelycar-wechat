@@ -1,5 +1,5 @@
 <template>
-  <div class="my-order">
+  <div :class="orderClass">
     <div class="order-card" v-for="(item,index) in msg">
       <div class="order-state">
         <span
@@ -58,6 +58,7 @@
     name: 'myOrder',
     data() {
       return {
+        orderClass:'my-order',
         msg: [],
         clientId: '',
         arkInfoState:'billingOrder',
@@ -109,13 +110,14 @@
             href: 'javascript:;'
           },
           onConfirm: () => {
+            this.orderClass='my-order stop-scroll'
             this.arkInfoState='payOrder'
             this.$refs.openDoor.changeTxt('payOrder')
-            this.$refs.successArk.changeTxt('payOrder')
             this.isOpenDoorShow=true
             this.$get('/wechat/ark/orderFinish',{
               id:id
             }).then(res=>{
+              this.$refs.successArk.changeTxt('payOrder')
               this.isSuccessShow=true
               setTimeout(()=>{
                 this.$router.push({path:'/myOrder'})
@@ -172,6 +174,12 @@
 
   w(n)
     n / 7.5vw
+
+  .stop-scroll{
+    overflow hidden
+    height 100vh
+    position fixed
+  }
 
   .my-order
     background #EEEEEE

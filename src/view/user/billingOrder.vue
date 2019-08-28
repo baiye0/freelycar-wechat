@@ -326,7 +326,6 @@
       submitHttp(){
         this.arkInfoState='billingOrder'
         this.$refs.openDoor.changeTxt('billingOrder')
-        this.$refs.successArk.changeTxt('billingOrder')
         this.isOpenDoorShow=true
         this.$post('/wechat/ark/orderService',{
           consumerOrder:this.consumerOrder,
@@ -334,6 +333,7 @@
           arkSn:localStorage.getItem('arkSn'),
           clientOrderImg:this.clientOrderImg
         }).then(res=>{
+          this.$refs.successArk.changeTxt('billingOrder')
           this.isSuccessShow=true
           setTimeout(()=>{
             this.$router.push({path:'/myOrder'})
@@ -482,7 +482,7 @@
     height h(103)
 
   .billing-order-photo
-    height h(277)
+    height h(300)
     position relative
 
   .billing-order-photo div
