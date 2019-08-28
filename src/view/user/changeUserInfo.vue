@@ -3,7 +3,8 @@
     <img class="change-order-head" :src="msg.headImgUrl" alt="">
     <div class="change-order-form">
       <span>昵称</span>
-      <input type="text" v-model="msg.name">
+      <!--<input type="text" v-model="msg.name">-->
+      <span>{{msg.name}}</span>
     </div>
     <div class="change-order-form">
       <span>真实姓名</span>
@@ -136,9 +137,9 @@
       submit(){
         this.$post('/wechat/wxuser/saveUserInfo',{
           id:localStorage.getItem('id'),
-          trueName:this.trueName,
-          nickName:this.name,
-          gender:this.gender
+          trueName:this.msg.trueName,
+          nickName:this.msg.name,
+          gender:this.msg.gender
         }).then(res=>{
           this.$router.go(-1)
         })
