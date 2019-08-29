@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <router-link to="/scanCode" v-show="(msg.length>0)?(msg[0].state<=3):true">
+    <router-link to="/scanCode" v-show="(msg.length>0)?(msg[0].state>=3):true">
       <button class="big-blue-btn">马上预约</button>
     </router-link>
 
