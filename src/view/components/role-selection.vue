@@ -9,18 +9,13 @@
     data() {
       return {
         trueName: '',
-        arkSn: '',
-        clientId:'',
-        staffId:''
+        arkSn: ''
       }
     },
     mounted: function () {
       this.arkSn = this.$route.params.arkSn
       localStorage.setItem('arkSn', this.arkSn)
-      this.clientId =localStorage.getItem('clientId')
-      this.staffId =localStorage.getItem('staffId')
       this.isLogin()
-
     },
     methods: {
       // 是否登录过
@@ -28,13 +23,13 @@
         if (localStorage.getItem('jwt')) {
 
           //如果技师已经登录，直接去接单页
-          if (this.staffId !== null && localStorage.getItem('jwt') !== null) {
+          if (localStorage.getItem('staffId') !== null && localStorage.getItem('jwt') !== null) {
             //判断扫的柜子是哪个门店，帮ta切换过去/提醒他，没有这个柜子的操作权
             this.getArkInfo()
           }
 
           //如果用户已经登录，
-          if (localStorage.getItem('jwt') !== null && this.clientId !== null) {
+          if (localStorage.getItem('jwt') !== null && localStorage.getItem('clientId') !== null) {
             this.trueName = localStorage.getItem('trueName')
             //若用户没有填写真实姓名，则先让其填写真实姓名
             if (this.trueName === '' || this.trueName === null) {
@@ -60,7 +55,7 @@
           if (res.storeId === localStorage.getItem('storeId')) {
             // 判断技师是否开通智能柜
             this.$get('/wechat/staff/isCurrentArk', {
-              staffId: this.staffId
+              staffId: localStorage.getItem('staffId')
             }).then(res => {
               if(res){
                 console.log('门店没有切换，直接跳转到order路径')
@@ -116,7 +111,7 @@
 //      判断当前最新订单状态
       getOrderState() {
         this.$get('/wechat/order/listOrders', {
-          clientId: this.clientId,
+          clientId: localStorage.getItem('clientId'),
           type: 'ark'
         }).then(res => {
           if (res && res.length > 0) {
