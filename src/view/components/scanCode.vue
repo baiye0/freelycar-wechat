@@ -112,6 +112,7 @@
       top h(870)
       border 1px solid #2049BF
       border-radius w(50)
+      font-size w(32)
 
 
   .center

@@ -1,5 +1,7 @@
 <template>
   <div :class="orderClass">
+    <img v-show="msg.length===0" class="my-order-kong" src="./../../assets/kong.png" alt="">
+    <div v-show="msg.length===0" class="my-order-kong-text">您还没有预约订单哦</div>
     <div class="order-card" v-for="(item,index) in msg">
       <div class="order-state">
         <span
@@ -40,6 +42,7 @@
       </div>
 
     </div>
+    <div class="no-more-orders">暂无更多订单</div>
 
     <open-door ref="openDoor" :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
     <success ref="successArk" :ark-info-state="arkInfoState" v-show="isSuccessShow"></success>
@@ -50,6 +53,11 @@
         <img :src="staffOrderImgUrl" class="dialog-car-img" alt="">
       </div>
     </div>
+
+    <router-link to="/scanCode" v-show="(msg.length>0)?(msg[0].state<=3):true">
+      <button class="big-blue-btn">马上预约</button>
+    </router-link>
+
   </div>
 </template>
 
@@ -175,16 +183,37 @@
   w(n)
     n / 7.5vw
 
-  .stop-scroll{
+  .no-more-orders
+    text-align center
+    margin h(50)
+    color #888888
+
+  .my-order-kong
+    width w(219)
+    height w(219)
+    position absolute
+    transform translate(-50%,-50%)
+    left 50%
+    top 35%
+
+  .my-order-kong-text
+    font-size w(28)
+    color #858585
+    position absolute
+    transform translate(-50%,-50%)
+    left 50%
+    top 50%
+
+
+  .stop-scroll
     overflow hidden
     height 100vh
     position fixed
-  }
 
   .my-order
     background #EEEEEE
     padding-top h(20)
-    padding-bottom h(20)
+    padding-bottom h(300)
 
   .order-card
     background white

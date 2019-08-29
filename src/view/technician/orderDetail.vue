@@ -60,6 +60,7 @@
       <div class="dialog-box-black my-order-dialog-box">
         <img src="./../../assets/close.png" @click="showCarImg" class="dialog-box-black-close" alt="">
         <img :src="carImageUrl" class="dialog-car-img" alt="">
+        <div class="dialog-box-black-text">车主未上传照片</div>
       </div>
     </div>
 
