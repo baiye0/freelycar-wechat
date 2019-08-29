@@ -79,6 +79,9 @@
             break
           case 'tecFinish': {
             console.log(this.arkInfoState)
+            setTimeout(()=> {
+              wx.closeWindow()
+            },1000)
             this.msg = null
             this.arkInfo = {
               text1: '订单完成',

@@ -269,7 +269,6 @@
         window.scrollTo(0, 0)
         this.arkInfoState = 'tecFinish'
         this.$refs.openDoor.changeTxt('tecFinish')
-        this.$refs.success.changeTxt('tecFinish')
         this.isOpenDoorShow=true
         this.$post('/wechat/ark/finishCar',{
           consumerOrder:{
@@ -279,6 +278,7 @@
           arkSn:this.arkSn ,
           staffOrderImg:this.staffOrderImg
         }).then(res=>{
+          this.$refs.success.changeTxt('tecFinish')
           this.isSuccessShow=true
           setTimeout(()=>{
             this.$router.push({path:'/order'})

@@ -110,6 +110,7 @@
           localStorage.setItem('storeId',selectedVal[0])
           localStorage.setItem('storeName',selectedText[0])
           this.storeName=selectedText[0]
+          this.getInfo()
         })
       },
       cancelHandle() {
