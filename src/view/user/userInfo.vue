@@ -6,7 +6,7 @@
     <div class="form">
       <div class="form-box">
         <img class="user-info-name" src="./../../assets/name.png" alt="">
-        <input v-model="name" type="text" placeholder="请输入真实姓名">
+        <input v-model="name" type="text" placeholder="请输入真实姓名" @blur="scrollTo0">
       </div>
 
       <div class="form-box">
@@ -39,6 +39,11 @@
 //        选择性别
       chooseGender(gender){
         this.gender = gender
+      },
+
+      // 滚动轴归位
+      scrollTo0(){
+        window.scrollTo(0,0)
       },
 
 //        提交

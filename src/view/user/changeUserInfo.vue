@@ -8,7 +8,7 @@
     </div>
     <div class="change-order-form">
       <span>真实姓名</span>
-      <input type="text" v-model="msg.trueName">
+      <input @blur="scrollTo0" type="text" v-model="msg.trueName">
     </div>
     <div class="change-order-form">
       <span>性别</span>
@@ -19,7 +19,7 @@
     </div>
     <div class="change-order-form">
       <span>手机号码</span>
-      <span><input type="text" v-model="msg.phone"><b @click="changePhoneBtn">修改</b></span>
+      <span><span>{{msg.phone}}</span><b @click="changePhoneBtn">修改</b></span>
     </div>
 
     <button class="big-blue-btn" @click="submit">保存</button>
@@ -58,6 +58,11 @@
           this.msg.phone=res.phone
           this.msg.headImgUrl=res.headImgUrl
         })
+      },
+
+      // 滚动轴归位
+      scrollTo0(){
+        window.scrollTo(0,0)
       },
 
 //      修改按钮
@@ -130,6 +135,7 @@
             type: 'txt'
           })
           this.toast.show()
+          this.msg.phone=this.newPhone.phone
         })
       },
 
