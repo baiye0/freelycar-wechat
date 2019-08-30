@@ -251,10 +251,7 @@
       // 微信注入权限
       wxConfig() {
         alert(location.href)
-        history.pushState(null,null,`/wechat/payOrder`)
-        alert(location.href)
         this.$get('/wechat/config/getJSSDKConfig',{
-            // targetUrl:'https://www.freelycar.com/wechat/payOrder'
             targetUrl:location.href.split('?')[0]
           }
         ).then(res => {
