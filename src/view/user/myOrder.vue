@@ -51,6 +51,7 @@
       <div class="dialog-box-black my-order-dialog-box">
         <img src="./../../assets/close.png" @click="getImg" class="dialog-box-black-close" alt="">
         <img :src="staffOrderImgUrl" class="dialog-car-img" alt="">
+        <div v-show="!staffOrderImgUrl" class="dialog-box-black-text">技师未上传照片</div>
       </div>
     </div>
 
