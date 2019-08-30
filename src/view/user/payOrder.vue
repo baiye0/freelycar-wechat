@@ -250,7 +250,6 @@
 
       // 微信注入权限
       wxConfig() {
-        alert(location.href)
         this.$get('/wechat/config/getJSSDKConfig',{
             targetUrl:location.href.split('?')[0]
           }
