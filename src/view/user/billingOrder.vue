@@ -155,7 +155,7 @@
             this.msg.number = res.cars[0].licensePlate
             this.consumerOrder.carId=res.cars[0].id
           }
-          this.getStoreProject(res.isNew)
+          this.getStoreProject(res.newUser)
         })
       },
 
@@ -165,10 +165,10 @@
       },
 
       // 获取门店服务列表
-      getStoreProject(isNew){
+      getStoreProject(newUser){
         this.$get('/wechat/ark/getProjects',{
           storeId:localStorage.getItem('storeId'),
-          newUser:isNew
+          newUser:newUser
         }).then(res=>{
           this.projects = res
         })
