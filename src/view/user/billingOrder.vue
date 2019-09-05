@@ -60,11 +60,11 @@
         <div class="billing-order-dialog-content">
 
           <div @click="selectProject(index)"
-               class="billing-order-dialog-item" v-for="(item,index) in projects">
+               :class="[item.comment==='***新用户专享***'?'billing-order-dialog-item':'billing-order-dialog-item']" v-for="(item,index) in projects">
             <img :src="[checkedId.indexOf(item.id)!==-1?'./static/check-yellow.png':'./static/check-no.png']" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
-            <div>{{item.comment}}</div>
+            <div :class="[item.comment==='***新用户专享***'?'is-new':'is-old']">{{item.comment}}</div>
           </div>
 
         </div>
@@ -155,6 +155,7 @@
             this.msg.number = res.cars[0].licensePlate
             this.consumerOrder.carId=res.cars[0].id
           }
+          this.getStoreProject(res.isNew)
         })
       },
 
@@ -164,9 +165,10 @@
       },
 
       // 获取门店服务列表
-      getStoreProject(){
+      getStoreProject(isNew){
         this.$get('/wechat/ark/getProjects',{
-          storeId:localStorage.getItem('storeId')
+          storeId:localStorage.getItem('storeId'),
+          newUser:isNew
         }).then(res=>{
           this.projects = res
         })
@@ -345,7 +347,6 @@
       this.storeName=localStorage.getItem('storeName')
       this.consumerOrder.clientId=localStorage.getItem('clientId')
       this.getUserInfo()
-      this.getStoreProject()
       this.wxConfig()
     },
     computed:{
@@ -523,6 +524,10 @@
       height w(25)
       width w(25)
 
+  .is-new
+    color red
+  .is-old
+    color #AFAEAE
   .billing-order-dialog-content
     height h(594)
     margin-left w(30)
@@ -535,7 +540,6 @@
         margin-left w(60)
         margin-top h(20)
         font-size w(25)
-        color #AFAEAE
     .billing-order-dialog-item-price
       float right
       color #FFBD03
