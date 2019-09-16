@@ -1,7 +1,7 @@
 <template>
   <div :class="orderClass">
-    <img v-show="msg.length===0" class="my-order-kong" src="./../../assets/kong.png" alt="">
-    <div v-show="msg.length===0" class="my-order-kong-text">您还没有预约订单哦</div>
+    <img v-show="noOrderShow" class="my-order-kong" src="./../../assets/kong.png" alt="">
+    <div v-show="noOrderShow" class="my-order-kong-text">您还没有预约订单哦</div>
     <div class="order-card" v-for="(item,index) in msg">
       <div class="order-state">
         <span
@@ -75,7 +75,8 @@
         isSuccessShow:false,
         storePhone:'025-86697165',
         isCarImgShow:false,
-        staffOrderImgUrl:''
+        staffOrderImgUrl:'',
+        noOrderShow:false
       }
     },
     methods: {
@@ -86,6 +87,7 @@
           type: 'ark'
         }).then(res => {
           this.msg = res
+          if (this.msg.length===0) this.noOrderShow=true
         })
       },
 

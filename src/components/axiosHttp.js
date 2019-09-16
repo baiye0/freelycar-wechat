@@ -76,6 +76,7 @@ export function get(url, params = {}) {
       })
       .catch(err => {
         alert('err:'+err)
+        reject(err)
       })
   })
 }
@@ -97,6 +98,7 @@ export function post(url, data = {}) {
         }
       }, err => {
         alert('err:'+err)
+        reject(err)
       })
   })
 }

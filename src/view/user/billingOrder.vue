@@ -340,6 +340,9 @@
           setTimeout(()=>{
             this.$router.push({path:'/myOrder'})
           },3000)
+        }).catch(err=>{
+          alert('下单失败，请勿放入钥匙')
+          this.isOpenDoorShow=false
         })
       }
     },
