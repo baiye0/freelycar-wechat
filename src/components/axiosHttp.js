@@ -70,6 +70,7 @@ export function get(url, params = {}) {
           resolve(response.data.data)
         } else {
           if (response.data.msg) {
+            reject(response.data.msg)
             alert('msg:'+response.data.msg)
           }
         }
@@ -92,7 +93,9 @@ export function post(url, data = {}) {
             resolve(response.data.data)
           }
         } else {
+          //报错
           if (response.data.msg) {
+            reject(response.data.msg)
             alert('msg:'+response.data.msg)
           }
         }
