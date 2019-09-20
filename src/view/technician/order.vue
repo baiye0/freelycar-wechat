@@ -16,7 +16,7 @@
           <img src="./../../assets/car-head.png" alt="">
           <b>订单号：{{item.id}}</b>
           <span>{{item.licensePlate}} {{item.carColor}} · {{item.carBrand}}</span>
-          <button @click="takeOrder(item.licensePlate,item.id,item.arkSn)" :class="[item.arkSn===arkSn?'bg-blue':'bg-gray']">接单</button>
+          <button @click="takeOrder(item.licensePlate,item.id,item.arkSn,item.keyLocation)" :class="[item.arkSn===arkSn?'bg-blue':'bg-gray']">接单</button>
         </div>
         <div class="order-card-info" @click="orderDetail(item.id,item.arkSn)">
           <span>车主姓名 {{item.clientName}}</span>
@@ -113,7 +113,7 @@
       },
 
       // 接单
-      takeOrder(licensePlate,id,arkSn){
+      takeOrder(licensePlate,id,arkSn,keyLocation){
         if(arkSn===this.arkSn){
           this.$createDialog({
             type: 'confirm',
@@ -132,7 +132,7 @@
               href: 'javascript:;'
             },
             onConfirm: () => {
-              this.pickOpen(id)
+              this.pickOpen(id,keyLocation)
             },
             onCancel: () => {
               console.log('取消')
@@ -148,10 +148,11 @@
       },
 
       // 接车的一键开柜
-      pickOpen(id){
+      pickOpen(id,keyLocation){
         window.scrollTo(0, 0)
         this.arkInfoState = 'tecGetKey'
-        this.$refs.openDoor.changeTxt('tecGetKey')
+        let local = keyLocation.split('-')
+        this.$refs.openDoor.changeTxt('tecGetKey',local[1])
         this.$refs.success.changeTxt('tecGetKey')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/pickCar',{

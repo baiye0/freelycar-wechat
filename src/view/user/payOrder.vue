@@ -235,7 +235,8 @@
 //      取消订单
       cancelOrderService(){
         this.arkInfoState='cancelOrder'
-        this.$refs.openDoor.changeTxt('cancelOrder')
+        let local=this.consumerOrder.userKeyLocation.split('-')
+        this.$refs.openDoor.changeTxt('cancelOrder',local[1])
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/cancelOrderService',{
           id:this.orderId
@@ -379,7 +380,8 @@
       // 取车
       getCar(){
         this.arkInfoState='payOrder'
-        this.$refs.openDoor.changeTxt('payOrder')
+        let local=this.consumerOrder.staffKeyLocation.split('-')
+        this.$refs.openDoor.changeTxt('payOrder',local[1])
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/orderFinish',{
           id:this.orderId

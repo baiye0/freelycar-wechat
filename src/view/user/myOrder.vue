@@ -29,7 +29,7 @@
         <a :href="['tel:' + storePhone]">
           <span>联系客服</span>
         </a>
-        <button @click="openDoor(item.id)">立即开柜</button>
+        <button @click="openDoor(item.id,item)">立即开柜</button>
       </div>
 
       <div class="payment" v-show="item.payState === 1 && item.state === 2">
@@ -121,18 +121,23 @@
             href: 'javascript:;'
           },
           onConfirm: () => {
-            this.orderClass='my-order stop-scroll'
-            this.arkInfoState='payOrder'
-            this.$refs.openDoor.changeTxt('payOrder')
-            this.isOpenDoorShow=true
-            this.$get('/wechat/ark/orderFinish',{
-              id:id
+            this.$get('/wechat/ark/getStaffKeyLocation',{
+              orderId:id
             }).then(res=>{
-              this.$refs.successArk.changeTxt('payOrder')
-              this.isSuccessShow=true
-              setTimeout(()=>{
-                this.$router.push({path:'/myOrder'})
-              },3000)
+              this.orderClass='my-order stop-scroll'
+              this.arkInfoState='payOrder'
+              let local = res.split('-')
+              this.$refs.openDoor.changeTxt('payOrder',local[1])
+              this.isOpenDoorShow=true
+              this.$get('/wechat/ark/orderFinish',{
+                id:id
+              }).then(res=>{
+                this.$refs.successArk.changeTxt('payOrder')
+                this.isSuccessShow=true
+                setTimeout(()=>{
+                  this.$router.push({path:'/myOrder'})
+                },3000)
+              })
             })
           },
           onCancel: () => {

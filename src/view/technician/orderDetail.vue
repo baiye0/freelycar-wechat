@@ -205,7 +205,8 @@
       pickOpen(){
         window.scrollTo(0, 0)
         this.arkInfoState = 'tecGetKey'
-        this.$refs.openDoor.changeTxt('tecGetKey')
+        let local = this.consumerOrder.userKeyLocation.split('-')
+        this.$refs.openDoor.changeTxt('tecGetKey',local[1])
         this.$refs.success.changeTxt('tecGetKey')
         this.isOpenDoorShow=true
         this.$get('/wechat/ark/pickCar',{
@@ -267,16 +268,24 @@
 
       // 确认完工的一键开柜
       finishOpen(){
-        window.scrollTo(0, 0)
-        this.arkInfoState = 'tecFinish'
-        this.$refs.openDoor.changeTxt('tecFinish')
-        this.isOpenDoorShow=true
+        this.$get('/wechat/ark/getEmptyDoor',{
+          arkSn:this.arkSn
+        }).then(res=>{
+          window.scrollTo(0, 0)
+          this.arkInfoState = 'tecFinish'
+          this.$refs.openDoor.changeTxt('tecFinish',res.doorSn)
+          this.isOpenDoorShow=true
+          this.finishOpenDoor(res.id)
+        })
+      },
+
+      finishOpenDoor(id){
         this.$post('/wechat/ark/finishCar',{
           consumerOrder:{
             id:this.orderId,
             parkingLocation:this.parkingLocation
           },
-          arkSn:this.arkSn ,
+          doorId:id,
           staffOrderImg:this.staffOrderImg
         }).then(res=>{
           this.$refs.success.changeTxt('tecFinish')

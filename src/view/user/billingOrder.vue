@@ -326,13 +326,22 @@
 
       // 提交下单的接口
       submitHttp(){
-        this.arkInfoState='billingOrder'
-        this.$refs.openDoor.changeTxt('billingOrder')
-        this.isOpenDoorShow=true
+        this.$get('/wechat/ark/getEmptyDoor',{
+          arkSn:localStorage.getItem('arkSn')
+        }).then(res=>{
+          this.arkInfoState='billingOrder'
+          this.$refs.openDoor.changeTxt('billingOrder',res.doorSn)
+          this.isOpenDoorShow=true
+          this.submitBilling(res.id)
+        })
+
+      },
+
+      submitBilling(id){
         this.$post('/wechat/ark/orderService',{
           consumerOrder:this.consumerOrder,
           consumerProjectInfos:this.consumerProjectInfos,
-          arkSn:localStorage.getItem('arkSn'),
+          doorId:id,
           clientOrderImg:this.clientOrderImg
         }).then(res=>{
           this.$refs.successArk.changeTxt('billingOrder')
@@ -345,6 +354,7 @@
           this.isOpenDoorShow=false
         })
       }
+
     },
     mounted: function () {
       this.storeName=localStorage.getItem('storeName')
