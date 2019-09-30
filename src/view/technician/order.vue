@@ -86,7 +86,8 @@
       getOrders(){
         this.$get('/wechat/order/listReservationOrders',{
           licensePlate:this.search,
-          storeId:localStorage.getItem('storeId')
+          storeId:localStorage.getItem('storeId'),
+          staffId:localStorage.getItem('staffId')
         }).then(res=>{
           this.orderList=res
         })
