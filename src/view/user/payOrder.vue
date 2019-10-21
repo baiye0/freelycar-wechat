@@ -1,6 +1,8 @@
 <template>
   <div class="pay-order">
+    <!--非完工状态时显示-->
     <div class="pay-order-card" v-show="consumerOrder.state !== 2">
+      <!--一直显示-->
       <div class="pay-order-card-item">
         <span>订单编号</span>
         <span class="pay-order-info-gray">{{orderId}}<b class="pay-order-info-blue copy"
@@ -8,16 +10,19 @@
                                                         v-clipboard:success="onCopy"
                                                         v-clipboard:error="onError">复制</b></span>
       </div>
+      <!--一直显示-->
       <div class="pay-order-card-item">
         <span>下单时间</span>
         <span class="pay-order-info-gray">{{consumerOrder.createTime}}</span>
       </div>
+      <!--支付后才显示-->
       <div class="pay-order-card-item" v-show="consumerOrder.payState===2">
         <span>支付方式</span>
         <span class="pay-order-info-gray">{{consumerOrder.firstPayMethod | payWay}}</span>
       </div>
     </div>
 
+    <!--一直显示-->
     <div class="pay-order-card">
       <div class="pay-order-card-item">
         <span>车辆信息</span>
@@ -33,6 +38,7 @@
       </div>
     </div>
 
+    <!--完工且未支付才显示-->
     <div class="pay-order-card" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
       <div class="pay-order-card-item" @click="choosePayWay">
         <span>支付方式</span>
@@ -48,6 +54,7 @@
       <!--</div>-->
     </div>
 
+    <!--门店及项目-->
     <div class="pay-order-card">
       <div class="pay-order-card-item">
         <span>{{storeInfo.name}}</span>
@@ -55,30 +62,34 @@
       <div class="pay-order-card-item-second">
         <div v-for="(item,index) in consumerProjectInfos">
           <span class="pay-order-info-gray">{{item.projectName}}</span>
-          <span class="pay-order-info-yellow">￥{{item.price}}</span>
+          <!--<span class="pay-order-info-yellow">￥{{item.price}}</span>-->
         </div>
       </div>
       <!--<div class="pay-order-card-item">-->
         <!--<span>抵扣</span>-->
         <!--<span class="pay-order-info-yellow">???-￥10</span>-->
       <!--</div>-->
-      <div class="pay-order-card-item">
+      <!--完工或交车时显示-->
+      <div class="pay-order-card-item" v-show="consumerOrder.state===2||consumerOrder.state===3">
         <span class="pay-order-info-gray">总计￥{{consumerOrder.totalPrice}}
           <a :href="['tel:' + storeInfo.phone]">
             <img class="call-service" src="./../../assets/call-service.png" alt=""><b class="pay-order-info-blue">联系店家</b>
           </a>
         </span>
-        <span>实付<b class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</b></span>
+        <span>实付<b class="pay-order-info-yellow">￥{{payWayInfo==='微信支付'?consumerOrder.totalPrice:consumerOrder.memberPrice}}</b></span>
       </div>
     </div>
 
+    <!--完工且未支付时显示-->
     <div class="pay-order-button" v-show="consumerOrder.state===2&&consumerOrder.payState===1">
-      <span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}}</span>
+      <span class="pay-order-info-yellow">￥{{payWayInfo==='微信支付'||consumerOrder.firstPayMethod===2?consumerOrder.totalPrice:consumerOrder.memberPrice}}</span>
       <!--<span class="pay-order-info-yellow">￥{{consumerOrder.actualPrice}} <b class="pay-order-info-gray">??已优惠￥10</b></span>-->
       <button @click="toPayOrder">立即结算</button>
     </div>
 
+    <!--未完工时显示-->
     <button class="blue-btn" v-show="consumerOrder.state===0 || consumerOrder.state===1" @click="orderTracking">订单跟踪</button>
+    <!--只有预约状态显示-->
     <button class="gray-btn" v-show="consumerOrder.state===0" @click="cancelOrder">取消订单</button>
 
     <open-door ref="openDoor" :ark-info-state="arkInfoState" v-show="isOpenDoorShow"></open-door>
@@ -309,7 +320,7 @@
         this.$post('/wechat/pay/payOrderByWechat',{
           openId: localStorage.getItem('openId'),
           orderId: this.orderId,
-          totalPrice:this.consumerOrder.actualPrice
+          totalPrice:this.consumerOrder.totalPrice
         }).then(res=>{
           let payInfo = res
           wx.chooseWXPay({
@@ -337,9 +348,9 @@
         this.$post('/wechat/pay/payOrderByCard',{
           consumerOrder: {
             id:this.orderId,
-            actualPrice: this.consumerOrder.actualPrice,
+            actualPrice: this.consumerOrder.memberPrice,
             firstPayMethod: 0,
-            firstActualPrice: this.consumerOrder.actualPrice,
+            firstActualPrice: this.consumerOrder.memberPrice,
             firstCardId: this.myCard[0].id,
             secondPayMethod: "",
             secondActualPrice: 0,

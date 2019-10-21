@@ -12,7 +12,7 @@
       </div>
       <span class="billing-order-project-item"
             v-for="(item,index) in consumerProjectInfos">{{item.projectName}}</span>
-      <span class="billing-order-project-count">合计费用： {{trueOrderPrice}}元</span>
+      <!--<span class="billing-order-project-count">合计费用： {{trueOrderPrice}}元</span>-->
     </div>
 
     <div class="billing-order-card billing-order-position">
@@ -60,17 +60,19 @@
         <div class="billing-order-dialog-content">
 
           <div @click="selectProject(index)"
-               :class="[item.comment==='***新用户专享***'?'billing-order-dialog-item':'billing-order-dialog-item']" v-for="(item,index) in projects">
+               :class="[item.comment==='***新用户专享***'?'billing-order-dialog-item':'billing-order-dialog-item']"
+               v-for="(item,index) in projects">
             <img :src="[checkedId.indexOf(item.id)!==-1?'./static/check-yellow.png':'./static/check-no.png']" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
+            <div class="member-price"><span>会员价</span><span>￥{{item.memberPrice}}</span></div>
             <div :class="[item.comment==='***新用户专享***'?'is-new':'is-old']">{{item.comment}}</div>
           </div>
 
         </div>
         <div class="billing-order-dialog-footer">
-          <span><b>￥</b>{{orderPrice}}</span>
-          <span class="billing-order-footer-project">普洗</span>
+          <!--<span><b>￥</b>{{orderPrice}}</span>-->
+          <!--<span class="billing-order-footer-project">普洗</span>-->
           <button @click="selectProjectBtn">确认</button>
         </div>
       </div>
@@ -223,7 +225,8 @@
           this.consumerProjectList.push({
             price:this.projects[index].price,
             projectId: this.projects[index].id,
-            projectName: this.projects[index].name
+            projectName: this.projects[index].name,
+            memberPrice: this.projects[index].memberPrice,
           })
           this.checkedId.push(this.projects[index].id)
         }
@@ -393,6 +396,11 @@
   .open-protocol
     text-decoration underline
 
+  .member-price
+    color red
+    display flex
+    justify-content space-between
+
   .submit-btn
     height h(84)
     width w(579)
@@ -549,7 +557,7 @@
       padding h(30) w(30) h(30) 0
       border-bottom $border-gray
       div
-        width w(360)
+        width w(450)
         margin-left w(60)
         margin-top h(20)
         font-size w(25)

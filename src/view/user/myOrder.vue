@@ -33,7 +33,8 @@
       </div>
 
       <div class="payment" v-show="item.payState === 1 && item.state === 2">
-        <span>待付款￥</span><span>{{item.actualPrice}}</span>
+        <span>待付款</span>
+        <!--<span>￥{{item.actualPrice}}</span>-->
         <img src="./../../assets/call-service.png" alt="">
         <a :href="['tel:' + storePhone]">
           <span class="payment-call-service">联系客服</span>
