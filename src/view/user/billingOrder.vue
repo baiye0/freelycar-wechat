@@ -65,7 +65,7 @@
             <img :src="[checkedId.indexOf(item.id)!==-1?'./static/check-yellow.png':'./static/check-no.png']" alt="">
             <span>{{item.name}}</span>
             <span class="billing-order-dialog-item-price">￥{{item.price}}</span>
-            <div class="member-price"><span>会员价</span><span>￥{{item.memberPrice}}</span></div>
+            <div class="member-price" v-show="item.price>item.memberPrice"><span>会员价</span><span>￥{{item.memberPrice}}</span></div>
             <div :class="[item.comment==='***新用户专享***'?'is-new':'is-old']">{{item.comment}}</div>
           </div>
 
