@@ -299,19 +299,23 @@
 
       // 支付
       toPayOrder(){
+        if(this.consumerOrder.actualPrice){
 //        先判断支付方式
-        if(this.payWayInfo==='微信支付'){
-          this.wxPay()
-        } else {
-          if(this.myCard[0].balance>=this.consumerOrder.actualPrice){
-            this.vipCardPay()
-          }else {
-            this.toast = this.$createToast({
-              txt: '会员卡余额不足',
-              type: 'txt'
-            })
-            this.toast.show()
+          if(this.payWayInfo==='微信支付'){
+            this.wxPay()
+          } else {
+            if(this.myCard[0].balance>=this.consumerOrder.actualPrice){
+              this.vipCardPay()
+            }else {
+              this.toast = this.$createToast({
+                txt: '会员卡余额不足',
+                type: 'txt'
+              })
+              this.toast.show()
+            }
           }
+        }else{
+          this.freePay()
         }
       },
 
@@ -352,6 +356,25 @@
             firstPayMethod: 0,
             firstActualPrice: this.consumerOrder.memberPrice,
             firstCardId: this.myCard[0].id,
+            secondPayMethod: "",
+            secondActualPrice: 0,
+            secondCardId: ""
+          },
+          useCoupons:[]
+        }).then(res=>{
+          this.isOpenDoor()
+        })
+      },
+
+      // 零元单
+      freePay(){
+        this.$post('/wechat/pay/payOrderByCard',{
+          consumerOrder: {
+            id:this.orderId,
+            actualPrice: this.consumerOrder.memberPrice,
+            firstPayMethod: 1,
+            firstActualPrice: this.consumerOrder.memberPrice,
+            firstCardId: null,
             secondPayMethod: "",
             secondActualPrice: 0,
             secondCardId: ""
