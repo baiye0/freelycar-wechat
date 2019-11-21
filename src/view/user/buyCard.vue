@@ -2,7 +2,7 @@
   <div class="buy-card">
     <span class="buy-card-store">以下会员卡仅限于{{store}}门店使用</span>
 
-    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(item.id,item.price)">
+    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(item.id,item.actualPrice)">
       <div class="buy-card-title">
         <span>小易会员VIP</span>
         <span>点击购买>></span>
