@@ -32,7 +32,7 @@
     <!--已接到订单-->
     <div v-show="tabBar==='已接到订单'">
       <div class="order-card" v-for="(item,index) in myOrderList"
-           @click="myOrderDetail(item.id,item.arkSn)">
+           @click="myOrderDetail(item.id,item.arkSn,item.userKeyLocationSn)">
         <div class="order-card-head">
           <img src="./../../assets/car-head.png" alt="">
           <b>订单号：{{item.id}}</b>
@@ -42,7 +42,7 @@
           <div>预约项目<span>{{item.projectNames}}</span></div>
           <div>接单时间<span>{{item.pickTime}}</span></div>
           <div>订单状态<span>已接车</span></div>
-          <button>确认完工</button>
+          <button :class="[item.userKeyLocationSn.split('-')[0]===arkSn?'orange':'gray']">确认完工</button>
         </div>
         <img class="order-card-myorder-more" src="./../../assets/more.png" alt="">
       </div>
@@ -172,8 +172,14 @@
       },
 
       // 已经到订单详情
-      myOrderDetail(id,arkSn){
-        this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:1,arkSn:arkSn}})
+      myOrderDetail(id,arkSn,userKeyLocationSn){
+        let sn = userKeyLocationSn.split('-')[0]
+        console.log(sn)
+        if(sn === localStorage.getItem('arkSn')){
+          this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:1,arkSn:arkSn}})
+        } else{
+          alert('请将钥匙归还至接单的智能柜')
+        }
       },
 
 
@@ -309,6 +315,10 @@
     padding h(28) 0
     font-size w(25)
     position relative
+    .orange
+      background #FFBD03
+    .gray
+      background gray
     div
       margin-bottom h(25)
     span
@@ -318,7 +328,6 @@
       border transparent
       height h(46)
       width w(160)
-      background #FFBD03
       position absolute
       bottom h(-15)
       right w(-5)
