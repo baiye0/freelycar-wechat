@@ -1,14 +1,14 @@
 <template>
   <div class="buy-card">
-    <span class="buy-card-store">以下会员卡仅限于{{store}}门店使用</span>
+    <span class="buy-card-store">以下会员卡仅限于{{store}}使用</span>
 
-    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(item.id,item.actualPrice)">
+    <div class="buy-card-card" v-for="(item,index) in msg" @click="buyCard(item.id,item.price)">
       <div class="buy-card-title">
-        <span>小易会员VIP</span>
+        <span>{{item.name}}</span>
         <span>点击购买>></span>
       </div>
-      <span class="buy-card-count">{{item.price}}<b>元</b></span>
-      <span class="buy-card-text">储值金额</span>
+      <span class="buy-card-count">{{item.actualPrice}}<b>元</b></span>
+      <span class="buy-card-text">付款金额：{{item.price}}元</span>
     </div>
 
   </div>
@@ -140,6 +140,7 @@
       this.getStoreDetail()
       this.wxConfig()
       this.getMyCard()
+      this.store=localStorage.getItem('storeName')
     }
   }
 </script>
