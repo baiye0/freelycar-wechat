@@ -32,7 +32,7 @@
     <!--已接到订单-->
     <div v-show="tabBar==='已接到订单'">
       <div class="order-card" v-for="(item,index) in myOrderList"
-           @click="myOrderDetail(item.id,item.arkSn,item.userKeyLocationSn)">
+           @click="myOrderDetail(item.id,item.arkSn,item.userKeyLocationSn,item.userKeyLocation)">
         <div class="order-card-head">
           <img src="./../../assets/car-head.png" alt="">
           <b>订单号：{{item.id}}</b>
@@ -172,13 +172,13 @@
       },
 
       // 已经到订单详情
-      myOrderDetail(id,arkSn,userKeyLocationSn){
+      myOrderDetail(id,arkSn,userKeyLocationSn,userKeyLocation){
         let sn = userKeyLocationSn.split('-')[0]
         console.log(sn)
         if(sn === localStorage.getItem('arkSn')){
           this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:1,arkSn:arkSn}})
         } else{
-          alert('请将钥匙归还至接单的智能柜')
+          alert('请将钥匙归还至接单的智能柜：'+userKeyLocation.split('-')[0])
         }
       },
 
