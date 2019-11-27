@@ -207,28 +207,33 @@
 
       // 选择项目
       selectProject(index){
-        // 购物车consumerProjectList。全部列表projects
-        // 先看购物车里有没有点击的这个，
-        let haveThisProject = false
-        this.consumerProjectList.map(item=>{
-          if(item.projectId===this.projects[index].id){
-            haveThisProject=true
-          }
-        })
-        //有就去掉，没有就加进去
-        if(haveThisProject){
-          let newList = this.consumerProjectList.filter(item=>item.projectId!==this.projects[index].id)
-          let newIdList = this.checkedId.filter(item=>item!==this.projects[index].id)
-          this.consumerProjectList=newList
-          this.checkedId=newIdList
-        }else {
-          this.consumerProjectList.push({
-            price:this.projects[index].price,
-            projectId: this.projects[index].id,
-            projectName: this.projects[index].name,
-            memberPrice: this.projects[index].memberPrice,
+        // 检测项目能不能选
+        if(this.projects[index].staffReady){
+          // 购物车consumerProjectList。全部列表projects
+          // 先看购物车里有没有点击的这个，
+          let haveThisProject = false
+          this.consumerProjectList.map(item=>{
+            if(item.projectId===this.projects[index].id){
+              haveThisProject=true
+            }
           })
-          this.checkedId.push(this.projects[index].id)
+          //有就去掉，没有就加进去
+          if(haveThisProject){
+            let newList = this.consumerProjectList.filter(item=>item.projectId!==this.projects[index].id)
+            let newIdList = this.checkedId.filter(item=>item!==this.projects[index].id)
+            this.consumerProjectList=newList
+            this.checkedId=newIdList
+          }else {
+            this.consumerProjectList.push({
+              price:this.projects[index].price,
+              projectId: this.projects[index].id,
+              projectName: this.projects[index].name,
+              memberPrice: this.projects[index].memberPrice,
+            })
+            this.checkedId.push(this.projects[index].id)
+          }
+        }else {
+          alert('当前项目暂时没有技师服务')
         }
       },
 
