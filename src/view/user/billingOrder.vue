@@ -138,7 +138,8 @@
         consumerProjectList:[],
         checkedId:[],
         idList:[],
-        toastTxt:''
+        toastTxt:'',
+        submitOrder:false
       }
     },
     methods: {
@@ -319,7 +320,13 @@
           this.toastTxt='请勾选同意使用协议'
           this.showTxt()
         } else {
-          this.submitHttp()
+          // 判断刚刚有没有点过提交
+          if(this.submitOrder){
+            alert('请勿重复提交')
+          }else{
+            this.submitOrder=true
+            this.submitHttp()
+          }
         }
       },
 
@@ -332,7 +339,7 @@
         this.toast.show()
       },
 
-      // 提交下单的接口
+      // 提交下单的接口（用柜子号获取门id）
       submitHttp(){
         this.$get('/wechat/ark/getEmptyDoor',{
           arkSn:localStorage.getItem('arkSn')
@@ -341,10 +348,15 @@
           this.$refs.openDoor.changeTxt('billingOrder',res.doorSn)
           this.isOpenDoorShow=true
           this.submitBilling(res.id)
+        }).catch(err=>{
+          alert('下单失败，请勿放入钥匙')
+          this.submitOrder=false
+          this.isOpenDoorShow=false
         })
 
       },
 
+      // 提交下单的接口（下单）
       submitBilling(id){
         this.$post('/wechat/ark/orderService',{
           consumerOrder:this.consumerOrder,
@@ -359,6 +371,7 @@
           },3000)
         }).catch(err=>{
           alert('下单失败，请勿放入钥匙')
+          this.submitOrder=false
           this.isOpenDoorShow=false
         })
       }
