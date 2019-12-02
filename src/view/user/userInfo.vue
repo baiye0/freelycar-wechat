@@ -58,8 +58,16 @@
             localStorage.setItem('trueName',res.trueName)
             localStorage.setItem('storeId',res.defaultStoreId)
             localStorage.setItem('clientId',res.defaultClientId)
-
-            this.$router.push({path:'/carInfo'})
+            // 检查是否有车
+            this.$get('/wechat/client/listPersonalCars',{
+              clientId:res.defaultClientId
+            }).then(res=>{
+              if(res.length>0){
+                this.$router.push({path:'/billingOrder'})
+              }else {
+                this.$router.push({path:'/carInfo'})
+              }
+            })
           })
         } else {
           this.toast = this.$createToast({
