@@ -16,7 +16,8 @@
           <img src="./../../assets/car-head.png" alt="">
           <b>订单号：{{item.id}}</b>
           <span>{{item.licensePlate}} {{item.carColor}} · {{item.carBrand}}</span>
-          <button @click="takeOrder(item.licensePlate,item.id,item.arkSn,item.keyLocation)" :class="[item.arkSn===arkSn?'bg-blue':'bg-gray']">接单</button>
+          <button @click="takeOrder(item.licensePlate,item.id,item.arkSn,item.keyLocation)"
+                  :class="[item.arkSn===arkSn && !orderProcessing?'bg-blue':'bg-gray']">接单</button>
         </div>
         <div class="order-card-info" @click="orderDetail(item.id,item.arkSn)">
           <span>车主姓名 {{item.clientName}}</span>
@@ -79,6 +80,7 @@
         isOpenDoorShow:false,
         isSuccessShow:false,
         arkInfoState:'tecGetKey',
+        orderProcessing:false
       }
     },
     methods: {
@@ -90,6 +92,9 @@
           staffId:localStorage.getItem('staffId')
         }).then(res=>{
           this.orderList=res
+          if(this.myOrderList.length>0){
+            this.orderProcessing=true
+          }
         })
       },
 
@@ -97,9 +102,11 @@
       getFinishOrders(){
         this.$get('/wechat/order/listServicingOrders',{
           licensePlate:this.search,
-          storeId:localStorage.getItem('storeId')
+          storeId:localStorage.getItem('storeId'),
+          staffId:localStorage.getItem('staffId')
         }).then(res=>{
           this.myOrderList =res
+          this.getOrders()
         })
       },
 
@@ -110,41 +117,60 @@
 
       // 订单详情
       orderDetail(id,arkSn){
-        this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:0,arkSn:arkSn}})
+        if(this.orderProcessing){
+          this.toast = this.$createToast({
+            txt: '您有尚未完成的订单，不可接单',
+            type: 'txt'
+          })
+          this.toast.show()
+        }else {
+          this.$router.push({path:'/orderDetail',query:{orderId:id,tabBar:0,arkSn:arkSn}})
+        }
+
       },
 
       // 接单
       takeOrder(licensePlate,id,arkSn,keyLocation){
-        if(arkSn===this.arkSn){
-          this.$createDialog({
-            type: 'confirm',
-            title: '提示',
-            content:'您是否确认在柜前开始'+licensePlate+'的订单？',
-            confirmBtn: {
-              text: '确认',
-              active: true,
-              disabled: false,
-              href: 'javascript:;'
-            },
-            cancelBtn: {
-              text: '取消',
-              active: false,
-              disabled: false,
-              href: 'javascript:;'
-            },
-            onConfirm: () => {
-              this.pickOpen(id,keyLocation)
-            },
-            onCancel: () => {
-              console.log('取消')
-            }
-          }).show()
-        }else {
+        // 判断是否有正在进行的单子
+        if(this.orderProcessing){
           this.toast = this.$createToast({
-            txt: '非当前智能柜，不可接单',
+            txt: '您有尚未完成的订单，不可接单',
             type: 'txt'
           })
           this.toast.show()
+        }else {
+          // 判断是否当前智能柜
+          if(arkSn===this.arkSn){
+            this.$createDialog({
+              type: 'confirm',
+              title: '提示',
+              content:'您是否确认在柜前开始'+licensePlate+'的订单？',
+              confirmBtn: {
+                text: '确认',
+                active: true,
+                disabled: false,
+                href: 'javascript:;'
+              },
+              cancelBtn: {
+                text: '取消',
+                active: false,
+                disabled: false,
+                href: 'javascript:;'
+              },
+              onConfirm: () => {
+                this.pickOpen(id,keyLocation)
+              },
+              onCancel: () => {
+                console.log('取消')
+              }
+            }).show()
+          }else {
+            this.toast = this.$createToast({
+              txt: '非当前智能柜，不可接单',
+              type: 'txt'
+            })
+            this.toast.show()
+          }
         }
       },
 
@@ -189,7 +215,6 @@
       // }
     },
     mounted: function () {
-      this.getOrders()
       this.getFinishOrders()
       this.arkSn=localStorage.getItem('arkSn')
       if(this.$route.query.tabBar){
