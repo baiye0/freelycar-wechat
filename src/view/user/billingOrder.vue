@@ -151,14 +151,27 @@
           this.wxUserInfo = res.wxUserInfo
           this.cars = res.cars
           this.msg.name = res.wxUserInfo.trueName
+          this.getStoreProject(res.newUser)
           if(this.$route.query.licensePlate){
             this.msg.number = this.$route.query.licensePlate
             this.consumerOrder.carId=this.$route.query.id
           } else {
-            this.msg.number = res.cars[0].licensePlate
-            this.consumerOrder.carId=res.cars[0].id
+            if(res.cars.length===0){
+
+              this.$createDialog({
+                type: 'alert',
+                title: '',
+                content: '请先添加车辆',
+                icon: 'cubeic-alert',
+                onConfirm: (e, promptValue) => {
+                  this.$router.push({path:'/addCar',query:{backTo:'/billingOrder'}})
+                }
+              }).show()
+            }else {
+              this.msg.number = res.cars[0].licensePlate
+              this.consumerOrder.carId=res.cars[0].id
+            }
           }
-          this.getStoreProject(res.newUser)
         })
       },
 

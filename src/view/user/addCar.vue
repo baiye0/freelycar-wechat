@@ -5,14 +5,14 @@
       <input type="text" placeholder="请输入车牌号" v-model="licensePlate">
     </div>
 
-    <div @click="showDrawer(licensePlate,clientId,storeId)" class="add-car-item">
-      <span>品牌车系</span>
-      <span class="color-blue">{{chooseBrand.carline?chooseBrand.carline:'选择品牌'}}<img src="./../../assets/more.png" alt=""></span>
-    </div>
-
     <div class="add-car-item" @click="chooseColor">
       <span>车辆颜色</span>
       <span class="color-blue">{{color?color:'选择颜色'}}<img src="./../../assets/more.png" alt=""></span>
+    </div>
+
+    <div @click="showDrawer(licensePlate,clientId,storeId)" class="add-car-item">
+      <span>品牌车系</span>
+      <span class="color-blue">{{chooseBrand.carline?chooseBrand.carline:'选择品牌'}}<img src="./../../assets/more.png" alt=""></span>
     </div>
 
     <div class="add-car-item">
