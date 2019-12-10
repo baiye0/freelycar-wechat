@@ -445,8 +445,8 @@
   .order-detail-btn
     height h(333)
     width 100vw
-    background url("./../../assets/button-bg.png")
-    position fixed
+    /*background url("./../../assets/button-bg.png")*/
+    /*position fixed*/
     bottom h(50)
 
   .order-detail-photo-img
