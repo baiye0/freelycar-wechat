@@ -197,6 +197,9 @@
   w(n)
     n / 7.5vw
 
+  .big-blue-btn
+    top h(50)
+
   .change-order
     height 100vh
     width 100vw

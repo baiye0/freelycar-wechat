@@ -122,6 +122,12 @@
   w(n)
     n / 7.5vw
 
+  .big-blue-btn
+    top h(420)
+
+  .big-gray-btn
+    top h(350)
+
   .car-info-upload
     height w(150)
     width w(150)

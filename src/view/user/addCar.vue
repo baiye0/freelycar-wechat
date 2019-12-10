@@ -197,4 +197,7 @@
     position absolute
     transform translateX(-50%)
     left 50%
+
+  .big-blue-btn
+    top h(250)
 </style>

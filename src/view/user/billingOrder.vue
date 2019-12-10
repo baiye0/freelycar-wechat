@@ -449,10 +449,10 @@
     color white
     font-size w(32)
     background $bt-blue
-    position absolute
+    position relative
     transform translate(-50%,0)
     left 50%
-    bottom h(50)
+    margin h(100) 0
 
   .billing-order-car-img
     height w(125)
@@ -460,7 +460,7 @@
     margin-left w(50)
 
   .billing-order
-    height 100vh
+    min-height 100vh
     width 100vw
     background white
 

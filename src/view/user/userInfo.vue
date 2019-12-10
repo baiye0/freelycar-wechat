@@ -93,6 +93,12 @@
   w(n)
     n / 7.5vw
 
+  .big-blue-btn
+    top h(450)
+
+  .big-gray-btn
+    top h(400)
+
   .user-info
     position relative
     height 100vh
