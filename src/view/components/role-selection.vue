@@ -5,6 +5,7 @@
 </template>
 
 <script>
+  import wx from 'weixin-js-sdk'
   export default {
     data() {
       return {
@@ -112,7 +113,8 @@
       getOrderState() {
         this.$get('/wechat/order/listOrders', {
           clientId: localStorage.getItem('clientId'),
-          type: 'ark'
+          type: 'ark',
+          arkSn: this.arkSn
         }).then(res => {
           if (res && res.length > 0) {
             if (res[0].state < 3) {
@@ -123,6 +125,11 @@
           } else {
             this.$router.push({path: '/billingOrder'})
           }
+        }).catch(err=>{
+          if(err==='智能柜已满'){
+            wx.closeWindow()
+          }
+          console.log('捕捉测试err',err)
         })
       }
 

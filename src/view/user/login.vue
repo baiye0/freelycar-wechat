@@ -52,6 +52,7 @@
 
       // console.log(localStorage.getItem('frompage'))
       this.redirect = this.$route.query.redirect
+      this.arkSn=localStorage.getItem('arkSn')
       //获取redirect的值并缓存，当值存在并改变时，改变redirect的值
       if(typeof(this.$route.query.redirect) !== "undefined"){
         localStorage.setItem('redirect',this.redirect)
@@ -238,7 +239,8 @@
       getOrderState(){
         this.$get('/wechat/order/listOrders', {
           clientId: localStorage.getItem('clientId'),
-          type: 'ark'
+          type: 'ark',
+          arkSn: this.arkSn
         }).then(res => {
           if (res && res.length > 0) {
             if (res[0].state < 3) {
@@ -248,6 +250,10 @@
             }
           } else {
             this.$router.push( {path: '/billingOrder' })
+          }
+        }).catch(err=>{
+          if(err==='智能柜已满'){
+            wx.closeWindow()
           }
         })
       }

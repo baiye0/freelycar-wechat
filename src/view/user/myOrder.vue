@@ -77,7 +77,8 @@
         storePhone:'025-86697165',
         isCarImgShow:false,
         staffOrderImgUrl:'',
-        noOrderShow:false
+        noOrderShow:false,
+        arkSn:null
       }
     },
     methods: {
@@ -85,7 +86,8 @@
       getOrderList(){
         this.$get('/wechat/order/listOrders', {
           clientId: localStorage.getItem('clientId'),
-          type: 'ark'
+          type: 'ark',
+          arkSn: this.arkSn
         }).then(res => {
           this.msg = res
           if (this.msg.length===0) this.noOrderShow=true
@@ -169,6 +171,7 @@
       }
     },
     created: function(){
+      this.arkSn=localStorage.getItem('arkSn')
       if(localStorage.getItem('staffId')){
         this.$router.push({path:'/order'})
       }else if(localStorage.getItem('clientId')){

@@ -392,9 +392,13 @@
             this.$router.push({path:'/myOrder'})
           },3000)
         }).catch(err=>{
-          alert('下单失败，请勿放入钥匙')
-          this.submitOrder=false
-          this.isOpenDoorShow=false
+          if(err==='智能柜已满'){
+            wx.closeWindow()
+          }else {
+            alert('下单失败，请勿放入钥匙')
+            this.submitOrder=false
+            this.isOpenDoorShow=false
+          }
         })
       }
 
