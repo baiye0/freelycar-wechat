@@ -29,13 +29,13 @@ axios.interceptors.response.use(response => {
   // console.log(response.data.message)
   //console.log(localStorage.getItem('wxinfo'))
   if(response.data.message=="JWT Expired"){
-    localStorage.removeItem('Authorization')
+    localStorage.removeItem('jwt')
     if(localStorage.getItem('clientId')){
       // console.log(router.currentRoute.fullPath)
       // localStorage.removeItem('wxinfo');
       localStorage.removeItem('jwt')
       router.replace({
-        path: '/client-login',
+        path: '/login',
         query: {
           redirect: router.currentRoute.fullPath
         }
@@ -46,7 +46,7 @@ axios.interceptors.response.use(response => {
       // localStorage.removeItem('staffinfo');
       localStorage.removeItem('jwt')
       router.replace({
-        path: '/technic-login',
+        path: '/tecLogin',
         query: {
           redirect: router.currentRoute.fullPath
         }
