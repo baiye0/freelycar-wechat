@@ -99,6 +99,16 @@
         })
       },
 
+      //        获取门店信息
+      getStoreDetail() {
+        this.$get('/wechat/store/getDetail', {
+          id: localStorage.getItem('storeId')
+        }).then(res => {
+          localStorage.setItem('storePhone',res.store.phone)
+          this.storePhone=res.store.phone
+        })
+      },
+
       editCar(){
         this.isEditCar = !this.isEditCar
       },
@@ -129,9 +139,9 @@
       if(localStorage.getItem('staffId')){
         this.$router.push({path:'/tecHome'})
       }else if(localStorage.getItem('clientId')){
-        this.storePhone=localStorage.getItem('storePhone')
         this.storeName=localStorage.getItem('storeName')
         this.getAllInfo()
+        this.getStoreDetail()
       }else {
         this.$router.push({path:'/login'})
       }
