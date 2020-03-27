@@ -4,9 +4,6 @@
       <div class="store-head-card">
         <span class="store-head-title">{{store.name}}</span>
         <span class="store-head-time">营业时间：{{time[0]}}-{{time[1]}}</span>
-        <a :href="['tel:' + store.phone]">
-          <div class="store-head-call"><img src="./../../assets/call-service.png" alt=""><span>联系店家</span></div>
-        </a>
         <div class="store-head-img">
           <img src="./../../assets/distance.png" alt="">
           <span>{{distance}}km</span>

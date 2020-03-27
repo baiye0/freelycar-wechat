@@ -82,7 +82,7 @@
         wxUserInfo:{},
         cars:[],
         isEditCar:false,
-        storePhone:'',
+        storePhone:'025-86697165',
         storeName:'',
         cardBalance:null
       }
@@ -96,16 +96,6 @@
           this.wxUserInfo=res.wxUserInfo
           this.cars=res.cars
           this.cardBalance=res.cardBalance
-        })
-      },
-
-      //        获取门店信息
-      getStoreDetail() {
-        this.$get('/wechat/store/getDetail', {
-          id: localStorage.getItem('storeId')
-        }).then(res => {
-          localStorage.setItem('storePhone',res.store.phone)
-          this.storePhone=res.store.phone
         })
       },
 
@@ -141,7 +131,6 @@
       }else if(localStorage.getItem('clientId')){
         this.storeName=localStorage.getItem('storeName')
         this.getAllInfo()
-        this.getStoreDetail()
       }else {
         this.$router.push({path:'/login'})
       }
