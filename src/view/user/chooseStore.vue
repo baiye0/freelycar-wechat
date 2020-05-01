@@ -4,7 +4,7 @@
     <button class="search-store" @click="getStoreList">搜门店</button>
     <div class="store-info" v-for="(item,index) in storeList"
          @click="checkedStore(index)">
-      <img class="store-img" :src="[item.headUrl]" alt="">
+      <img class="store-img" src='https://www.freelycar.com/upload/headimg/logo.jpg' alt="">
       <span class="store-title">{{item.name}}</span>
       <span class="store-local">门店地址：{{item.address}}</span>
       <img class="checkbox" :src="index===chooseStore?'./static/check-yellow.png':'./static/check-no.png'" alt="">
